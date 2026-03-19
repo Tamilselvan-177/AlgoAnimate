@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sliding Window — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e11;
+    --bg2: #16161a;
+    --bg3: #1e1e24;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0;
+    --text2: #9a9890;
+    --text3: #5a5856;
+    --accent: #7c6af7;
+    --accent2: #a594f9;
+    --green: #3dd68c;
+    --green-bg: rgba(61,214,140,0.1);
+    --amber: #f5a623;
+    --amber-bg: rgba(245,166,35,0.1);
+    --coral: #f07060;
+    --coral-bg: rgba(240,112,96,0.1);
+    --purple-bg: rgba(124,106,247,0.12);
+    --radius: 10px;
+    --radius-lg: 16px;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f4f2ee;
+      --bg2: #ffffff;
+      --bg3: #eeece8;
+      --border: rgba(0,0,0,0.08);
+      --border2: rgba(0,0,0,0.14);
+      --text: #1a1a1e;
+      --text2: #5a5856;
+      --text3: #9a9890;
+      --accent: #5b48e8;
+      --accent2: #7c6af7;
+      --green: #1a9e5c;
+      --green-bg: rgba(26,158,92,0.08);
+      --amber: #c47d0a;
+      --amber-bg: rgba(196,125,10,0.08);
+      --coral: #d04030;
+      --coral-bg: rgba(208,64,48,0.08);
+      --purple-bg: rgba(91,72,232,0.08);
+    }
+  }
+
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6}
+
+  /* NAV */
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;backdrop-filter:blur(12px)}
+  .nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+  .nav-logo span{color:var(--accent)}
+  .nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+  .nav-back:hover{color:var(--accent)}
+  .nav-meta{display:flex;align-items:center;gap:10px}
+  .badge{padding:3px 10px;border-radius:20px;font-size:0.72rem;font-family:var(--mono);font-weight:500;letter-spacing:0.04em}
+  .badge-easy{background:var(--green-bg);color:var(--green);border:1px solid rgba(61,214,140,0.2)}
+  .badge-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid rgba(124,106,247,0.2)}
+
+  /* HERO */
+  .hero{padding:2.5rem 2rem 0;max-width:1100px;margin:0 auto}
+  .hero-tag{font-size:0.72rem;font-family:var(--mono);color:var(--accent);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.6rem}
+  .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:0.8rem}
+  .hero-sub{font-size:0.95rem;color:var(--text2);max-width:600px;line-height:1.7}
+
+  /* TABS */
+  .tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+  .tab{padding:0.7rem 1.2rem;font-size:0.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+  .tab:hover{color:var(--text)}
+  .tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+
+  /* SECTIONS */
+  .sections{max-width:1100px;margin:0 auto;padding:2rem}
+  .section{display:none}.section.active{display:block}
+
+  /* PROBLEM SECTION */
+  .problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+  @media(max-width:700px){.problem-grid{grid-template-columns:1fr}}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+  .card h3{font-size:0.8rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem}
+  .prose{font-size:0.9rem;color:var(--text2);line-height:1.8}
+  .prose strong{color:var(--text);font-weight:500}
+  .prose ul{padding-left:1.2rem;margin-top:0.5rem}
+  .prose li{margin-bottom:0.3rem}
+  .example-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:0.8rem;font-family:var(--mono);font-size:0.82rem}
+  .example-block .label{color:var(--text3);font-size:0.72rem;margin-bottom:4px}
+  .example-block .val{color:var(--green)}
+  .constraints{display:flex;flex-direction:column;gap:6px}
+  .constraint-row{display:flex;align-items:center;gap:8px;font-size:0.82rem;font-family:var(--mono)}
+  .c-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);flex-shrink:0}
+  .c-text{color:var(--text2)}
+
+  /* SOLUTION SECTION */
+  .solution-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+  .solution-title{font-size:0.95rem;font-weight:700}
+  .complexity-row{display:flex;gap:8px}
+  .cx-badge{padding:4px 12px;border-radius:20px;font-size:0.75rem;font-family:var(--mono)}
+  .cx-time{background:var(--purple-bg);color:var(--accent2)}
+  .cx-space{background:var(--green-bg);color:var(--green)}
+  .code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .code-block pre{padding:1.5rem;overflow-x:auto;font-family:var(--mono);font-size:0.82rem;line-height:1.8;color:var(--text2)}
+  .code-block pre .kw{color:#c792ea}
+  .code-block pre .fn{color:var(--green)}
+  .code-block pre .cm{color:var(--text3)}
+  .code-block pre .st{color:var(--amber)}
+  .code-block pre .nm{color:#f78c6c}
+  .copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.75rem;color:var(--text2);cursor:pointer;transition:all .2s}
+  .copy-btn:hover{background:var(--border2);color:var(--text)}
+
+  /* EXPLANATION SECTION */
+  .explain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-bottom:1.5rem}
+  .explain-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem}
+  .explain-card .num{font-size:1.8rem;font-weight:800;color:var(--accent);font-family:var(--mono);line-height:1;margin-bottom:8px}
+  .explain-card .etitle{font-size:0.9rem;font-weight:700;margin-bottom:6px}
+  .explain-card .ebody{font-size:0.82rem;color:var(--text2);line-height:1.7}
+  .tip-box{background:var(--purple-bg);border:1px solid rgba(124,106,247,0.25);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:0.88rem;color:var(--text2)}
+  .tip-box strong{color:var(--accent2)}
+
+  /* ANIMATION SECTION */
+  .anim-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem}
+  .anim-controls select,.anim-controls input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;font-family:var(--mono);font-size:0.8rem;color:var(--text);outline:none}
+  .anim-controls select:focus,.anim-controls input:focus{border-color:var(--accent)}
+  .input-group{display:flex;flex-direction:column;gap:4px}
+  .input-label{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase}
+  .run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;letter-spacing:0.04em}
+  .run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+  .sample-btns{display:flex;gap:6px;flex-wrap:wrap}
+  .sample-btn{padding:5px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:0.75rem;color:var(--text2);cursor:pointer;transition:all .2s}
+  .sample-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ANIMATION CANVAS */
+  .anim-canvas{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;min-height:280px}
+  .arr-display{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;padding-bottom:4px;margin-bottom:0.5rem}
+  .acell{min-width:52px;width:52px;height:52px;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:1rem;font-weight:700;border:1.5px solid var(--border2);background:var(--bg3);color:var(--text2);transition:all .25s;flex-shrink:0;position:relative}
+  .acell.win{background:rgba(124,106,247,0.15);border-color:var(--accent);color:var(--accent2);transform:translateY(-5px)}
+  .acell.left{background:var(--coral-bg);border-color:var(--coral);color:var(--coral);transform:translateY(-5px) scale(1.08)}
+  .acell.right{background:var(--amber-bg);border-color:var(--amber);color:var(--amber);transform:translateY(-5px) scale(1.08)}
+  .acell.best{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+  .acell.both{background:rgba(124,106,247,0.15);border-color:var(--accent);color:var(--accent2);transform:translateY(-5px) scale(1.08)}
+  .idx-row{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+  .aidx{min-width:52px;width:52px;text-align:center;font-family:var(--mono);font-size:0.65rem;color:var(--text3)}
+  .ptr-row{display:flex;gap:6px;overflow-x:auto;height:22px;margin-top:4px}
+  .aptr{min-width:52px;width:52px;text-align:center;font-family:var(--mono);font-size:0.72rem;font-weight:700}
+  .aptr.L{color:var(--coral)}.aptr.R{color:var(--amber)}
+
+  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1.2rem 0}
+  @media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--bg3);border-radius:var(--radius);padding:10px 12px}
+  .stat-l{font-size:0.65rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
+  .stat-v{font-size:1.2rem;font-weight:700;font-family:var(--mono);color:var(--text)}
+
+  .msg-bar{font-family:var(--mono);font-size:0.82rem;color:var(--text2);min-height:22px;margin:0.6rem 0;padding:10px 14px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent)}
+
+  .code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin:1rem 0}
+  .code-hl pre{padding:1.2rem;font-family:var(--mono);font-size:0.8rem;line-height:2}
+  .hl-line{display:block;padding:0 6px;border-radius:4px;transition:background .2s;color:var(--text3)}
+  .hl-line .kw{color:#c792ea}.hl-line .fn{color:var(--green)}.hl-line .cm{color:var(--text3)}
+  .hl-line.active{background:rgba(124,106,247,0.18);color:var(--text)}
+
+  .step-controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:1rem}
+  .ctrl-btn{padding:8px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.78rem;color:var(--text2);cursor:pointer;transition:all .2s}
+  .ctrl-btn:hover{border-color:var(--accent);color:var(--accent)}
+  .ctrl-btn:disabled{opacity:0.35;cursor:not-allowed}
+  .ctrl-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+  .ctrl-btn.primary:hover{background:var(--accent2)}
+  .speed-wrap{display:flex;align-items:center;gap:8px;font-size:0.75rem;font-family:var(--mono);color:var(--text3);margin-left:auto}
+  .speed-wrap input{width:80px}
+
+  /* LEGEND */
+  .legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:1rem}
+  .leg-item{display:flex;align-items:center;gap:6px;font-size:0.75rem;font-family:var(--mono);color:var(--text2)}
+  .leg-dot{width:12px;height:12px;border-radius:4px;border:1.5px solid}
+
+  /* VARIANTS */
+  .variant-tabs{display:flex;gap:6px;margin-bottom:1.2rem;flex-wrap:wrap}
+  .vtab{padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:0.75rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+  .vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+  footer a{color:var(--accent);text-decoration:none}
+  .next-problem{display:flex;justify-content:flex-end;margin-top:2rem}
+  .next-btn{display:flex;align-items:center;gap:8px;padding:10px 20px;background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius-lg);text-decoration:none;color:var(--text2);font-size:0.82rem;font-family:var(--mono);transition:all .2s}
+  .next-btn:hover{border-color:var(--accent);color:var(--accent)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge badge-easy">Easy–Medium</span>
+    <span class="badge badge-topic">Array</span>
+    <span class="badge badge-topic">Two Pointers</span>
+  </div>
+  <a href="index.html" class="nav-back">← All Problems</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Technique #01</div>
+  <h1>Sliding Window</h1>
+  <p class="hero-sub">Maintain a moving subarray to solve subarray/substring problems in O(n) — instead of the brute-force O(n²) nested loop approach.</p>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+  <!-- PROBLEM -->
+  <div class="section active" id="tab-problem">
+    <div class="problem-grid">
+      <div class="card">
+        <h3>Problem Statement</h3>
+        <div class="prose">
+          <strong>Max Sum Subarray of Size K</strong><br><br>
+          Given an array of integers and a number <strong>k</strong>, find the maximum sum of any contiguous subarray of size k.<br><br>
+          <strong>Variant 2:</strong> Longest substring without repeating characters — find the length of the longest substring with all unique characters.
+        </div>
+        <div class="example-block">
+          <div class="label">Example 1 — Fixed Window</div>
+          <div class="val">Input:  arr = [2,1,5,1,3,2],  k = 3</div>
+          <div class="val">Output: 9   (subarray [2,1,5] → wait, [1,5,1]? No — [5,1,3] = 9)</div>
+        </div>
+        <div class="example-block" style="margin-top:8px">
+          <div class="label">Example 2 — Dynamic Window</div>
+          <div class="val">Input:  s = "abcabcbb"</div>
+          <div class="val">Output: 3   (substring "abc")</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Constraints</h3>
+        <div class="constraints">
+          <div class="constraint-row"><div class="c-dot"></div><span class="c-text">1 ≤ arr.length ≤ 10⁵</span></div>
+          <div class="constraint-row"><div class="c-dot"></div><span class="c-text">-10⁴ ≤ arr[i] ≤ 10⁴</span></div>
+          <div class="constraint-row"><div class="c-dot"></div><span class="c-text">1 ≤ k ≤ arr.length</span></div>
+          <div class="constraint-row"><div class="c-dot"></div><span class="c-text">s consists of printable ASCII characters</span></div>
+        </div>
+        <div style="margin-top:1.2rem">
+          <h3 style="margin-bottom:0.8rem">When to use Sliding Window</h3>
+          <div class="prose">
+            <ul>
+              <li>Problem asks for a <strong>subarray / substring</strong></li>
+              <li>Involves <strong>contiguous elements</strong></li>
+              <li>Asks for max / min / longest / shortest</li>
+              <li>Has a clear <strong>expand / shrink</strong> condition</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="next-problem" style="justify-content:flex-start">
+      <button class="ctrl-btn primary" onclick="switchTab('solution', document.querySelectorAll('.tab')[1])">See Solution →</button>
+    </div>
+  </div>
+
+  <!-- SOLUTION -->
+  <div class="section" id="tab-solution">
+    <div class="variant-tabs">
+      <div class="vtab on" onclick="showSol(0,this)">Fixed Window (Max Sum)</div>
+      <div class="vtab" onclick="showSol(1,this)">Dynamic Window (No Repeat)</div>
+    </div>
+
+    <div id="sol-0">
+      <div class="solution-header">
+        <span class="solution-title">Max Sum Subarray of Size K</span>
+        <div class="complexity-row">
+          <span class="cx-badge cx-time">Time O(n)</span>
+          <span class="cx-badge cx-space">Space O(1)</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+        <button class="copy-btn" onclick="copyCode('code-fixed')">Copy</button>
+      </div>
+      <div class="code-block">
+        <pre id="code-fixed"><span class="kw">def</span> <span class="fn">max_sum_subarray</span>(arr, k):
+    n = len(arr)
+    <span class="kw">if</span> n &lt; k:
+        <span class="kw">return</span> -1
+
+    <span class="cm"># Compute sum of first window</span>
+    window_sum = sum(arr[:k])
+    best = window_sum
+
+    <span class="cm"># Slide the window: add right, drop left</span>
+    <span class="kw">for</span> R <span class="kw">in</span> range(k, n):
+        window_sum += arr[R]       <span class="cm"># incoming element</span>
+        window_sum -= arr[R - k]   <span class="cm"># outgoing element</span>
+        best = max(best, window_sum)
+
+    <span class="kw">return</span> best</pre>
+      </div>
+    </div>
+
+    <div id="sol-1" style="display:none">
+      <div class="solution-header">
+        <span class="solution-title">Longest Substring Without Repeating Characters</span>
+        <div class="complexity-row">
+          <span class="cx-badge cx-time">Time O(n)</span>
+          <span class="cx-badge cx-space">Space O(k)</span>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+        <button class="copy-btn" onclick="copyCode('code-dynamic')">Copy</button>
+      </div>
+      <div class="code-block">
+        <pre id="code-dynamic"><span class="kw">def</span> <span class="fn">longest_no_repeat</span>(s):
+    seen = {}  <span class="cm"># char → last seen index</span>
+    L = 0
+    best = 0
+
+    <span class="kw">for</span> R <span class="kw">in</span> range(len(s)):
+        <span class="cm"># If duplicate inside window, shrink from left</span>
+        <span class="kw">if</span> s[R] <span class="kw">in</span> seen <span class="kw">and</span> seen[s[R]] &gt;= L:
+            L = seen[s[R]] + 1
+
+        seen[s[R]] = R  <span class="cm"># record latest position</span>
+        best = max(best, R - L + 1)
+
+    <span class="kw">return</span> best</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLANATION -->
+  <div class="section" id="tab-explanation">
+    <div class="explain-grid">
+      <div class="explain-card">
+        <div class="num">01</div>
+        <div class="etitle">The core idea</div>
+        <div class="ebody">Instead of summing every subarray from scratch (O(n²)), keep a running total. Slide one step: add the new element on the right, drop the old one on the left. One pass = O(n).</div>
+      </div>
+      <div class="explain-card">
+        <div class="num">02</div>
+        <div class="etitle">Two pointers L and R</div>
+        <div class="ebody">R always moves forward every iteration. L only moves forward when a constraint is violated — like a duplicate character entering the window. This asymmetry is what keeps it O(n).</div>
+      </div>
+      <div class="explain-card">
+        <div class="num">03</div>
+        <div class="etitle">Fixed vs dynamic</div>
+        <div class="ebody">Fixed window: size k is constant, both L and R move together. Dynamic window: size changes — R expands freely, L catches up only when the window breaks a rule.</div>
+      </div>
+      <div class="explain-card">
+        <div class="num">04</div>
+        <div class="etitle">Universal template</div>
+        <div class="ebody">for R in range(n): expand window. while window invalid: shrink (L++). update answer. This template solves nearly every sliding window problem.</div>
+      </div>
+    </div>
+    <div class="tip-box">
+      <strong>Key insight:</strong> Every element enters the window exactly once (when R reaches it) and leaves exactly once (when L passes it). So the total work across all iterations is O(n) — not O(n²) even though there's a nested while loop.
+    </div>
+    <div style="margin-top:1.5rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem">
+      <h3 style="font-size:0.8rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem">Universal Template</h3>
+      <div class="code-block">
+        <pre><span class="kw">def</span> <span class="fn">sliding_window</span>(arr):
+    L = <span class="nm">0</span>
+    <span class="cm"># initialize window state (sum, set, map, etc.)</span>
+
+    <span class="kw">for</span> R <span class="kw">in</span> range(len(arr)):
+        <span class="cm"># 1. EXPAND: add arr[R] to window state</span>
+
+        <span class="kw">while</span> window_is_invalid():
+            <span class="cm"># 2. SHRINK: remove arr[L], L += 1</span>
+            L += <span class="nm">1</span>
+
+        <span class="cm"># 3. UPDATE: record best answer</span>
+        answer = update(answer, R - L + <span class="nm">1</span>)</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- ANIMATION -->
+  <div class="section" id="tab-animation">
+    <div class="variant-tabs">
+      <div class="vtab on" onclick="switchVariant('fixed',this)">Fixed Window</div>
+      <div class="vtab" onclick="switchVariant('dynamic',this)">Dynamic Window</div>
+    </div>
+
+    <!-- FIXED -->
+    <div id="anim-fixed">
+      <div class="anim-controls">
+        <div class="input-group">
+          <span class="input-label">Array (comma separated)</span>
+          <input id="fix-input" type="text" value="2,1,5,1,3,2" style="width:220px" placeholder="e.g. 2,1,5,1,3,2">
+        </div>
+        <div class="input-group">
+          <span class="input-label">Window size k</span>
+          <input id="fix-k" type="number" value="3" min="1" style="width:70px">
+        </div>
+        <button class="run-btn" onclick="initFixed()">Run</button>
+      </div>
+      <div style="margin-bottom:1rem">
+        <span style="font-size:0.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-right:8px">Samples:</span>
+        <div class="sample-btns" style="display:inline-flex">
+          <button class="sample-btn" onclick="loadFixedSample([2,1,5,1,3,2],3)">Basic</button>
+          <button class="sample-btn" onclick="loadFixedSample([4,2,1,7,8,1,2,8,1,0],3)">Larger</button>
+          <button class="sample-btn" onclick="loadFixedSample([-2,1,-3,4,-1,2,1,-5,4],4)">Negatives</button>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--coral-bg);border-color:var(--coral)"></div>L pointer</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--amber-bg);border-color:var(--amber)"></div>R pointer</div>
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(124,106,247,0.15);border-color:var(--accent)"></div>window</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green-bg);border-color:var(--green)"></div>best window</div>
+      </div>
+      <div class="anim-canvas">
+        <div class="arr-display" id="fix-arr"></div>
+        <div class="idx-row" id="fix-idx"></div>
+        <div class="ptr-row" id="fix-ptr"></div>
+        <div class="stats-bar">
+          <div class="stat"><div class="stat-l">Window</div><div class="stat-v" id="fstat-win">—</div></div>
+          <div class="stat"><div class="stat-l">Sum</div><div class="stat-v" id="fstat-sum">—</div></div>
+          <div class="stat"><div class="stat-l">Best Sum</div><div class="stat-v" id="fstat-best">—</div></div>
+          <div class="stat"><div class="stat-l">Best Range</div><div class="stat-v" id="fstat-range" style="font-size:0.9rem;padding-top:2px">—</div></div>
+        </div>
+        <div class="msg-bar" id="fix-msg">Configure input above and press Run</div>
+        <div class="code-hl">
+          <pre><span class="hl-line" id="fl0">window_sum = sum(arr[0:k])</span>
+<span class="hl-line" id="fl1">best = window_sum;  best_start = 0</span>
+<span class="hl-line" id="fl2"><span class="kw">for</span> R <span class="kw">in</span> range(k, len(arr)):</span>
+<span class="hl-line" id="fl3">  window_sum += arr[R]      <span class="cm"># add incoming right</span></span>
+<span class="hl-line" id="fl4">  window_sum -= arr[R - k]  <span class="cm"># drop outgoing left</span></span>
+<span class="hl-line" id="fl5">  <span class="kw">if</span> window_sum &gt; best: best = window_sum</span></pre>
+        </div>
+        <div class="step-controls">
+          <button class="ctrl-btn" id="fprev" onclick="fStep(-1)" disabled>← Prev</button>
+          <button class="ctrl-btn" id="fnext" onclick="fStep(1)" disabled>Next →</button>
+          <button class="ctrl-btn primary" onclick="fAutoPlay()" id="fauto" disabled>Auto-play</button>
+          <button class="ctrl-btn" onclick="fReset()" id="freset" disabled>Reset</button>
+          <div class="speed-wrap">Speed <input type="range" min="1" max="5" value="3" step="1" id="fspeed" style="width:70px"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC -->
+    <div id="anim-dynamic" style="display:none">
+      <div class="anim-controls">
+        <div class="input-group">
+          <span class="input-label">String</span>
+          <input id="dyn-input" type="text" value="abcabcbb" style="width:200px" placeholder="e.g. abcabcbb">
+        </div>
+        <button class="run-btn" onclick="initDynamic()">Run</button>
+      </div>
+      <div style="margin-bottom:1rem">
+        <span style="font-size:0.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-right:8px">Samples:</span>
+        <div class="sample-btns" style="display:inline-flex">
+          <button class="sample-btn" onclick="loadDynSample('abcabcbb')">Classic</button>
+          <button class="sample-btn" onclick="loadDynSample('pwwkew')">pwwkew</button>
+          <button class="sample-btn" onclick="loadDynSample('dvdf')">dvdf</button>
+          <button class="sample-btn" onclick="loadDynSample('aab')">aab</button>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:var(--coral-bg);border-color:var(--coral)"></div>L pointer</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--amber-bg);border-color:var(--amber)"></div>R pointer</div>
+        <div class="leg-item"><div class="leg-dot" style="background:rgba(124,106,247,0.15);border-color:var(--accent)"></div>window</div>
+        <div class="leg-item"><div class="leg-dot" style="background:var(--green-bg);border-color:var(--green)"></div>best window</div>
+      </div>
+      <div class="anim-canvas">
+        <div class="arr-display" id="dyn-arr"></div>
+        <div class="idx-row" id="dyn-idx"></div>
+        <div class="ptr-row" id="dyn-ptr"></div>
+        <div class="stats-bar">
+          <div class="stat"><div class="stat-l">L</div><div class="stat-v" id="dstat-l">0</div></div>
+          <div class="stat"><div class="stat-l">R</div><div class="stat-v" id="dstat-r">0</div></div>
+          <div class="stat"><div class="stat-l">Length</div><div class="stat-v" id="dstat-len">0</div></div>
+          <div class="stat"><div class="stat-l">Best</div><div class="stat-v" id="dstat-best">0</div></div>
+        </div>
+        <div class="msg-bar" id="dyn-msg">Configure input above and press Run</div>
+        <div class="code-hl">
+          <pre><span class="hl-line" id="dl0">seen = {};  L = 0;  best = 0</span>
+<span class="hl-line" id="dl1"><span class="kw">for</span> R <span class="kw">in</span> range(len(s)):</span>
+<span class="hl-line" id="dl2">  <span class="kw">while</span> s[R] <span class="kw">in</span> seen <span class="kw">and</span> seen[s[R]] &gt;= L:</span>
+<span class="hl-line" id="dl3">    L += 1   <span class="cm"># shrink from left</span></span>
+<span class="hl-line" id="dl4">  seen[s[R]] = R</span>
+<span class="hl-line" id="dl5">  best = <span class="fn">max</span>(best, R - L + 1)</span></pre>
+        </div>
+        <div class="step-controls">
+          <button class="ctrl-btn" id="dprev" onclick="dStep(-1)" disabled>← Prev</button>
+          <button class="ctrl-btn" id="dnext" onclick="dStep(1)" disabled>Next →</button>
+          <button class="ctrl-btn primary" onclick="dAutoPlay()" id="dauto" disabled>Auto-play</button>
+          <button class="ctrl-btn" onclick="dReset()" id="dreset" disabled>Reset</button>
+          <div class="speed-wrap">Speed <input type="range" min="1" max="5" value="3" step="1" id="dspeed" style="width:70px"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /sections -->
+
+<footer>
+  <p>AlgoAnimate — Built with pure HTML, CSS & JS &nbsp;·&nbsp; <a href="https://github.com">GitHub</a></p>
+</footer>
+
+<script>
+// ─── TAB SWITCHING ───────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ─── SOLUTION VARIANT ────────────────────────────────────────
+function showSol(idx, btn) {
+  document.getElementById('sol-0').style.display = idx === 0 ? 'block' : 'none';
+  document.getElementById('sol-1').style.display = idx === 1 ? 'block' : 'none';
+  document.querySelectorAll('.variant-tabs')[0].querySelectorAll('.vtab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ─── ANIMATION VARIANT ───────────────────────────────────────
+function switchVariant(name, btn) {
+  document.getElementById('anim-fixed').style.display = name === 'fixed' ? 'block' : 'none';
+  document.getElementById('anim-dynamic').style.display = name === 'dynamic' ? 'block' : 'none';
+  document.querySelectorAll('#tab-animation .variant-tabs .vtab').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+// ─── COPY CODE ───────────────────────────────────────────────
+function copyCode(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.innerText).then(() => {
+    event.target.textContent = 'Copied!';
+    setTimeout(() => event.target.textContent = 'Copy', 1500);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════
+// FIXED WINDOW ENGINE
+// ═══════════════════════════════════════════════════════════
+let fSteps = [], fCur = 0, fTimer = null, fArr = [], fK = 3;
+
+function loadFixedSample(arr, k) {
+  document.getElementById('fix-input').value = arr.join(',');
+  document.getElementById('fix-k').value = k;
+  initFixed();
+}
+
+function initFixed() {
+  if (fTimer) { clearInterval(fTimer); fTimer = null; }
+  const raw = document.getElementById('fix-input').value;
+  fArr = raw.split(',').map(x => parseInt(x.trim())).filter(x => !isNaN(x));
+  fK = Math.max(1, parseInt(document.getElementById('fix-k').value) || 3);
+  if (fK > fArr.length) { document.getElementById('fix-msg').textContent = `k=${fK} is larger than array length ${fArr.length}`; return; }
+  fSteps = buildFixedSteps(fArr, fK);
+  fCur = 0;
+  renderFixed();
+  ['fprev','fnext','fauto','freset'].forEach(id => document.getElementById(id).disabled = false);
+}
+
+function buildFixedSteps(arr, k) {
+  const steps = [];
+  const n = arr.length;
+  let wsum = arr.slice(0, k).reduce((a, b) => a + b, 0);
+  let best = wsum, bstart = 0;
+  steps.push({ cl: 0, L: 0, R: k-1, wsum, best, bstart, msg: `Initial window [0..${k-1}]: sum = ${wsum}` });
+  steps.push({ cl: 1, L: 0, R: k-1, wsum, best, bstart, msg: `best = ${best}, best_start = 0` });
+  for (let R = k; R < n; R++) {
+    const L = R - k + 1;
+    steps.push({ cl: 2, L, R, wsum, best, bstart, msg: `Slide to [${L}..${R}]` });
+    wsum += arr[R];
+    steps.push({ cl: 3, L, R, wsum, best, bstart, msg: `Add arr[${R}]=${arr[R]} → sum = ${wsum}` });
+    wsum -= arr[R - k];
+    steps.push({ cl: 4, L, R, wsum, best, bstart, msg: `Remove arr[${R-k}]=${arr[R-k]} → sum = ${wsum}` });
+    if (wsum > best) { best = wsum; bstart = L; }
+    steps.push({ cl: 5, L, R, wsum, best, bstart, msg: `best = ${best} at [${bstart}..${bstart+k-1}]` });
+  }
+  steps.push({ cl: 5, L: n-k, R: n-1, wsum, best, bstart, msg: `✓ Done! Max sum = ${best}` });
+  return steps;
+}
+
+function renderFixed() {
+  const s = fSteps[fCur], arr = fArr, k = fK;
+  const row = document.getElementById('fix-arr');
+  row.innerHTML = '';
+  arr.forEach((v, i) => {
+    const c = document.createElement('div'); c.className = 'acell';
+    if (i >= s.bstart && i < s.bstart + k) c.classList.add('best');
+    if (i >= s.L && i <= s.R) {
+      if (i === s.L && i === s.R) c.classList.add('both');
+      else if (i === s.L) c.classList.add('left');
+      else if (i === s.R) c.classList.add('right');
+      else c.classList.add('win');
+    }
+    c.textContent = v; row.appendChild(c);
+  });
+  document.getElementById('fix-idx').innerHTML = arr.map((_, i) => `<div class="aidx">${i}</div>`).join('');
+  document.getElementById('fix-ptr').innerHTML = arr.map((_, i) => {
+    let t = '';
+    if (i === s.L && i === s.R) t = '<span class="aptr L">L=R</span>';
+    else if (i === s.L) t = '<span class="aptr L">L</span>';
+    else if (i === s.R) t = '<span class="aptr R">R</span>';
+    return `<div style="min-width:52px;width:52px;text-align:center">${t}</div>`;
+  }).join('');
+  document.getElementById('fstat-win').textContent = `[${s.L}..${s.R}]`;
+  document.getElementById('fstat-sum').textContent = s.wsum;
+  document.getElementById('fstat-best').textContent = s.best;
+  document.getElementById('fstat-range').textContent = `[${s.bstart}..${s.bstart+k-1}]`;
+  document.getElementById('fix-msg').textContent = s.msg;
+  for (let i = 0; i <= 5; i++) { const e = document.getElementById('fl'+i); if(e) e.classList.toggle('active', i === s.cl); }
+  document.getElementById('fprev').disabled = fCur === 0;
+  document.getElementById('fnext').disabled = fCur === fSteps.length - 1;
+  document.getElementById('fauto').textContent = fTimer ? 'Pause' : 'Auto-play';
+}
+
+function fStep(d) { fCur = Math.max(0, Math.min(fSteps.length-1, fCur+d)); renderFixed(); if(fCur===fSteps.length-1&&fTimer){clearInterval(fTimer);fTimer=null;renderFixed();} }
+function fAutoPlay() {
+  if (fTimer) { clearInterval(fTimer); fTimer=null; renderFixed(); return; }
+  if (fCur === fSteps.length-1) fCur = 0;
+  const sp = [900,580,320,180,80][parseInt(document.getElementById('fspeed').value)-1];
+  fTimer = setInterval(() => { if(fCur>=fSteps.length-1){clearInterval(fTimer);fTimer=null;renderFixed();return;} fCur++; renderFixed(); }, sp);
+  renderFixed();
+}
+function fReset() { if(fTimer){clearInterval(fTimer);fTimer=null;} fCur=0; renderFixed(); }
+
+// ═══════════════════════════════════════════════════════════
+// DYNAMIC WINDOW ENGINE
+// ═══════════════════════════════════════════════════════════
+let dSteps = [], dCur = 0, dTimer = null, dStr = '';
+
+function loadDynSample(str) {
+  document.getElementById('dyn-input').value = str;
+  initDynamic();
+}
+
+function initDynamic() {
+  if (dTimer) { clearInterval(dTimer); dTimer = null; }
+  dStr = document.getElementById('dyn-input').value.trim();
+  if (!dStr) return;
+  dSteps = buildDynSteps(dStr);
+  dCur = 0;
+  renderDyn();
+  ['dprev','dnext','dauto','dreset'].forEach(id => document.getElementById(id).disabled = false);
+}
+
+function buildDynSteps(s) {
+  const steps = [];
+  const seen = {}; let L = 0, best = 0, bL = 0, bR = -1;
+  steps.push({ cl:0, L:0, R:-1, seen:{}, best, bL, bR, msg:`Init: seen={}, L=0, best=0` });
+  for (let R = 0; R < s.length; R++) {
+    steps.push({ cl:1, L, R, seen:{...seen}, best, bL, bR, msg:`R=${R}: examine '${s[R]}'` });
+    if (seen[s[R]] !== undefined && seen[s[R]] >= L) {
+      steps.push({ cl:2, L, R, seen:{...seen}, best, bL, bR, msg:`'${s[R]}' is in window (at ${seen[s[R]]}) → shrink` });
+      while (seen[s[R]] !== undefined && seen[s[R]] >= L) {
+        steps.push({ cl:3, L, R, seen:{...seen}, best, bL, bR, msg:`  Drop '${s[L]}', L: ${L} → ${L+1}` });
+        L++;
+      }
+    }
+    seen[s[R]] = R;
+    steps.push({ cl:4, L, R, seen:{...seen}, best, bL, bR, msg:`Record '${s[R]}' at index ${R}` });
+    if (R-L+1 > best) { best = R-L+1; bL = L; bR = R; }
+    steps.push({ cl:5, L, R, seen:{...seen}, best, bL, bR, msg:`Window "${s.slice(L,R+1)}" len=${R-L+1} · best=${best}` });
+  }
+  steps.push({ cl:5, L, R:s.length-1, seen:{...seen}, best, bL, bR, msg:`✓ Done! Longest = ${best} ("${s.slice(bL,bR+1)}")` });
+  return steps;
+}
+
+function renderDyn() {
+  const s = dSteps[dCur], str = dStr;
+  const row = document.getElementById('dyn-arr');
+  row.innerHTML = '';
+  str.split('').forEach((ch, i) => {
+    const c = document.createElement('div'); c.className = 'acell';
+    if (i >= s.bL && i <= s.bR) c.classList.add('best');
+    if (s.R >= 0 && i >= s.L && i <= s.R) {
+      if (i === s.L && i === s.R) c.classList.add('both');
+      else if (i === s.L) c.classList.add('left');
+      else if (i === s.R) c.classList.add('right');
+      else c.classList.add('win');
+    }
+    c.textContent = ch; row.appendChild(c);
+  });
+  document.getElementById('dyn-idx').innerHTML = str.split('').map((_, i) => `<div class="aidx">${i}</div>`).join('');
+  document.getElementById('dyn-ptr').innerHTML = str.split('').map((_, i) => {
+    let t = '';
+    if (i === s.L && s.R >= 0 && i === s.R) t = '<span class="aptr L">L=R</span>';
+    else if (i === s.L) t = '<span class="aptr L">L</span>';
+    else if (s.R >= 0 && i === s.R) t = '<span class="aptr R">R</span>';
+    return `<div style="min-width:52px;width:52px;text-align:center">${t}</div>`;
+  }).join('');
+  document.getElementById('dstat-l').textContent = s.L;
+  document.getElementById('dstat-r').textContent = Math.max(0, s.R);
+  document.getElementById('dstat-len').textContent = s.R >= s.L ? s.R - s.L + 1 : 0;
+  document.getElementById('dstat-best').textContent = s.best;
+  document.getElementById('dyn-msg').textContent = s.msg;
+  for (let i = 0; i <= 5; i++) { const e = document.getElementById('dl'+i); if(e) e.classList.toggle('active', i === s.cl); }
+  document.getElementById('dprev').disabled = dCur === 0;
+  document.getElementById('dnext').disabled = dCur === dSteps.length - 1;
+  document.getElementById('dauto').textContent = dTimer ? 'Pause' : 'Auto-play';
+}
+
+function dStep(d) { dCur = Math.max(0, Math.min(dSteps.length-1, dCur+d)); renderDyn(); if(dCur===dSteps.length-1&&dTimer){clearInterval(dTimer);dTimer=null;renderDyn();} }
+function dAutoPlay() {
+  if (dTimer) { clearInterval(dTimer); dTimer=null; renderDyn(); return; }
+  if (dCur === dSteps.length-1) dCur = 0;
+  const sp = [900,580,320,180,80][parseInt(document.getElementById('dspeed').value)-1];
+  dTimer = setInterval(() => { if(dCur>=dSteps.length-1){clearInterval(dTimer);dTimer=null;renderDyn();return;} dCur++; renderDyn(); }, sp);
+  renderDyn();
+}
+function dReset() { if(dTimer){clearInterval(dTimer);dTimer=null;} dCur=0; renderDyn(); }
+</script>
+</body>
+</html>
