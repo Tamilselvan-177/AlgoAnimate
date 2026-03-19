@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AlgoAnimate — Visual Algorithm Learning</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e11; --bg2: #16161a; --bg3: #1e1e24;
+    --border: rgba(255,255,255,0.08); --border2: rgba(255,255,255,0.14);
+    --text: #e8e6e0; --text2: #9a9890; --text3: #5a5856;
+    --accent: #7c6af7; --accent2: #a594f9;
+    --green: #3dd68c; --green-bg: rgba(61,214,140,0.1);
+    --amber: #f5a623; --amber-bg: rgba(245,166,35,0.1);
+    --coral: #f07060; --coral-bg: rgba(240,112,96,0.1);
+    --purple-bg: rgba(124,106,247,0.12);
+    --radius: 10px; --radius-lg: 16px;
+    --mono: 'JetBrains Mono', monospace; --sans: 'Syne', sans-serif;
+  }
+  @media(prefers-color-scheme:light){
+    :root{
+      --bg:#f4f2ee;--bg2:#ffffff;--bg3:#eeece8;
+      --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.14);
+      --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+      --accent:#5b48e8;--accent2:#7c6af7;
+      --green:#1a9e5c;--green-bg:rgba(26,158,92,0.08);
+      --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.08);
+      --coral:#d04030;--coral-bg:rgba(208,64,48,0.08);
+      --purple-bg:rgba(91,72,232,0.08);
+    }
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2rem;border-bottom:1px solid var(--border)}
+  .logo{font-size:1.2rem;font-weight:800;letter-spacing:-0.02em;color:var(--text)}
+  .logo span{color:var(--accent)}
+  .nav-right{font-size:0.78rem;font-family:var(--mono);color:var(--text3)}
+
+  .hero{max-width:1100px;margin:0 auto;padding:5rem 2rem 3rem}
+  .hero-eyebrow{font-size:0.72rem;font-family:var(--mono);color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem}
+  .hero h1{font-size:clamp(2.5rem,6vw,4.5rem);font-weight:800;letter-spacing:-0.04em;line-height:1.05;margin-bottom:1.2rem}
+  .hero h1 em{font-style:normal;color:var(--accent)}
+  .hero p{font-size:1rem;color:var(--text2);max-width:520px;line-height:1.7;margin-bottom:2rem}
+  .hero-stats{display:flex;gap:2rem;flex-wrap:wrap}
+  .hstat{display:flex;flex-direction:column;gap:3px}
+  .hstat-n{font-size:1.6rem;font-weight:800;font-family:var(--mono);color:var(--text)}
+  .hstat-l{font-size:0.75rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase}
+
+  .search-wrap{max-width:1100px;margin:0 auto;padding:0 2rem 1.5rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .search-input{background:var(--bg2);border:1px solid var(--border2);border-radius:var(--radius);padding:10px 16px;font-family:var(--mono);font-size:0.82rem;color:var(--text);outline:none;width:260px;transition:border-color .2s}
+  .search-input:focus{border-color:var(--accent)}
+  .filter-btn{padding:8px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg2);font-family:var(--mono);font-size:0.75rem;color:var(--text2);cursor:pointer;transition:all .2s}
+  .filter-btn:hover,.filter-btn.on{border-color:var(--accent);color:var(--accent2);background:var(--purple-bg)}
+
+  .problems-grid{max-width:1100px;margin:0 auto;padding:0 2rem 4rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+  .prob-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;text-decoration:none;display:flex;flex-direction:column;gap:1rem;transition:all .25s;position:relative;overflow:hidden}
+  .prob-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);opacity:0;transition:opacity .2s}
+  .prob-card:hover{border-color:var(--border2);transform:translateY(-3px)}
+  .prob-card:hover::before{opacity:1}
+  .prob-card.coming-soon{opacity:0.5;pointer-events:none}
+  .card-top{display:flex;align-items:center;justify-content:space-between}
+  .card-num{font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em}
+  .card-badges{display:flex;gap:6px}
+  .badge{padding:3px 9px;border-radius:20px;font-size:0.68rem;font-family:var(--mono);font-weight:500}
+  .b-easy{background:var(--green-bg);color:var(--green)}
+  .b-medium{background:var(--amber-bg);color:var(--amber)}
+  .b-hard{background:var(--coral-bg);color:var(--coral)}
+  .b-topic{background:var(--purple-bg);color:var(--accent2)}
+  .card-title{font-size:1.1rem;font-weight:700;color:var(--text);letter-spacing:-0.02em}
+  .card-desc{font-size:0.82rem;color:var(--text2);line-height:1.6}
+  .card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:0.8rem;border-top:1px solid var(--border)}
+  .card-tags{display:flex;gap:6px;flex-wrap:wrap}
+  .tag{font-size:0.68rem;font-family:var(--mono);color:var(--text3)}
+  .card-arrow{font-size:1rem;color:var(--accent);opacity:0;transition:opacity .2s}
+  .prob-card:hover .card-arrow{opacity:1}
+  .soon-pill{position:absolute;top:14px;right:14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:0.68rem;font-family:var(--mono);color:var(--text3)}
+
+  .section-label{max-width:1100px;margin:0 auto;padding:0 2rem 1rem;font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase}
+
+  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.78rem;font-family:var(--mono);color:var(--text3)}
+  footer a{color:var(--accent);text-decoration:none}
+  footer a:hover{text-decoration:underline}
+
+  /* HOW IT WORKS */
+  .how-section{max-width:1100px;margin:4rem auto 2rem;padding:0 2rem}
+  .how-title{font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:1.5rem}
+  .how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+  .how-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem}
+  .how-n{font-size:2rem;font-weight:800;font-family:var(--mono);color:var(--accent);line-height:1;margin-bottom:8px}
+  .how-t{font-size:0.88rem;font-weight:700;margin-bottom:5px}
+  .how-b{font-size:0.78rem;color:var(--text2);line-height:1.6}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Algo<span>Animate</span></div>
+  <div class="nav-right">v1.0 · Pure HTML/CSS/JS</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Visual Algorithm Learning</div>
+  <h1>Learn algorithms<br>by <em>watching</em> them</h1>
+  <p>Step-by-step animated breakdowns of every classic algorithm. Custom input, sample cases, code highlighting — no backend, no frameworks.</p>
+  <div class="hero-stats">
+    <div class="hstat"><span class="hstat-n" id="problem-count">4</span><span class="hstat-l">Problems</span></div>
+    <div class="hstat"><span class="hstat-n">100%</span><span class="hstat-l">Interactive</span></div>
+    <div class="hstat"><span class="hstat-n">0</span><span class="hstat-l">Dependencies</span></div>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-input" type="text" id="search" placeholder="Search problems..." oninput="filterProblems()">
+  <button class="filter-btn on" onclick="setFilter('all',this)">All</button>
+  <button class="filter-btn" onclick="setFilter('array',this)">Array</button>
+  <button class="filter-btn" onclick="setFilter('graph',this)">Graph</button>
+  <button class="filter-btn" onclick="setFilter('bfs',this)">BFS</button>
+  <button class="filter-btn" onclick="setFilter('dfs',this)">DFS</button>
+</div>
+
+<div class="section-label">Problems</div>
+
+<div class="problems-grid" id="problems-grid">
+
+  <!-- ADD NEW PROBLEMS HERE — copy a prob-card block -->
+
+  <a class="prob-card" href="problems/sliding-window.html" data-tags="array sliding-window two-pointers">
+    <div class="card-top">
+      <span class="card-num">#01</span>
+      <div class="card-badges"><span class="badge b-easy">Easy–Med</span><span class="badge b-topic">Array</span></div>
+    </div>
+    <div class="card-title">Sliding Window</div>
+    <div class="card-desc">Max sum subarray of size k · Longest substring without repeating characters. The O(n) technique that replaces O(n²) brute force.</div>
+    <div class="card-footer">
+      <div class="card-tags"><span class="tag">two-pointers</span><span class="tag">window</span></div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="prob-card" href="problems/bfs-dfs.html" data-tags="graph bfs dfs">
+    <div class="card-top">
+      <span class="card-num">#02</span>
+      <div class="card-badges"><span class="badge b-easy">Easy</span><span class="badge b-topic">Graph</span></div>
+    </div>
+    <div class="card-title">BFS & DFS</div>
+    <div class="card-desc">Breadth-first and depth-first search on a 2D grid. See the queue vs stack difference visually with live traversal animation.</div>
+    <div class="card-footer">
+      <div class="card-tags"><span class="tag">bfs</span><span class="tag">dfs</span><span class="tag">grid</span></div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="prob-card" href="problems/flood-fill.html" data-tags="graph bfs array">
+    <div class="card-top">
+      <span class="card-num">#03</span>
+      <div class="card-badges"><span class="badge b-easy">Easy</span><span class="badge b-topic">Graph</span></div>
+    </div>
+    <div class="card-title">Flood Fill</div>
+    <div class="card-desc">Paint-bucket algorithm. Starting from (sr,sc), recolor all connected pixels of the same color. BFS multi-source flood.</div>
+    <div class="card-footer">
+      <div class="card-tags"><span class="tag">bfs</span><span class="tag">grid</span><span class="tag">matrix</span></div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <a class="prob-card" href="problems/rotting-oranges.html" data-tags="graph bfs array">
+    <div class="card-top">
+      <span class="card-num">#04</span>
+      <div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Graph</span></div>
+    </div>
+    <div class="card-title">Rotting Oranges</div>
+    <div class="card-desc">Multi-source BFS. All rotten oranges spread simultaneously each minute. Find minimum time until no fresh oranges remain.</div>
+    <div class="card-footer">
+      <div class="card-tags"><span class="tag">bfs</span><span class="tag">multi-source</span></div>
+      <span class="card-arrow">→</span>
+    </div>
+  </a>
+
+  <div class="prob-card coming-soon" data-tags="array">
+    <div class="soon-pill">Coming soon</div>
+    <div class="card-top"><span class="card-num">#05</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Array</span></div></div>
+    <div class="card-title">Two Sum</div>
+    <div class="card-desc">Hash map approach. Find two indices that add up to a target in one pass.</div>
+    <div class="card-footer"><div class="card-tags"><span class="tag">hashmap</span></div></div>
+  </div>
+
+  <div class="prob-card coming-soon" data-tags="graph dfs">
+    <div class="soon-pill">Coming soon</div>
+    <div class="card-top"><span class="card-num">#06</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Graph</span></div></div>
+    <div class="card-title">Number of Islands</div>
+    <div class="card-desc">Count connected components in a 2D binary grid using BFS/DFS.</div>
+    <div class="card-footer"><div class="card-tags"><span class="tag">dfs</span><span class="tag">bfs</span></div></div>
+  </div>
+
+</div>
+
+<div class="how-section">
+  <div class="how-title">How to add a new problem</div>
+  <div class="how-grid">
+    <div class="how-card"><div class="how-n">01</div><div class="how-t">Copy the template</div><div class="how-b">Duplicate <code>sliding-window.html</code> into <code>problems/</code> folder.</div></div>
+    <div class="how-card"><div class="how-n">02</div><div class="how-t">Fill in the sections</div><div class="how-b">Replace the problem statement, solution code, explanation, and animation engine.</div></div>
+    <div class="how-card"><div class="how-n">03</div><div class="how-t">Add a card here</div><div class="how-b">Copy one <code>&lt;a class="prob-card"&gt;</code> block in index.html and update the link + text.</div></div>
+    <div class="how-card"><div class="how-n">04</div><div class="how-t">Push to GitHub</div><div class="how-b">GitHub Pages serves it instantly. No build step, no server, no config.</div></div>
+  </div>
+</div>
+
+<footer>
+  <p>AlgoAnimate · Pure HTML/CSS/JS · <a href="https://github.com">View on GitHub</a> · Add a problem by opening a PR</p>
+</footer>
+
+<script>
+let activeFilter = 'all';
+
+function setFilter(f, btn) {
+  activeFilter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
+  btn.classList.add('on');
+  filterProblems();
+}
+
+function filterProblems() {
+  const q = document.getElementById('search').value.toLowerCase();
+  document.querySelectorAll('.prob-card').forEach(card => {
+    const tags = (card.dataset.tags || '').toLowerCase();
+    const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+    const desc = card.querySelector('.card-desc')?.textContent.toLowerCase() || '';
+    const matchSearch = !q || title.includes(q) || tags.includes(q) || desc.includes(q);
+    const matchFilter = activeFilter === 'all' || tags.includes(activeFilter);
+    card.style.display = matchSearch && matchFilter ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
