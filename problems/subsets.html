@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>78. Subsets — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
+  --accent:#7c6af7;--accent2:#a594f9;
+  --green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);
+  --coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);
+  --purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);
+  --radius:10px;--radius-lg:16px;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+}
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;
+    --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+    --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+    --accent:#5b48e8;--accent2:#7c6af7;
+    --green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);
+    --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);
+    --coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);
+    --purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);
+    --teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);
+  }
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6}
+
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--accent)}
+.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-family:var(--mono);font-weight:500}
+.b-lc{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+
+.hero{padding:2.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
+.lc-number{font-size:0.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:0.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:0.8rem}
+.hero-sub{font-size:0.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:0.7rem 1.2rem;font-size:0.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+
+.sections{max-width:1100px;margin:0 auto;padding:2rem}
+.section{display:none}.section.active{display:block}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:0.88rem;color:var(--text2);line-height:1.85}
+.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:0.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:0.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}
+.cx{padding:4px 12px;border-radius:20px;font-size:0.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}
+.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:0.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:0.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}
+.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:0.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:0.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:1.1rem 1.3rem;font-family:var(--mono);font-size:0.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,0.22);color:var(--text)}
+
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-lc">LC #78</span>
+    <span class="badge b-lc">Medium</span>
+    <span class="badge b-topic">Backtracking</span>
+    <span class="badge b-topic">Bit Manipulation</span>
+  </div>
+  <a href="../index.html" class="nav-back">← All Problems</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Problem #07</div>
+  <div class="lc-number">LeetCode 78</div>
+  <h1>Subsets</h1>
+  <p class="hero-sub">Generate all 2ⁿ subsets of an array of unique integers. The classic backtracking / power set problem — every element is either included or excluded at each level of the recursion tree.</p>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- ═══ PROBLEM ═══ -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">
+        Given an integer array <strong>nums</strong> of unique elements, return <strong>all possible subsets</strong> (the power set).<br><br>
+        The solution must not contain duplicate subsets. Return in any order.<br><br>
+        A <strong>subset</strong> is any selection of 0 or more elements — including the empty set <code>[]</code> and the full array itself.
+      </div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1</div>
+        <div class="ex-io"><strong>Input:</strong> nums = [1,2,3]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]</span></div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:5px;font-family:var(--mono)">8 subsets = 2³</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2</div>
+        <div class="ex-io"><strong>Input:</strong> nums = [0]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[],[0]]</span></div>
+        <div style="font-size:.72rem;color:var(--text3);margin-top:5px;font-family:var(--mono)">2 subsets = 2¹</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints &amp; Key Facts</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ nums.length ≤ 10</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>-10 ≤ nums[i] ≤ 10</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>All numbers are unique</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Output sizes</div>
+        <div style="color:var(--accent2)">n=1 → 2 subsets</div>
+        <div style="color:var(--accent2)">n=3 → 8 subsets</div>
+        <div style="color:var(--accent2)">n=5 → 32 subsets</div>
+        <div style="color:var(--accent2)">n=10 → 1024 subsets</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- ═══ SOLUTION ═══ -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Backtracking</div>
+    <div class="vtab" onclick="showSol(1,this)">Iterative</div>
+    <div class="vtab" onclick="showSol(2,this)">Bit Manipulation</div>
+  </div>
+  <div class="vsec on" id="sv0">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Backtracking (DFS)</span>
+      <div class="cx-row"><span class="cx cx-t">O(n × 2ⁿ)</span><span class="cx cx-s">O(n) stack</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">subsets</span>(nums):
+    res = []
+
+    <span class="kw">def</span> <span class="fn">backtrack</span>(start, current):
+        res.append(current[:])   <span class="cm"># record at EVERY call</span>
+        <span class="kw">for</span> i <span class="kw">in</span> range(start, len(nums)):
+            current.append(nums[i])   <span class="cm"># include</span>
+            backtrack(i + 1, current) <span class="cm"># explore</span>
+            current.pop()             <span class="cm"># exclude (backtrack)</span>
+
+    backtrack(0, [])
+    <span class="kw">return</span> res</pre></div>
+  </div>
+  <div class="vsec" id="sv1">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Iterative Cascade</span>
+      <div class="cx-row"><span class="cx cx-t">O(n × 2ⁿ)</span><span class="cx cx-s">O(1) extra</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">subsets</span>(nums):
+    res = [[]]
+    <span class="kw">for</span> num <span class="kw">in</span> nums:
+        res += [sub + [num] <span class="kw">for</span> sub <span class="kw">in</span> res]
+    <span class="kw">return</span> res
+
+<span class="cm"># start:  [[]]
+# add 1:  [[], [1]]
+# add 2:  [[], [1], [2], [1,2]]
+# add 3:  [[], [1], [2], [1,2], [3], [1,3], [2,3], [1,2,3]]</span></pre></div>
+  </div>
+  <div class="vsec" id="sv2">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Bit Manipulation</span>
+      <div class="cx-row"><span class="cx cx-t">O(n × 2ⁿ)</span><span class="cx cx-s">O(1) extra</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s2')">Copy</button></div>
+    <div class="code-block"><pre id="s2"><span class="kw">def</span> <span class="fn">subsets</span>(nums):
+    n, res = len(nums), []
+    <span class="kw">for</span> mask <span class="kw">in</span> range(1 &lt;&lt; n):
+        res.append([nums[i] <span class="kw">for</span> i <span class="kw">in</span> range(n) <span class="kw">if</span> mask & (1 &lt;&lt; i)])
+    <span class="kw">return</span> res
+
+<span class="cm"># mask 000 → []    mask 001 → [1]
+# mask 010 → [2]   mask 011 → [1,2]
+# mask 100 → [3]   mask 111 → [1,2,3]</span></pre></div>
+  </div>
+</div>
+
+<!-- ═══ EXPLANATION ═══ -->
+<div class="section" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — Every element has exactly 2 choices</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      For each element in <code>nums</code>, you make one binary decision: <strong>include it</strong> or <strong>skip it</strong>. With n independent binary choices, the total number of outcomes is <strong style="color:var(--accent2)">2 × 2 × … × 2 = 2ⁿ</strong>.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:4px">✓</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--green);font-weight:700">Include</div>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2);margin-top:4px">current.append(nums[i])</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem;text-align:center">
+        <div style="font-size:2rem;margin-bottom:4px">✗</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--coral);font-weight:700">Skip</div>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2);margin-top:4px">loop moves to i+1</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.8rem;color:var(--text2)">
+      For n=3: <span style="color:var(--accent2)">2³ = 8 subsets</span>. For n=10: <span style="color:var(--accent2)">2¹⁰ = 1024 subsets</span>. This is called the <strong style="color:var(--text)">power set</strong>.
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — What backtracking does, step by step</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      Backtracking = <strong>try → recurse deeper → undo → try next option</strong>. We mutate a single <code>current</code> list because undoing is just <code>pop()</code>.
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;margin-bottom:1rem;overflow-x:auto">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Full trace for nums=[1,2,3]</div>
+      <div><span style="color:var(--accent)">call</span> backtrack(0, [])    → <span style="color:#4af7b0">record []</span></div>
+      <div style="padding-left:1.5rem"><span style="color:var(--accent)">call</span> backtrack(1, [1])   → <span style="color:#4af7b0">record [1]</span></div>
+      <div style="padding-left:3rem"><span style="color:var(--accent)">call</span> backtrack(2, [1,2]) → <span style="color:#4af7b0">record [1,2]</span></div>
+      <div style="padding-left:4.5rem"><span style="color:var(--accent)">call</span> backtrack(3, [1,2,3]) → <span style="color:#4af7b0">record [1,2,3]</span></div>
+      <div style="padding-left:4.5rem"><span style="color:var(--coral)">pop(3)</span> → cur=[1,2]</div>
+      <div style="padding-left:3rem"><span style="color:var(--coral)">pop(2)</span> → cur=[1]</div>
+      <div style="padding-left:3rem"><span style="color:var(--accent)">call</span> backtrack(3, [1,3]) → <span style="color:#4af7b0">record [1,3]</span></div>
+      <div style="padding-left:3rem"><span style="color:var(--coral)">pop(3)</span> → cur=[1]</div>
+      <div style="padding-left:1.5rem"><span style="color:var(--coral)">pop(1)</span> → cur=[]</div>
+      <div style="padding-left:1.5rem"><span style="color:var(--accent)">call</span> backtrack(2, [2])  → <span style="color:#4af7b0">record [2]</span></div>
+      <div style="padding-left:3rem"><span style="color:var(--accent)">call</span> backtrack(3, [2,3]) → <span style="color:#4af7b0">record [2,3]</span></div>
+      <div style="padding-left:3rem"><span style="color:var(--coral)">pop(3)</span> → cur=[2]</div>
+      <div style="padding-left:1.5rem"><span style="color:var(--coral)">pop(2)</span> → cur=[]</div>
+      <div style="padding-left:1.5rem"><span style="color:var(--accent)">call</span> backtrack(3, [3])  → <span style="color:#4af7b0">record [3]</span></div>
+      <div style="padding-left:1.5rem"><span style="color:var(--coral)">pop(3)</span> → cur=[]</div>
+    </div>
+    <div class="prose"><code style="color:var(--coral)">pop()</code> is the "undo". After every recursive call returns, we remove what we added. One array is reused for the entire search — no copying needed until we record a result.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Why the <code>start</code> index prevents duplicates</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      Without <code>start</code>, we'd revisit earlier elements and produce <code>[1,2]</code> AND <code>[2,1]</code> — two representations of the same subset.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">❌ Without start</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">
+          for i in range(0, n):<br>
+          <span style="color:var(--coral)">generates [1,2] AND [2,1]</span><br>
+          <span style="color:var(--coral)">generates [1,3] AND [3,1]</span>
+        </div>
+      </div>
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✓ With start</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">
+          for i in range(start, n):<br>
+          <span style="color:var(--green)">only looks FORWARD</span><br>
+          <span style="color:var(--green)">[1,2] only, never [2,1]</span>
+        </div>
+      </div>
+    </div>
+    <div class="prose">When we include <code>nums[i]</code> and recurse, we pass <code>i+1</code> as new start. Subsets are always built in increasing index order — uniqueness is guaranteed structurally.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Record at EVERY call, not just at leaves</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      This is what makes Subsets different from all other backtracking problems. Every state of <code>current[]</code> is a valid subset — even an empty <code>[]</code> at the root.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1rem">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.78rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Subsets</div>
+        <div style="color:var(--green);font-weight:700">Record at TOP<br>of every call</div>
+        <div style="color:var(--text3);margin-top:4px;font-size:.72rem">→ 2ⁿ results</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.78rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Combinations</div>
+        <div style="color:var(--amber);font-weight:700">Record when<br>len == k</div>
+        <div style="color:var(--text3);margin-top:4px;font-size:.72rem">→ C(n,k) results</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.78rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Permutations</div>
+        <div style="color:var(--coral);font-weight:700">Record when<br>len == n</div>
+        <div style="color:var(--text3);margin-top:4px;font-size:.72rem">→ n! results</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.8rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      <span style="color:var(--accent2)">res.append(current[:])</span>&nbsp;&nbsp;<span style="color:var(--text3)"># FIRST LINE — before the for loop. Always.</span>
+    </div>
+  </div>
+
+  <!-- DECISION TREE -->
+  <div class="card">
+    <h3>Full decision tree for nums = [1, 2, 3]</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      Solid purple edge = include. Dashed gray = skip. Every node (not just leaves) is recorded as a subset. That's all 8 = 2³ subsets.
+    </div>
+    <div style="overflow-x:auto">
+      <svg viewBox="0 0 720 340" width="100%" style="display:block">
+        <g fill="none">
+          <line x1="360" y1="38" x2="178" y2="100" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="360" y1="38" x2="542" y2="100" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="178" y1="120" x2="90" y2="182" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="178" y1="120" x2="266" y2="182" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="542" y1="120" x2="454" y2="182" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="542" y1="120" x2="630" y2="182" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="90" y1="202" x2="46" y2="264" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="90" y1="202" x2="134" y2="264" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="266" y1="202" x2="222" y2="264" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="266" y1="202" x2="310" y2="264" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="454" y1="202" x2="410" y2="264" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="454" y1="202" x2="498" y2="264" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+          <line x1="630" y1="202" x2="586" y2="264" stroke="#7c6af7" stroke-width="2"/>
+          <line x1="630" y1="202" x2="674" y2="264" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="5 4"/>
+        </g>
+        <g font-family="'JetBrains Mono',monospace" font-size="9" font-weight="700">
+          <text x="250" y="76" fill="#7c6af7">+1</text><text x="445" y="76" fill="#5a5870">skip</text>
+          <text x="114" y="155" fill="#7c6af7">+2</text><text x="210" y="155" fill="#5a5870">skip</text>
+          <text x="378" y="155" fill="#7c6af7">+2</text><text x="474" y="155" fill="#5a5870">skip</text>
+          <text x="54" y="238" fill="#7c6af7">+3</text><text x="110" y="238" fill="#5a5870">skip</text>
+          <text x="230" y="238" fill="#7c6af7">+3</text><text x="286" y="238" fill="#5a5870">skip</text>
+          <text x="418" y="238" fill="#7c6af7">+3</text><text x="474" y="238" fill="#5a5870">skip</text>
+          <text x="594" y="238" fill="#7c6af7">+3</text><text x="650" y="238" fill="#5a5870">skip</text>
+        </g>
+        <g font-family="'JetBrains Mono',monospace" font-size="11" font-weight="700" text-anchor="middle" dominant-baseline="central">
+          <circle cx="360" cy="28" r="22" fill="#7c6af7" stroke="#a090ff" stroke-width="2.5"/>
+          <text x="360" y="28" fill="#fff">[]✓</text>
+          <circle cx="178" cy="110" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="178" y="110" fill="#062016">[1]✓</text>
+          <circle cx="542" cy="110" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="542" y="110" fill="#062016">[]✓</text>
+          <circle cx="90" cy="192" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="90" y="192" fill="#062016" font-size="9">[1,2]✓</text>
+          <circle cx="266" cy="192" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="266" y="192" fill="#062016">[1]✓</text>
+          <circle cx="454" cy="192" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="454" y="192" fill="#062016">[2]✓</text>
+          <circle cx="630" cy="192" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="630" y="192" fill="#062016">[]✓</text>
+          <circle cx="46" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="46" y="274" fill="#062016" font-size="8">[1,2,3]✓</text>
+          <circle cx="134" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="134" y="274" fill="#062016" font-size="9">[1,2]✓</text>
+          <circle cx="222" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="222" y="274" fill="#062016" font-size="9">[1,3]✓</text>
+          <circle cx="310" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="310" y="274" fill="#062016">[1]✓</text>
+          <circle cx="410" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="410" y="274" fill="#062016" font-size="9">[2,3]✓</text>
+          <circle cx="498" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="498" y="274" fill="#062016">[2]✓</text>
+          <circle cx="586" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="586" y="274" fill="#062016">[3]✓</text>
+          <circle cx="674" cy="274" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="674" y="274" fill="#062016">[]✓</text>
+        </g>
+        <g font-family="'JetBrains Mono',monospace" font-size="10">
+          <circle cx="20" cy="318" r="6" fill="#7c6af7"/><text x="30" y="322" fill="#5a5870">current (exploring)</text>
+          <circle cx="178" cy="318" r="6" fill="#4af7b0"/><text x="188" y="322" fill="#5a5870">recorded subset</text>
+          <line x1="330" y1="318" x2="352" y2="318" stroke="#7c6af7" stroke-width="2"/><text x="357" y="322" fill="#5a5870">include</text>
+          <line x1="420" y1="318" x2="442" y2="318" stroke="#5a5870" stroke-width="1.5" stroke-dasharray="4 3"/><text x="447" y="322" fill="#5a5870">skip</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+
+  <!-- COMPARISON TABLE -->
+  <div class="card">
+    <h3>Backtracking family — how they differ</h3>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8rem">
+        <thead><tr style="border-bottom:1px solid var(--border2)">
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Problem</th>
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Record when</th>
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Count</th>
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Use start?</th>
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Order matters?</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Subsets</td>
+            <td style="padding:9px 12px;color:var(--green)">Every call (top)</td>
+            <td style="padding:9px 12px;color:var(--text2)">2ⁿ</td>
+            <td style="padding:9px 12px;color:var(--green)">Yes → forward</td>
+            <td style="padding:9px 12px;color:var(--coral)">No</td>
+          </tr>
+          <tr style="border-bottom:1px solid var(--border)">
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Combinations</td>
+            <td style="padding:9px 12px;color:var(--amber)">When len == k</td>
+            <td style="padding:9px 12px;color:var(--text2)">C(n,k)</td>
+            <td style="padding:9px 12px;color:var(--green)">Yes → forward</td>
+            <td style="padding:9px 12px;color:var(--coral)">No</td>
+          </tr>
+          <tr>
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Permutations</td>
+            <td style="padding:9px 12px;color:var(--amber)">When len == n</td>
+            <td style="padding:9px 12px;color:var(--text2)">n!</td>
+            <td style="padding:9px 12px;color:var(--coral)">No (use visited[])</td>
+            <td style="padding:9px 12px;color:var(--green)">Yes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>The universal backtracking template:</strong>&nbsp;
+    <code style="color:var(--accent2)">record(current)</code> →
+    <code style="color:var(--text2)">for i in choices: include → recurse(i+1) → exclude</code><br><br>
+    Change only <em>when</em> you call <code>record()</code>. Subsets = top of function. Everything else = base case.
+  </div>
+</div>
+
+<!-- ═══ ANIMATION ═══ -->
+<div class="section" id="tab-animation">
+
+  <!-- CONTROLS -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">nums (unique integers, max n=5)</span>
+      <input class="grid-inp" id="nums-inp" type="text" value="1,2,3" style="width:200px">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Run</button>
+    <button class="cbtn" id="btn-step" onclick="stepFwd()" disabled>⏭ Step</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadS([1])">n=1</button>
+    <button class="sbtn" onclick="loadS([1,2])">n=2</button>
+    <button class="sbtn" onclick="loadS([1,2,3])">n=3 ★</button>
+    <button class="sbtn" onclick="loadS([4,1,0])">n=3 alt</button>
+    <button class="sbtn" onclick="loadS([1,2,3,4])">n=4</button>
+    <button class="sbtn" onclick="loadS([1,2,3,4,5])">n=5</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:1rem;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+    Speed
+    <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:90px;accent-color:var(--accent)">
+    <span id="speed-lbl">Normal</span>
+    <span id="step-info" style="margin-left:auto;color:var(--text2)"></span>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div style="display:grid;grid-template-columns:1fr 290px;gap:12px">
+
+    <!-- LEFT COLUMN -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- CANVAS — dark background like template -->
+      <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;min-height:360px;background:radial-gradient(ellipse at 30% 20%,rgba(124,106,247,.08) 0%,transparent 60%),radial-gradient(ellipse at 80% 80%,rgba(247,106,138,.05) 0%,transparent 50%),#0a0a0f;border:1px solid #2a2a3e">
+        <canvas id="bt-canvas" style="position:absolute;inset:0;width:100%;height:100%"></canvas>
+        <div id="canvas-ph" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:13px;color:#3a3a5e">Press ▶ Run to start</div>
+      </div>
+
+      <!-- STATUS BAR -->
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+        <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:#3a3a5e;flex-shrink:0"></div>
+        <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+        <span id="st-stat" style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto"></span>
+      </div>
+
+      <!-- CURRENT PATH -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Current path</div>
+        <div id="bt-path" style="display:flex;gap:5px;flex-wrap:wrap;min-height:30px;align-items:center">
+          <span style="font-family:var(--mono);font-size:12px;color:#3a3a5e">[ ]</span>
+        </div>
+      </div>
+
+      <!-- RESULTS -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">
+          Subsets found &nbsp;<span id="bt-count" style="color:#4af7b0;font-weight:700"></span>
+        </div>
+        <div id="bt-results" style="display:flex;flex-wrap:wrap;gap:5px;min-height:28px;align-items:center">
+          <span style="font-family:var(--mono);font-size:12px;color:#3a3a5e">none yet</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- LEGEND -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:7px;font-size:11px;font-family:var(--mono)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#7c6af7;box-shadow:0 0 10px #7c6af7;flex-shrink:0"></div><span style="color:var(--text2)">Exploring (current)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#4af7b0;box-shadow:0 0 8px #4af7b0;flex-shrink:0"></div><span style="color:var(--text2)">Recorded (saved)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#f76a8a;flex-shrink:0"></div><span style="color:var(--text2)">Backtracked (popped)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#2a2a3e;border:1px solid #4a4a6e;flex-shrink:0"></div><span style="color:var(--text2)">Not yet visited</span></div>
+        </div>
+      </div>
+
+      <!-- CALL STACK -->
+      <div style="background:#0a0a0f;border:1px solid #2a2a3e;border-radius:var(--radius-lg);padding:.9rem 1rem;flex:1;display:flex;flex-direction:column;min-height:160px;max-height:220px">
+        <div style="font-size:.62rem;font-family:var(--mono);color:#5a5870;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Call Stack</div>
+        <div id="bt-stack" style="display:flex;flex-direction:column;gap:4px;overflow-y:auto;flex:1">
+          <div style="font-size:11px;color:#2a2a3e;font-family:var(--mono)">empty</div>
+        </div>
+      </div>
+
+      <!-- CODE HIGHLIGHT -->
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.05"><span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">backtrack</span>(start, cur):</span>
+<span class="hl" id="cl1">  res.append(cur[:]) <span class="cm"># record!</span></span>
+<span class="hl" id="cl2">  <span class="kw">for</span> i <span class="kw">in</span> range(start, n):</span>
+<span class="hl" id="cl3">    cur.append(nums[i]) <span class="cm"># include</span></span>
+<span class="hl" id="cl4">    backtrack(i+1, cur) <span class="cm"># explore</span></span>
+<span class="hl" id="cl5">    cur.pop() <span class="cm"># undo (backtrack)</span></span></pre>
+      </div>
+
+      <!-- NOTE -->
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.5">
+        Set input and press ▶ Run
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #78 Subsets</p></footer>
+
+<script>
+// ══ TABS ══════════════════════════════════════════
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
+  if(n==='animation')setTimeout(()=>{resizeCv();if(V.built)redraw();},40);
+}
+function showSol(i,btn){
+  ['sv0','sv1','sv2'].forEach((id,j)=>document.getElementById(id).style.display=j===i?'block':'none');
+  document.querySelectorAll('.vtabs .vtab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy',1500);}
+
+// ══ SPEED ═════════════════════════════════════════
+const SPDS=[900,550,280,140,60];
+const SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+const spSlider=document.getElementById('speed-sl');
+spSlider.addEventListener('input',()=>{document.getElementById('speed-lbl').textContent=SPNAMES[spSlider.value-1];});
+
+// ══ CANVAS ════════════════════════════════════════
+const cv=document.getElementById('bt-canvas');
+const ctx=cv.getContext('2d');
+function resizeCv(){
+  cv.width=cv.parentElement.clientWidth||600;
+  cv.height=cv.parentElement.clientHeight||360;
+}
+window.addEventListener('resize',()=>{resizeCv();if(V.built)redraw();});
+
+// ══ STATE ═════════════════════════════════════════
+const ST={I:'idle',A:'active',S:'success',B:'backtrack',V:'visited'};
+const V={nums:[],steps:[],si:0,timer:null,nodes:{},edges:[],results:[],built:false,callStack:[]};
+
+// ══ STEP BUILDER ══════════════════════════════════
+function buildSteps(nums){
+  const s=[]; let nc=0;
+  function bt(start,path,pid,depth){
+    const id=nc++;
+    const lbl='['+path.join(',')+']';
+    s.push({t:'enter',id,pid,lbl,path:[...path],depth,cl:0,note:`backtrack(${start}, [${path.join(',')}])`});
+    s.push({t:'record',id,pid,lbl,path:[...path],depth,cl:1,note:`res.append([${path.join(',')||''}])  ← record!`});
+    for(let i=start;i<nums.length;i++){
+      s.push({t:'loop',id,pid,lbl,path:[...path],depth,cl:2,note:`i=${i}: try nums[${i}]=${nums[i]}`});
+      s.push({t:'inc',id,pid,lbl,path:[...path,nums[i]],depth,cl:3,note:`cur.append(${nums[i]}) → [${[...path,nums[i]].join(',')}]`});
+      bt(i+1,[...path,nums[i]],id,depth+1);
+      s.push({t:'pop',id,pid,lbl,path:[...path],depth,cl:5,note:`cur.pop() → backtrack → [${path.join(',')||''}]`});
+    }
+    s.push({t:'ret',id,pid,lbl,path:[...path],depth,cl:-1,note:`return from backtrack(${start}, [${path.join(',')||''}])`});
+  }
+  bt(0,[],null,0);
+  s.push({t:'done',id:0,pid:null,lbl:'[]',path:[],depth:0,cl:-1,note:`✓ Done! All ${1<<nums.length} subsets found.`});
+  return s;
+}
+
+// ══ LAYOUT ════════════════════════════════════════
+function layoutNodes(){
+  const W=cv.width,H=cv.height;
+  const byD={};
+  Object.values(V.nodes).forEach(n=>{(byD[n.depth]||(byD[n.depth]=[])).push(n);});
+  const maxD=Math.max(...Object.keys(byD).map(Number),0);
+  const vGap=Math.min(88,(H-60)/(maxD+1));
+  Object.entries(byD).forEach(([d,row])=>{
+    const totalW=row.length*68, sx=(W-totalW)/2+34;
+    row.forEach((node,i)=>{node.x=sx+i*68;node.y=42+parseInt(d)*vGap;});
+  });
+}
+
+// ══ DRAW ══════════════════════════════════════════
+const R=19;
+const FILL={[ST.A]:'#7c6af7',[ST.S]:'#4af7b0',[ST.B]:'#f76a8a',[ST.V]:'#2a2a3e',[ST.I]:'#1a1a26'};
+const STRK={[ST.A]:'#a090ff',[ST.S]:'#7affc8',[ST.B]:'#ff90a8',[ST.V]:'#4a4a6a',[ST.I]:'#2a2a3e'};
+const TXTC={[ST.A]:'#fff',[ST.S]:'#062016',[ST.B]:'#fff',[ST.V]:'#9090b0',[ST.I]:'#4a4a60'};
+
+function redraw(){
+  const W=cv.width,H=cv.height;
+  ctx.clearRect(0,0,W,H);
+  if(!Object.keys(V.nodes).length){
+    ctx.fillStyle='rgba(58,58,94,.2)';ctx.font="13px 'JetBrains Mono',monospace";
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText('Press ▶ Run to start',W/2,H/2);
+    ctx.textBaseline='alphabetic';return;
+  }
+  // edges
+  V.edges.forEach(e=>{
+    const f=V.nodes[e.from],t=V.nodes[e.to];
+    if(!f||!t)return;
+    ctx.beginPath();ctx.moveTo(f.x,f.y);ctx.lineTo(t.x,t.y);
+    const ts=t.state;
+    if(ts===ST.S){ctx.strokeStyle='rgba(74,247,176,.55)';ctx.lineWidth=2;ctx.setLineDash([]);}
+    else if(ts===ST.B){ctx.strokeStyle='rgba(247,106,138,.4)';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);}
+    else if(ts===ST.A){ctx.strokeStyle='rgba(124,106,247,.8)';ctx.lineWidth=2;ctx.setLineDash([]);}
+    else{ctx.strokeStyle='rgba(42,42,62,.9)';ctx.lineWidth=1.5;ctx.setLineDash([]);}
+    ctx.stroke();ctx.setLineDash([]);
+    // edge label
+    ctx.fillStyle='rgba(80,80,110,.8)';
+    ctx.font="bold 8px 'JetBrains Mono',monospace";
+    ctx.textAlign='left';ctx.textBaseline='middle';
+    ctx.fillText(e.label,(f.x+t.x)/2+3,(f.y+t.y)/2);
+  });
+  // nodes
+  Object.values(V.nodes).forEach(n=>{
+    const {x,y,state:st,label}=n;
+    ctx.shadowBlur=0;
+    if(st===ST.A){ctx.shadowColor='#7c6af7';ctx.shadowBlur=22;}
+    else if(st===ST.S){ctx.shadowColor='#4af7b0';ctx.shadowBlur=14;}
+    else if(st===ST.B){ctx.shadowColor='#f76a8a';ctx.shadowBlur=10;}
+    ctx.beginPath();ctx.arc(x,y,R,0,Math.PI*2);
+    ctx.fillStyle=FILL[st]||FILL[ST.I];ctx.fill();
+    ctx.strokeStyle=STRK[st]||STRK[ST.I];ctx.lineWidth=st===ST.A?2.5:1.5;ctx.stroke();
+    ctx.shadowBlur=0;
+    const s=label.length>8?label.slice(0,7)+'…':label;
+    ctx.fillStyle=TXTC[st]||TXTC[ST.I];
+    ctx.font=`bold ${s.length>5?8:10}px 'JetBrains Mono',monospace`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(s,x,y);
+  });
+  ctx.textBaseline='alphabetic';
+}
+
+// ══ APPLY STEP ════════════════════════════════════
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  const s=V.steps[V.si];
+
+  // code highlight
+  for(let i=0;i<=5;i++){const e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent=`${V.si+1}/${V.steps.length}`;
+
+  if(s.t==='enter'){
+    if(!V.nodes[s.id]){
+      V.nodes[s.id]={id:s.id,x:0,y:0,label:s.lbl,state:ST.A,depth:s.depth};
+      if(s.pid!==null&&s.pid!==undefined&&V.nodes[s.pid]){
+        V.edges.push({from:s.pid,to:s.id,label:s.path.length?'+'+s.path[s.path.length-1]:'∅'});
+        if(V.nodes[s.pid].state===ST.A)V.nodes[s.pid].state=ST.V;
+      }
+    }
+    Object.values(V.nodes).forEach(n=>{if(n.id!==s.id&&n.state===ST.A)n.state=ST.V;});
+    V.nodes[s.id].state=ST.A;
+    V.callStack.push({id:s.id,lbl:s.lbl,depth:s.depth,path:s.path});
+    layoutNodes();renderStack();setStatus('run');
+  }
+  else if(s.t==='record'){
+    if(V.nodes[s.id])V.nodes[s.id].state=ST.S;
+    V.results.push(s.path);addChip(s.path);
+  }
+  else if(s.t==='ret'){
+    if(V.nodes[s.id]&&V.nodes[s.id].state!==ST.S)V.nodes[s.id].state=ST.V;
+    V.callStack=V.callStack.filter(f=>f.id!==s.id);
+    // reactivate parent
+    if(s.pid!==null&&s.pid!==undefined&&V.nodes[s.pid]){
+      Object.values(V.nodes).forEach(n=>{if(n.state===ST.A)n.state=ST.V;});
+      if(V.nodes[s.pid].state!==ST.S)V.nodes[s.pid].state=ST.A;
+    }
+    renderStack();
+  }
+  else if(s.t==='done'){
+    Object.values(V.nodes).forEach(n=>{if(n.state===ST.A)n.state=ST.V;});
+    V.callStack=[];renderStack();setStatus('done');
+  }
+
+  updatePath(s.path);redraw();
+  V.si++;
+  return V.si<V.steps.length;
+}
+
+// ══ UI HELPERS ════════════════════════════════════
+function updatePath(p){
+  const el=document.getElementById('bt-path');
+  if(!p||!p.length){el.innerHTML='<span style="font-family:var(--mono);font-size:12px;color:#3a3a5e">[ ]</span>';return;}
+  el.innerHTML=p.map(v=>`<span style="padding:3px 9px;border-radius:7px;border:1.5px solid #7c6af7;background:rgba(124,106,247,.15);color:#a090ff;font-family:var(--mono);font-size:12px;font-weight:700">${v}</span>`).join('<span style="color:#3a3a5e;font-family:var(--mono);padding:0 2px">,</span>');
+}
+
+function addChip(p){
+  const el=document.getElementById('bt-results');
+  if(el.querySelector('span'))el.innerHTML='';
+  const c=document.createElement('div');
+  c.style.cssText='padding:4px 10px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:700;background:rgba(74,247,176,.12);border:1px solid rgba(74,247,176,.3);color:#4af7b0;animation:popIn .3s cubic-bezier(.34,1.56,.64,1)';
+  c.textContent='['+(p.length?p.join(','):'')+']';
+  el.appendChild(c);
+  document.getElementById('bt-count').textContent=`(${V.results.length}/${1<<V.nums.length})`;
+}
+
+function renderStack(){
+  const el=document.getElementById('bt-stack');
+  if(!V.callStack.length){el.innerHTML='<div style="font-size:11px;color:#2a2a3e;font-family:var(--mono)">empty</div>';return;}
+  el.innerHTML='';
+  [...V.callStack].reverse().forEach((f,i)=>{
+    const d=document.createElement('div');const isTop=i===0;
+    d.style.cssText=`padding:7px 10px;border-radius:6px;font-size:11px;font-family:var(--mono);border-left:3px solid ${isTop?'#7c6af7':'#2a2a3e'};background:${isTop?'rgba(124,106,247,.12)':'rgba(26,26,38,.8)'};margin-bottom:4px;animation:slideIn .15s ease`;
+    d.innerHTML=`<span style="color:#7c6af7;font-weight:700">bt</span><span style="color:#5a5870">(${f.depth},[${f.path.join(',')}])</span><span style="float:right;font-size:9px;color:#3a3a5e;background:#1a1a26;padding:1px 5px;border-radius:3px">d=${f.depth}</span>`;
+    el.appendChild(d);
+  });
+}
+
+function setStatus(s){
+  const dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Exploring…';}
+  else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent=`Done — ${V.results.length} subsets`;}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#3a3a5e;flex-shrink:0';txt.textContent='Ready';}
+}
+
+// ══ PLAYBACK ══════════════════════════════════════
+function loadS(arr){document.getElementById('nums-inp').value=arr.join(',');runViz();}
+
+function runViz(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  const raw=document.getElementById('nums-inp').value;
+  V.nums=[...new Set(raw.split(',').map(x=>parseInt(x.trim())).filter(x=>!isNaN(x)))];
+  if(!V.nums.length){document.getElementById('bt-note').textContent='Enter at least one number.';return;}
+  if(V.nums.length>5){document.getElementById('bt-note').textContent='Max 5 elements (n=5 → 32 nodes). Please trim your input.';return;}
+  V.steps=buildSteps(V.nums);V.si=0;V.nodes={};V.edges=[];V.results=[];V.callStack=[];V.built=true;
+  document.getElementById('bt-results').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:#3a3a5e">none yet</span>';
+  document.getElementById('bt-count').textContent='';
+  document.getElementById('canvas-ph').style.display='none';
+  updatePath([]);renderStack();setStatus('ready');
+  for(let i=0;i<=5;i++){const e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  resizeCv();redraw();
+  document.getElementById('btn-step').disabled=false;
+  document.getElementById('btn-reset').disabled=false;
+  V.timer=setInterval(()=>{const more=applyStep();if(!more){clearInterval(V.timer);V.timer=null;}},SPDS[spSlider.value-1]);
+}
+
+function stepFwd(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  applyStep();
+}
+
+function resetViz(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  V.si=0;V.nodes={};V.edges=[];V.results=[];V.callStack=[];
+  document.getElementById('bt-results').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:#3a3a5e">none yet</span>';
+  document.getElementById('bt-count').textContent='';
+  updatePath([]);renderStack();setStatus('ready');
+  for(let i=0;i<=5;i++){const e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  document.getElementById('bt-note').textContent='Reset. Press ▶ Run or ⏭ Step.';
+  redraw();
+}
+
+// ══ GLOBAL ANIMATIONS ═════════════════════════════
+const ss=document.createElement('style');
+ss.textContent='@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',()=>{resizeCv();loadS([1,2,3]);});
+</script>
+</body>
+</html>
