@@ -363,6 +363,108 @@ footer a{color:var(--accent);text-decoration:none}
     </div>
   </div>
 
+  <!-- ══════════════════════════════════════════════════════════════
+       NEW CARD: What does j mean?
+       ══════════════════════════════════════════════════════════════ -->
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>🎯 What does j mean? (The column index)</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      <strong style="color:var(--teal)">j is the current sum we are trying to build</strong> — not an array index, not a position. It is an actual numeric value ranging from 0 up to the target.
+    </div>
+
+    <!-- NOT / YES grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1.2rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:.63rem;font-family:var(--mono);color:var(--coral);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">❌ NOT this</div>
+        <div style="font-family:var(--mono);font-size:.85rem;color:var(--text2)">array index</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:.63rem;font-family:var(--mono);color:var(--coral);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">❌ NOT this</div>
+        <div style="font-family:var(--mono);font-size:.85rem;color:var(--text2)">position</div>
+      </div>
+      <div style="background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:.63rem;font-family:var(--mono);color:var(--teal);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px">✅ YES this</div>
+        <div style="font-family:var(--mono);font-size:.85rem;color:var(--text)">target value</div>
+      </div>
+    </div>
+
+    <!-- Table of j meanings -->
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.2rem;margin-bottom:1rem">
+      <div style="font-size:.68rem;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.7rem">🧠 Example — target = 5, arr = [3, 4, 2]</div>
+      <div style="font-family:var(--mono);font-size:.84rem;color:var(--text2);margin-bottom:.8rem">
+        We try <strong style="color:var(--text)">ALL sums</strong> from <span style="color:var(--teal)">0 → 1 → 2 → 3 → 4 → 5</span>
+      </div>
+      <table style="border-collapse:separate;border-spacing:3px;font-family:var(--mono);font-size:.8rem;width:100%">
+        <thead>
+          <tr>
+            <th style="padding:6px 10px;background:var(--bg4);border-radius:6px;color:var(--accent2);text-align:center;font-size:.75rem;font-weight:700">j</th>
+            <th style="padding:6px 10px;background:var(--bg4);border-radius:6px;color:var(--text2);text-align:left;font-size:.75rem;font-weight:600">Question the column answers</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);border:1px solid var(--green-border);border-radius:6px;color:var(--green);font-weight:700">0</td>
+            <td style="padding:6px 10px;color:var(--text2)">Can we make sum <strong>0</strong>? → Always <span style="color:var(--green)">True</span> (empty subset)</td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--bg4);border-radius:6px;color:var(--text3);font-weight:700">1</td>
+            <td style="padding:6px 10px;color:var(--text2)">Can we make sum <strong>1</strong>? &nbsp;<span style="color:var(--text3)">(No element equals 1 here → False)</span></td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--bg4);border-radius:6px;color:var(--text3);font-weight:700">2</td>
+            <td style="padding:6px 10px;color:var(--text2)">Can we make sum <strong>2</strong>? &nbsp;<span style="color:var(--green)">(Yes — element 2 alone)</span></td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--bg4);border-radius:6px;color:var(--text3);font-weight:700">3</td>
+            <td style="padding:6px 10px;color:var(--text2)">Can we make sum <strong>3</strong>? &nbsp;<span style="color:var(--green)">(Yes — element 3 alone)</span></td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--bg4);border-radius:6px;color:var(--text3);font-weight:700">4</td>
+            <td style="padding:6px 10px;color:var(--text2)">Can we make sum <strong>4</strong>? &nbsp;<span style="color:var(--green)">(Yes — element 4 alone)</span></td>
+          </tr>
+          <tr>
+            <td style="padding:6px 10px;text-align:center;background:var(--teal-bg);border:1.5px solid var(--teal-border);border-radius:6px;color:var(--teal);font-weight:700">5</td>
+            <td style="padding:6px 10px;color:var(--text)"><strong>Can we make sum 5? ← This is our final goal</strong></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Why ALL j -->
+    <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius-lg);padding:1rem 1.2rem;margin-bottom:.9rem">
+      <div style="font-size:.68rem;font-family:var(--mono);color:var(--amber);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.6rem">🔥 Why check ALL j from 1 → target? Not just the target?</div>
+      <div style="font-family:var(--mono);font-size:.84rem;color:var(--text2);line-height:2.2">
+        Because <strong style="color:var(--text)">smaller sums help build bigger sums.</strong><br>
+        <span style="color:var(--text3)">Example: to make sum = 5 using element 2 →</span><br>
+        <span style="color:var(--teal)">we need to already know: can we make sum = <strong style="color:var(--text)">3</strong>?</span><br>
+        <span style="color:var(--amber)">because &nbsp; 5 − 2 = 3 &nbsp;→&nbsp; check dp[i-1][3]</span><br>
+        <span style="color:var(--text3);font-size:.75rem">This chain of dependencies is exactly what makes DP efficient.</span>
+      </div>
+    </div>
+
+    <!-- Reading dp[3][5] -->
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem 1.2rem">
+      <div style="font-size:.68rem;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.7rem">🧩 How to read any cell — example: dp[3][5]</div>
+      <div style="font-family:var(--mono);font-size:1.05rem;text-align:center;margin-bottom:.8rem;letter-spacing:.03em">
+        <span style="color:var(--text2)">dp[</span><span style="color:var(--accent2);font-weight:700">3</span><span style="color:var(--text2)">][</span><span style="color:var(--amber);font-weight:700">5</span><span style="color:var(--text2)">]</span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="text-align:center;padding:10px;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:10px">
+          <div style="font-size:.63rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Row = i = 3</div>
+          <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2)">first <strong style="color:var(--accent2)">3</strong> elements<br><span style="color:var(--text3);font-size:.72rem">[3, 4, 2]</span></div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:10px">
+          <div style="font-size:.63rem;font-family:var(--mono);color:var(--amber);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Col = j = 5</div>
+          <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2)">sum = <strong style="color:var(--amber)">5</strong><br><span style="color:var(--text3);font-size:.72rem">the numeric value</span></div>
+        </div>
+      </div>
+      <div style="padding:10px 16px;background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:10px;font-family:var(--mono);font-size:.86rem;color:var(--teal);text-align:center;font-weight:600">
+        "Can we make sum = 5 using the first 3 elements?"
+      </div>
+    </div>
+  </div>
+  <!-- ══ END NEW CARD ══ -->
+
   <div class="card" style="border-left:3px solid var(--amber)">
     <h3>Step 2 — The recurrence: include or exclude</h3>
     <div class="prose" style="margin-bottom:1rem">
@@ -470,7 +572,7 @@ footer a{color:var(--accent);text-decoration:none}
 <!-- ═══ ANIMATION ═══ -->
 <div class="section" id="tab-animation">
 
-  <!-- ONE-LINE DP INTUITION (fix #5 advanced) — above everything -->
+  <!-- ONE-LINE DP INTUITION -->
   <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
     <span style="font-size:1rem">💡</span>
     <span><strong style="color:var(--text)">DP = remembering results of smaller subproblems to avoid recomputation.</strong> The tree has 2ⁿ paths — the table has n×sum cells.</span>
@@ -499,7 +601,6 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
     </div>
-    <!-- FIX #6: dependency direction -->
     <div style="margin-top:.7rem;padding:6px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;font-family:var(--mono);font-size:.77rem;color:var(--amber)">
       👆 We ONLY look at the row ABOVE (i-1). Current row depends entirely on the previous row — never on itself.
     </div>
@@ -562,20 +663,19 @@ footer a{color:var(--accent);text-decoration:none}
             <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:#085041;border:1.5px solid #1D9E75;display:inline-block"></span>True</span>
             <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:var(--bg3);border:1.5px solid var(--border2);display:inline-block"></span>False</span>
             <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:#3C3489;border:1.5px solid #7F77DD;display:inline-block"></span>Computing</span>
-            <!-- FIX #2: dependency cell in legend -->
             <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;border:2px dashed #EF9F27;display:inline-block"></span>Dependency</span>
           </div>
         </div>
         <div class="dp-scroll"><div id="dp-table-wrap"></div></div>
       </div>
 
-      <!-- FIX #3: path reconstruction — step by step -->
+      <!-- PATH PANEL -->
       <div id="path-panel" style="display:none;background:var(--bg2);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">✓ Subset found — tracing back through table</div>
         <div id="path-trace" style="font-family:var(--mono);font-size:.81rem;color:var(--text2);line-height:2.1"></div>
       </div>
 
-      <!-- FIX #4: failure reasoning -->
+      <!-- FAIL PANEL -->
       <div id="fail-panel" style="display:none;background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">✗ Why no subset exists</div>
         <div id="fail-trace" style="font-family:var(--mono);font-size:.81rem;color:var(--text2);line-height:2"></div>
@@ -584,7 +684,7 @@ footer a{color:var(--accent);text-decoration:none}
       <!-- RESULT BANNER -->
       <div class="result-banner" id="result-banner"></div>
 
-      <!-- FIX #3 pattern: after done -->
+      <!-- PATTERN PANEL -->
       <div id="pattern-panel" style="display:none;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1rem 1.2rem">
         <div style="font-size:.72rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem">🎯 DP Pattern — commit this to memory</div>
         <div style="font-family:var(--mono);font-size:.82rem;line-height:2.2">
@@ -593,7 +693,6 @@ footer a{color:var(--accent);text-decoration:none}
           <div><span style="color:var(--text3)">Goal &nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">dp[n][target] = True?</span></div>
           <div><span style="color:var(--text3)">Base &nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">dp[i][0] = True (empty subset)</span></div>
         </div>
-        <!-- FIX advanced: WHEN to use DP detector -->
         <div style="margin-top:.8rem;padding:.8rem 1rem;background:var(--bg3);border-radius:var(--radius);font-family:var(--mono);font-size:.79rem">
           <div style="color:var(--text3);font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">🔍 When you see this → Think DP</div>
           <div style="color:var(--text2);line-height:1.9">
@@ -616,15 +715,12 @@ footer a{color:var(--accent);text-decoration:none}
     <!-- RIGHT PANEL -->
     <div style="display:flex;flex-direction:column;gap:10px">
 
-      <!-- FIX #1: specific think question tied to dp[i][j] -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">
           dp[<span id="cur-i" style="color:var(--accent2)">—</span>][<span id="cur-j" style="color:var(--amber)">—</span>]
           <span style="float:right">elem = <span id="cur-elem" style="color:var(--accent2)">—</span></span>
         </div>
-        <!-- FIX #1: specific question always tied to current i,j -->
         <div id="think-q" style="display:none;padding:7px 10px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;font-family:var(--mono);font-size:.77rem;color:var(--amber);margin-bottom:7px;line-height:1.6"></div>
-        <!-- FIX #2: dependency cells shown as text with clear arrows -->
         <div id="dep-box" style="display:none;padding:7px 10px;background:var(--bg3);border:1px dashed #EF9F27;border-radius:8px;font-family:var(--mono);font-size:.76rem;color:var(--text2);margin-bottom:7px;line-height:1.9"></div>
         <div id="cur-explain" style="font-size:.78rem;color:var(--text2);font-family:var(--mono);line-height:1.7;min-height:44px">—</div>
       </div>
@@ -641,7 +737,7 @@ footer a{color:var(--accent);text-decoration:none}
 <span class="hl" id="cl6">        dp[i-1][j-arr[i-1]]<span class="hl-tip">↑ row above, ← left by arr[i-1] cols</span></span></pre>
       </div>
 
-      <!-- FIX #5: wrong intuition warning -->
+      <!-- COMMON MISTAKE -->
       <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.8rem 1rem">
         <div style="font-size:.63rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">⚠ Common mistake (1D DP)</div>
         <div style="font-family:var(--mono);font-size:.76rem;color:var(--text2);line-height:1.8">
@@ -716,17 +812,14 @@ document.addEventListener('keydown',e=>{
 
 const V={arr:[],target:0,steps:[],si:0,timer:null,dp:[],built:false,dpFinal:[]};
 
-// ══ STEP BUILDER ══════════════════════════════════
 function buildSteps(arr,target){
   const n=arr.length, s=[];
   const dp=Array.from({length:n+1},()=>new Array(target+1).fill(false));
 
-  // Base cases
   for(let i=0;i<=n;i++){
     dp[i][0]=true;
     s.push({t:'base',i,j:0,val:true,cl:0,
       dpSnap:dp.map(r=>[...r]),skipRef:{i:-1,j:-1},inclRef:{i:-1,j:-1},
-      // FIX #1: specific think question
       think:null,
       note:`dp[${i}][0] = True — sum 0 always reachable (empty subset)`});
   }
@@ -742,9 +835,7 @@ function buildSteps(arr,target){
       s.push({
         t:'set',i,j,val:dp[i][j],elem,
         skipResult,canInclude,includeResult,
-        // FIX #1: specific question tied to dp[i][j]
         think:`🤔 Can we make sum = ${j} using first ${i} element${i>1?'s':''} (including ${elem})?`,
-        // FIX #2: exact dependency cells
         skipRef:{i:i-1,j},
         inclRef:canInclude?{i:i-1,j:j-elem}:{i:-1,j:-1},
         cl: dp[i][j]?5:3,
@@ -765,7 +856,6 @@ function buildSteps(arr,target){
   return s;
 }
 
-// FIX #3: step-by-step path reconstruction
 function buildPathSteps(arr,target,dpFinal){
   const steps=[];
   let i=arr.length,j=target;
@@ -781,7 +871,6 @@ function buildPathSteps(arr,target,dpFinal){
   return steps;
 }
 
-// FIX #4: failure analysis
 function buildFailureReason(arr,target,dpFinal){
   const maxReachable=[];
   for(let j=0;j<=target;j++){if(dpFinal[arr.length][j])maxReachable.push(j);}
@@ -789,7 +878,6 @@ function buildFailureReason(arr,target,dpFinal){
   return {largest,total:arr.reduce((a,b)=>a+b,0)};
 }
 
-// ══ JUMP TO ═══════════════════════════════════════
 function jumpTo(type){
   if(!V.steps.length)return;
   if(V.timer){clearInterval(V.timer);V.timer=null;}
@@ -802,7 +890,6 @@ function jumpTo(type){
   while(V.si<=idx&&V.si<V.steps.length)applyStep();
 }
 
-// ══ RENDER TABLE — FIX #2: dep cells as dashed outline, FIX #6: prev row fade ══
 let curI=-1,curJ=-1,skipRefI=-1,skipRefJ=-1,inclRefI=-1,inclRefJ=-1;
 
 function renderTable(){
@@ -817,7 +904,6 @@ function renderTable(){
   for(let i=0;i<=n;i++){
     const elemLabel=i===0?'∅':String(V.arr[i-1]);
     const isCurrentRow=i===curI;
-    // FIX #6: previous row gets a subtle highlight (dependency row)
     const isPrevRow=i===curI-1&&curI>0;
     const rowStyle=isPrevRow?'background:rgba(239,159,39,.04)':'';
     html+=`<tr style="${rowStyle}"><th style="padding:4px 10px;color:${isCurrentRow?'#a090ff':'var(--text3)'};font-size:10px;text-align:left;white-space:nowrap;font-weight:${isCurrentRow?'700':'400'}">${elemLabel}</th>`;
@@ -826,7 +912,6 @@ function renderTable(){
       const val=V.dp[i]?.[j];
       const isCur=i===curI&&j===curJ;
       const isAnswer=V.steps[V.si-1]?.t==='done'&&i===n&&j===target;
-      // FIX #2: dependency cells shown with dashed amber outline
       const isSkipRef=i===skipRefI&&j===skipRefJ&&!isCur;
       const isInclRef=i===inclRefI&&j===inclRefJ&&!isCur&&inclRefI>=0;
 
@@ -835,7 +920,6 @@ function renderTable(){
       else if(isCur) cls='dp-cell-active';
       else if(val===true) cls='dp-cell-true';
 
-      // dependency outline via inline style
       let extra='';
       if(isSkipRef) extra=' style="outline:2px dashed #EF9F27;outline-offset:1px"';
       else if(isInclRef) extra=' style="outline:2px dashed #5DCAA5;outline-offset:1px"';
@@ -864,7 +948,6 @@ function renderArrayStrip(){
   strip.appendChild(lbl);
 }
 
-// ══ APPLY STEP ════════════════════════════════════
 function applyStep(){
   if(V.si>=V.steps.length)return false;
   const s=V.steps[V.si];
@@ -878,12 +961,10 @@ function applyStep(){
   for(let i=0;i<=6;i++){const e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
   document.getElementById('bt-note').textContent=s.note;
 
-  // FIX #1: specific think question always tied to dp[i][j]
   const tq=document.getElementById('think-q');
   if(s.think&&tq&&s.t==='set'){tq.textContent=s.think;tq.style.display='block';}
   else if(tq){tq.style.display='none';}
 
-  // FIX #2: show exact dependency cells as text with arrows
   const db=document.getElementById('dep-box');
   if(db&&s.t==='set'){
     let depHtml=`<span style="color:#EF9F27">-- --</span> Skip: dp[${s.i-1}][${s.j}] = <strong style="color:${s.skipResult?'#4af7b0':'#f76a8a'}">${s.skipResult?'T':'F'}</strong>`;
@@ -895,7 +976,6 @@ function applyStep(){
     db.innerHTML=depHtml;db.style.display='block';
   } else if(db){db.style.display='none';}
 
-  // Cell explanation
   document.getElementById('cur-i').textContent=s.i;
   document.getElementById('cur-j').textContent=s.j;
   document.getElementById('cur-elem').textContent=s.elem!==null&&s.elem!==undefined?s.elem:'—';
@@ -917,7 +997,6 @@ function applyStep(){
     document.getElementById('pattern-panel').style.display='block';
 
     if(s.val&&V.dpFinal.length){
-      // FIX #3: step-by-step path reconstruction
       const pathSteps=buildPathSteps(V.arr,V.target,V.dpFinal);
       const pt=document.getElementById('path-trace');
       if(pathSteps.length){
@@ -937,7 +1016,6 @@ function applyStep(){
       }
       document.getElementById('fail-panel').style.display='none';
     } else if(!s.val){
-      // FIX #4: failure reasoning
       const fp=document.getElementById('fail-panel');
       const ft=document.getElementById('fail-trace');
       const reason=buildFailureReason(V.arr,V.target,V.dpFinal);
@@ -1013,7 +1091,6 @@ function runViz(){
   V.target=Math.min(parseInt(document.getElementById('sum-inp').value)||5,20);
   if(!V.arr.length){document.getElementById('bt-note').textContent='Enter at least one number.';return;}
 
-  // Pre-compute final dp for path reconstruction and failure analysis
   const n=V.arr.length;
   V.dpFinal=Array.from({length:n+1},()=>new Array(V.target+1).fill(false));
   for(let i=0;i<=n;i++)V.dpFinal[i][0]=true;
