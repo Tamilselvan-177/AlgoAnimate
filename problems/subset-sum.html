@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Subset Sum — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
+  --accent:#7c6af7;--accent2:#a594f9;
+  --green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);
+  --coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);
+  --purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);
+  --radius:10px;--radius-lg:16px;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --cv-bg:#0a0a0f;--cv-border:#2a2a3e;--cv-empty:#3a3a5e;
+}
+[data-theme="light"]{
+  --bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+  --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+  --accent:#5b48e8;--accent2:#7c6af7;
+  --green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);
+  --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);
+  --coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);
+  --purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);
+  --teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);
+  --cv-bg:#1a1a26;--cv-border:#3a3a4e;--cv-empty:#5a5a7e;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+
+nav{display:flex;align-items:center;gap:10px;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex:1}
+.nav-right{display:flex;align-items:center;gap:10px;margin-left:auto}
+.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .2s}
+.breadcrumb a:hover{color:var(--accent)}
+
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:.4rem}
+.gfg-number{font-size:0.82rem;font-family:var(--mono);color:var(--green);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:.6rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:640px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap;height:fit-content}
+.time-est span{color:var(--amber)}
+
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-gfg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:1.5rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+
+.sections{max-width:1100px;margin:0 auto;padding:2rem}
+.section{display:none}.section.active{display:block}
+
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}
+.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}
+.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}
+.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}
+.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.jbtn{padding:5px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--amber);cursor:pointer;transition:all .2s}
+.jbtn:hover{background:var(--amber);color:#1a0a00}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+
+.progress-wrap{background:var(--bg3);border-radius:4px;height:5px;width:100%;overflow:hidden;margin:.6rem 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%}
+
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.05}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s;position:relative;cursor:default}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.hl-tip{position:absolute;left:0;bottom:calc(100% + 4px);background:#1a1a2e;border:1px solid var(--accent);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--accent2);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s;z-index:50;font-family:var(--mono)}
+.hl:hover .hl-tip{opacity:1}
+
+.status-bar{display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.kbd{display:inline-flex;align-items:center;justify-content:center;padding:1px 6px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;font-family:var(--mono);font-size:.68rem;color:var(--text3)}
+
+/* ── DP TABLE ── */
+.dp-scroll{overflow-x:auto;border-radius:var(--radius-lg);background:var(--cv-bg);border:1px solid var(--cv-border);padding:1rem}
+.dp-table{border-collapse:separate;border-spacing:3px;font-family:var(--mono);font-size:12px}
+.dp-table th{padding:5px 8px;color:var(--text3);font-weight:600;font-size:10px;text-align:center;white-space:nowrap}
+.dp-table td{width:38px;height:34px;text-align:center;border-radius:7px;font-weight:700;font-size:12px;transition:background .25s,color .25s,transform .2s,box-shadow .2s;position:relative}
+.dp-cell-false{background:#1a1a26;color:#3a3a5a;border:1.5px solid #2a2a3e}
+.dp-cell-true{background:#085041;color:#5DCAA5;border:1.5px solid #1D9E75}
+.dp-cell-active{background:#3C3489;color:#EEEDFE;border:2px solid #7F77DD;transform:scale(1.12);box-shadow:0 0 12px rgba(124,106,247,.5);z-index:2}
+.dp-cell-checking{background:#412402;color:#FAC775;border:2px solid #EF9F27;transform:scale(1.06);box-shadow:0 0 8px rgba(245,166,35,.4)}
+.dp-cell-answer{background:#1D9E75;color:#E1F5EE;border:2.5px solid #4af7b0;transform:scale(1.15);box-shadow:0 0 16px rgba(74,247,176,.5)}
+[data-theme="light"] .dp-cell-false{background:#e8e5e0;color:#9a9890;border-color:#c5c2bb}
+[data-theme="light"] .dp-cell-true{background:#EAF3DE;color:#173404;border-color:#639922}
+[data-theme="light"] .dp-cell-active{background:#EEEDFE;color:#26215C;border-color:#7F77DD;box-shadow:0 0 10px rgba(91,72,232,.3)}
+[data-theme="light"] .dp-cell-checking{background:#FAEEDA;color:#412402;border-color:#BA7517;box-shadow:0 0 8px rgba(196,125,10,.3)}
+[data-theme="light"] .dp-cell-answer{background:#9FE1CB;color:#04342C;border-color:#1D9E75;box-shadow:0 0 12px rgba(26,158,92,.4)}
+
+.arr-strip{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:.8rem;align-items:center}
+.arr-el{padding:5px 12px;border-radius:8px;font-family:var(--mono);font-size:13px;font-weight:700;border:1.5px solid var(--border2);background:var(--bg3);color:var(--text2);transition:all .2s}
+.arr-el.current{border-color:#7F77DD;background:#3C3489;color:#EEEDFE;transform:scale(1.1);box-shadow:0 0 10px rgba(124,106,247,.4)}
+[data-theme="light"] .arr-el.current{background:#EEEDFE;color:#26215C;border-color:#7F77DD}
+
+.result-banner{display:none;padding:1rem 1.4rem;border-radius:var(--radius-lg);font-family:var(--mono);font-size:.95rem;font-weight:700;text-align:center;margin-top:.8rem;animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+.result-banner.true{background:rgba(74,247,176,.15);border:2px solid rgba(74,247,176,.5);color:#4af7b0}
+.result-banner.false{background:rgba(247,106,138,.12);border:2px solid rgba(247,106,138,.4);color:#f76a8a}
+
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+
+@keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}
+
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-gfg">GeeksForGeeks</span>
+    <span class="badge b-med">Medium</span>
+    <span class="badge b-topic">Dynamic Programming</span>
+    <span class="badge b-topic">Backtracking</span>
+  </div>
+  <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a>
+  <span>/</span>
+  <a href="../index.html?filter=dp">Dynamic Programming</a>
+  <span>/</span>
+  <span style="color:var(--text2)">Subset Sum</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #09</div>
+      <div class="gfg-number">GeeksForGeeks · Accuracy 32%</div>
+      <h1>Subset Sum</h1>
+      <p class="hero-sub">Given an array of positive integers and a target sum — does any subset add up to exactly that sum? A pure <strong style="color:var(--text)">true/false decision problem</strong>, solved beautifully with a 2D DP table.</p>
+    </div>
+    <div class="time-est">⏱ <span>~15 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- ═══ PROBLEM ═══ -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">
+        Given an array of <strong>positive integers</strong> <code>arr[]</code> and a value <code>sum</code>, determine if there is a <strong>subset of arr[]</strong> with sum equal to the given sum.<br><br>
+        Return <strong>true</strong> if such a subset exists, <strong>false</strong> otherwise. You don't need to find the subset — just decide if one exists.
+      </div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — true</div>
+        <div class="ex-io"><strong>arr[]</strong> = [3, 34, 4, 12, 5, 2], sum = 9</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">true</span></div>
+        <div class="ex-io" style="color:var(--text3)">4 + 3 + 2 = 9 ✓</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2 — false</div>
+        <div class="ex-io"><strong>arr[]</strong> = [3, 34, 4, 12, 5, 2], sum = 30</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--coral)">false</span></div>
+        <div class="ex-io" style="color:var(--text3)">No subset sums to 30</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 3 — full array</div>
+        <div class="ex-io"><strong>arr[]</strong> = [1, 2, 3], sum = 6</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">true</span></div>
+        <div class="ex-io" style="color:var(--text3)">1 + 2 + 3 = 6, take everything</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ arr.size() ≤ 200</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ arr[i] ≤ 200</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ sum ≤ 10⁴</span></div>
+      </div>
+      <div style="margin-top:1.2rem">
+        <h3 style="margin-bottom:.8rem">Why not brute force?</h3>
+        <div class="prose">
+          Brute force tries all 2ⁿ subsets. For n=200 that's more atoms than in the universe.<br><br>
+          <strong>DP approach:</strong> Build a table where <code>dp[i][j]</code> = "can the first i elements reach sum j?" Fill in O(n × sum) = O(200 × 10000) = 2M operations. Fast.
+        </div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- ═══ SOLUTION ═══ -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">DP (2D Table)</div>
+    <div class="vtab" onclick="showSol(1,this)">DP (1D Space Optimized)</div>
+    <div class="vtab" onclick="showSol(2,this)">Backtracking (Slow)</div>
+  </div>
+
+  <div class="vsec on" id="sv0">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">2D Dynamic Programming</span>
+      <div class="cx-row"><span class="cx cx-t">O(n × sum)</span><span class="cx cx-s">O(n × sum)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">isSubsetSum</span>(arr, target):
+    n = len(arr)
+    <span class="cm"># dp[i][j] = True if we can make sum j using first i elements</span>
+    dp = [[<span class="kw">False</span>] * (target + 1) <span class="kw">for</span> _ <span class="kw">in</span> range(n + 1)]
+
+    <span class="cm"># Base case: sum 0 is always achievable (empty subset)</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(n + 1):
+        dp[i][0] = <span class="kw">True</span>
+
+    <span class="kw">for</span> i <span class="kw">in</span> range(1, n + 1):
+        <span class="kw">for</span> j <span class="kw">in</span> range(1, target + 1):
+            <span class="cm"># Option 1: exclude arr[i-1] — same as without it</span>
+            dp[i][j] = dp[i-1][j]
+            <span class="cm"># Option 2: include arr[i-1] if it fits</span>
+            <span class="kw">if</span> arr[i-1] <= j:
+                dp[i][j] = dp[i][j] <span class="kw">or</span> dp[i-1][j - arr[i-1]]
+
+    <span class="kw">return</span> dp[n][target]</pre></div>
+  </div>
+
+  <div class="vsec" id="sv1">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">1D Space-Optimized DP</span>
+      <div class="cx-row"><span class="cx cx-t">O(n × sum)</span><span class="cx cx-s">O(sum)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">isSubsetSum</span>(arr, target):
+    <span class="cm"># dp[j] = can we make sum j using elements seen so far?</span>
+    dp = [<span class="kw">False</span>] * (target + 1)
+    dp[0] = <span class="kw">True</span>   <span class="cm"># sum 0 always achievable</span>
+
+    <span class="kw">for</span> num <span class="kw">in</span> arr:
+        <span class="cm"># iterate RIGHT TO LEFT to avoid reusing same element</span>
+        <span class="kw">for</span> j <span class="kw">in</span> range(target, num - 1, -1):
+            dp[j] = dp[j] <span class="kw">or</span> dp[j - num]
+
+    <span class="kw">return</span> dp[target]
+
+<span class="cm"># Why right-to-left? Prevents using arr[i] more than once.
+# If we go left-to-right, dp[j-num] might already include arr[i].</span></pre></div>
+  </div>
+
+  <div class="vsec" id="sv2">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Backtracking (Exponential — TLE for large inputs)</span>
+      <div class="cx-row"><span class="cx cx-t">O(2ⁿ)</span><span class="cx cx-s">O(n)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s2')">Copy</button></div>
+    <div class="code-block"><pre id="s2"><span class="kw">def</span> <span class="fn">isSubsetSum</span>(arr, target):
+    <span class="kw">def</span> <span class="fn">bt</span>(idx, remaining):
+        <span class="kw">if</span> remaining == 0: <span class="kw">return True</span>   <span class="cm"># found!</span>
+        <span class="kw">if</span> idx == len(arr) <span class="kw">or</span> remaining < 0: <span class="kw">return False</span>
+        <span class="cm"># include arr[idx] OR skip it</span>
+        <span class="kw">return</span> bt(idx+1, remaining-arr[idx]) <span class="kw">or</span> bt(idx+1, remaining)
+
+    <span class="kw">return</span> bt(0, target)
+
+<span class="cm"># ⚠ O(2^n) — fine for tiny arrays, TLE for n=200.
+# Use the DP solution for production code.</span></pre></div>
+  </div>
+</div>
+
+<!-- ═══ EXPLANATION ═══ -->
+<div class="section" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — What dp[i][j] means</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      The DP table is the heart of the solution. Every cell answers one question precisely:
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;text-align:center;font-family:var(--mono);margin-bottom:1rem">
+      <div style="font-size:1.2rem;color:var(--accent2);font-weight:700;margin-bottom:8px">dp[i][j]</div>
+      <div style="font-size:.88rem;color:var(--text2)">= <span style="color:var(--green)">True</span> if we can form sum <strong style="color:var(--amber)">j</strong> using any subset of the <strong style="color:var(--accent2)">first i elements</strong></div>
+      <div style="font-size:.88rem;color:var(--text2);margin-top:6px">= <span style="color:var(--coral)">False</span> otherwise</div>
+    </div>
+    <div class="prose">
+      Rows = "how many elements are we allowed to use (0 to n)". Columns = "what sum are we trying to reach (0 to target)".<br><br>
+      The answer is <code>dp[n][target]</code> — can we reach the target using all n elements?
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — The recurrence: include or exclude</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      For each element <code>arr[i-1]</code> and each sum <code>j</code>, we have exactly two choices:
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Option A — Exclude arr[i-1]</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2);line-height:2">
+          dp[i][j] = dp[i-1][j]<br>
+          <span style="color:var(--text3);font-size:.75rem">"Can we reach j without<br>using arr[i-1] at all?"</span>
+        </div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Option B — Include arr[i-1]</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2);line-height:2">
+          dp[i][j] = dp[i-1][j - arr[i-1]]<br>
+          <span style="color:var(--text3);font-size:.75rem">"Can we reach j - arr[i-1]<br>without using arr[i-1]?"</span>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.82rem;color:var(--text2)">
+      dp[i][j] = <span style="color:var(--coral)">dp[i-1][j]</span> <span style="color:var(--accent2)">OR</span> <span style="color:var(--green)">(arr[i-1] ≤ j AND dp[i-1][j-arr[i-1]])</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Base cases (the seeds)</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">dp[i][0] = True for all i</div>
+        <div style="font-size:.82rem;color:var(--text2);line-height:1.7">Sum = 0 is always reachable — just pick the <strong style="color:var(--text)">empty subset</strong>. The entire first column is True.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">dp[0][j] = False for j > 0</div>
+        <div style="font-size:.82rem;color:var(--text2);line-height:1.7">Using <strong style="color:var(--text)">zero elements</strong>, we can't reach any positive sum. The first row (except dp[0][0]) is False.</div>
+      </div>
+    </div>
+    <div class="prose">These two base cases seed the entire table. Every other cell is derived from them via the recurrence.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Concrete trace: arr=[3,4,2], target=5</h3>
+    <div style="overflow-x:auto;margin-bottom:1rem">
+      <table style="border-collapse:separate;border-spacing:3px;font-family:var(--mono);font-size:12px">
+        <thead>
+          <tr>
+            <th style="padding:5px 10px;color:var(--text3);text-align:left">arr[i-1] →</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=0</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=1</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=2</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=3</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=4</th>
+            <th style="padding:5px 10px;color:var(--text3)">s=5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding:5px 10px;color:var(--text2);font-size:11px">i=0 (none)</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+          </tr>
+          <tr>
+            <td style="padding:5px 10px;color:var(--text2);font-size:11px">i=1 (use 3?)</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+          </tr>
+          <tr>
+            <td style="padding:5px 10px;color:var(--text2);font-size:11px">i=2 (use 4?)</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+          </tr>
+          <tr>
+            <td style="padding:5px 10px;color:var(--text2);font-size:11px">i=3 (use 2?)</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--coral-bg);color:var(--coral);border-radius:6px;font-weight:700">F</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--green-bg);color:var(--green);border-radius:6px;font-weight:700">T</td>
+            <td style="padding:6px 10px;text-align:center;background:var(--teal-bg);color:var(--teal);border-radius:6px;font-weight:700;border:2px solid var(--teal)">T ✓</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">dp[3][5] = True because dp[2][3] = True (we can reach 3 with {3}), and 3 + 2 = 5. So the subset {3, 2} works.</div>
+  </div>
+
+  <div class="tip">
+    <strong>The DP insight:</strong> We never need to enumerate subsets explicitly. Instead, we ask "is there any way to reach this sum using these elements?" — and each cell answers it using two previously computed cells. This overlapping subproblem structure is the essence of dynamic programming.
+  </div>
+</div>
+
+<!-- ═══ ANIMATION ═══ -->
+<div class="section" id="tab-animation">
+
+  <!-- ONE-LINE DP INTUITION (fix #5 advanced) — above everything -->
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
+    <span style="font-size:1rem">💡</span>
+    <span><strong style="color:var(--text)">DP = remembering results of smaller subproblems to avoid recomputation.</strong> The tree has 2ⁿ paths — the table has n×sum cells.</span>
+  </div>
+
+  <!-- BACKTRACKING → DP BRIDGE -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;margin-bottom:.8rem;border-left:3px solid var(--accent)">
+    <div style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem">Why exactly two choices? — backtracking tree → DP table</div>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center">
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:.8rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Backtracking tree (2ⁿ paths)</div>
+        <div style="color:var(--text2);line-height:2">
+          For each element:<br>
+          <span style="color:var(--green)">→ Include</span> (rem -= arr[i])<br>
+          <span style="color:var(--coral)">→ Skip</span> (move on)<br>
+          <span style="color:var(--text3);font-size:.72rem">Many repeated subproblems</span>
+        </div>
+      </div>
+      <div style="text-align:center;color:var(--accent);font-size:1.3rem">⟹<br><span style="font-size:.65rem;font-family:var(--mono);color:var(--text3)">cache it</span></div>
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:.8rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">DP table (n×sum cells)</div>
+        <div style="color:var(--text2);line-height:2">
+          <span style="color:var(--coral)">Skip</span>: dp[i][j] = dp[i-1][j]<br>
+          <span style="color:var(--green)">Include</span>: dp[i][j] = dp[i-1][j-arr[i-1]]<br>
+          <span style="color:var(--text3);font-size:.72rem">Each subproblem computed once</span>
+        </div>
+      </div>
+    </div>
+    <!-- FIX #6: dependency direction -->
+    <div style="margin-top:.7rem;padding:6px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;font-family:var(--mono);font-size:.77rem;color:var(--amber)">
+      👆 We ONLY look at the row ABOVE (i-1). Current row depends entirely on the previous row — never on itself.
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.6rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">arr[] (max 7 elements)</span>
+      <input class="grid-inp" id="arr-inp" type="text" value="3,4,2" style="width:200px">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">target</span>
+      <input class="grid-inp" id="sum-inp" type="number" value="5" style="width:72px" min="1" max="20">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Run</button>
+    <button class="cbtn" id="btn-step" onclick="stepFwd()" disabled>⏭ Step</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+  </div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.5rem">
+    <button class="sbtn" onclick="loadS([3,4,2],5)">Small (true)</button>
+    <button class="sbtn" onclick="loadS([1,2,3],6)">Full array (true)</button>
+    <button class="sbtn" onclick="loadS([3,5,2],8)">→ 8 (false)</button>
+    <button class="sbtn" onclick="loadS([3,4,5,2],9)">GFG → 9 (true)</button>
+  </div>
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:.4rem">
+    <button class="jbtn" onclick="jumpTo('first-true')">✓ First True</button>
+    <button class="jbtn" onclick="jumpTo('answer')">🏁 Answer</button>
+    <button class="jbtn" onclick="jumpTo('done')">⏩ End</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:80px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span><span class="kbd">←</span><span class="kbd">→</span> <span class="kbd">Space</span></span>
+    </div>
+  </div>
+  <div style="font-family:var(--mono);font-size:.7rem;color:var(--text3);display:flex;justify-content:space-between;margin-bottom:2px">
+    <span id="prog-label">Step 0 / 0</span><span id="prog-pct">0%</span>
+  </div>
+  <div class="progress-wrap"><div class="progress-fill" id="prog-fill"></div></div>
+
+  <!-- MAIN LAYOUT -->
+  <div style="display:grid;grid-template-columns:1fr 275px;gap:12px;margin-top:.8rem">
+
+    <!-- LEFT -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- ARRAY STRIP -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.8rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Array — purple = element being considered for current row</div>
+        <div id="arr-strip" class="arr-strip"></div>
+      </div>
+
+      <!-- DP TABLE -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.7rem;flex-wrap:wrap;gap:6px">
+          <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em">dp[i][j] — row i = first i elements, col j = target sum</div>
+          <div style="display:flex;gap:8px;font-family:var(--mono);font-size:10px;flex-wrap:wrap">
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:#085041;border:1.5px solid #1D9E75;display:inline-block"></span>True</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:var(--bg3);border:1.5px solid var(--border2);display:inline-block"></span>False</span>
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;background:#3C3489;border:1.5px solid #7F77DD;display:inline-block"></span>Computing</span>
+            <!-- FIX #2: dependency cell in legend -->
+            <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:3px;border:2px dashed #EF9F27;display:inline-block"></span>Dependency</span>
+          </div>
+        </div>
+        <div class="dp-scroll"><div id="dp-table-wrap"></div></div>
+      </div>
+
+      <!-- FIX #3: path reconstruction — step by step -->
+      <div id="path-panel" style="display:none;background:var(--bg2);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">✓ Subset found — tracing back through table</div>
+        <div id="path-trace" style="font-family:var(--mono);font-size:.81rem;color:var(--text2);line-height:2.1"></div>
+      </div>
+
+      <!-- FIX #4: failure reasoning -->
+      <div id="fail-panel" style="display:none;background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">✗ Why no subset exists</div>
+        <div id="fail-trace" style="font-family:var(--mono);font-size:.81rem;color:var(--text2);line-height:2"></div>
+      </div>
+
+      <!-- RESULT BANNER -->
+      <div class="result-banner" id="result-banner"></div>
+
+      <!-- FIX #3 pattern: after done -->
+      <div id="pattern-panel" style="display:none;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1rem 1.2rem">
+        <div style="font-size:.72rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:.7rem">🎯 DP Pattern — commit this to memory</div>
+        <div style="font-family:var(--mono);font-size:.82rem;line-height:2.2">
+          <div><span style="color:var(--text3)">State &nbsp;&nbsp;</span><span style="color:var(--text2)">dp[i][j] = can first <span style="color:var(--accent2)">i</span> elements reach sum <span style="color:var(--amber)">j</span>?</span></div>
+          <div><span style="color:var(--text3)">Choice &nbsp;</span><span style="color:var(--green)">include arr[i-1]</span> <span style="color:var(--text3)">OR</span> <span style="color:var(--coral)">skip arr[i-1]</span></div>
+          <div><span style="color:var(--text3)">Goal &nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">dp[n][target] = True?</span></div>
+          <div><span style="color:var(--text3)">Base &nbsp;&nbsp;&nbsp;</span><span style="color:var(--text2)">dp[i][0] = True (empty subset)</span></div>
+        </div>
+        <!-- FIX advanced: WHEN to use DP detector -->
+        <div style="margin-top:.8rem;padding:.8rem 1rem;background:var(--bg3);border-radius:var(--radius);font-family:var(--mono);font-size:.79rem">
+          <div style="color:var(--text3);font-size:.63rem;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">🔍 When you see this → Think DP</div>
+          <div style="color:var(--text2);line-height:1.9">
+            <span style="color:var(--accent2)">keywords:</span> "subset", "sum", "count ways"<br>
+            <span style="color:var(--accent2)">choice:</span> take-or-not-take per element<br>
+            <span style="color:var(--accent2)">goal:</span> reach/count/optimize a value<br>
+            <span style="color:var(--accent2)">roadmap:</span> Subset Sum → Partition → Target Sum → Knapsack
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS -->
+      <div class="status-bar">
+        <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:#3a3a5e;flex-shrink:0"></div>
+        <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+        <span id="st-stat" style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto"></span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- FIX #1: specific think question tied to dp[i][j] -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">
+          dp[<span id="cur-i" style="color:var(--accent2)">—</span>][<span id="cur-j" style="color:var(--amber)">—</span>]
+          <span style="float:right">elem = <span id="cur-elem" style="color:var(--accent2)">—</span></span>
+        </div>
+        <!-- FIX #1: specific question always tied to current i,j -->
+        <div id="think-q" style="display:none;padding:7px 10px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;font-family:var(--mono);font-size:.77rem;color:var(--amber);margin-bottom:7px;line-height:1.6"></div>
+        <!-- FIX #2: dependency cells shown as text with clear arrows -->
+        <div id="dep-box" style="display:none;padding:7px 10px;background:var(--bg3);border:1px dashed #EF9F27;border-radius:8px;font-family:var(--mono);font-size:.76rem;color:var(--text2);margin-bottom:7px;line-height:1.9"></div>
+        <div id="cur-explain" style="font-size:.78rem;color:var(--text2);font-family:var(--mono);line-height:1.7;min-height:44px">—</div>
+      </div>
+
+      <!-- CODE HIGHLIGHT -->
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">for</span> i: dp[i][0]=True<span class="hl-tip">Empty subset always reaches sum 0</span></span>
+<span class="hl" id="cl1"><span class="kw">for</span> i <span class="kw">in</span> 1..n:<span class="hl-tip">Process each element row by row</span></span>
+<span class="hl" id="cl2">  <span class="kw">for</span> j <span class="kw">in</span> 1..target:<span class="hl-tip">Try every possible sum value</span></span>
+<span class="hl" id="cl3">    dp[i][j]=dp[i-1][j]<span class="hl-tip">SKIP arr[i-1] → inherit from row above</span></span>
+<span class="hl" id="cl4">    <span class="kw">if</span> arr[i-1]&lt;=j:<span class="hl-tip">Element fits in the sum? Try including</span></span>
+<span class="hl" id="cl5">      dp[i][j]|=<span class="hl-tip">OR with include case: look UP+LEFT</span></span>
+<span class="hl" id="cl6">        dp[i-1][j-arr[i-1]]<span class="hl-tip">↑ row above, ← left by arr[i-1] cols</span></span></pre>
+      </div>
+
+      <!-- FIX #5: wrong intuition warning -->
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.8rem 1rem">
+        <div style="font-size:.63rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">⚠ Common mistake (1D DP)</div>
+        <div style="font-family:var(--mono);font-size:.76rem;color:var(--text2);line-height:1.8">
+          <span style="color:var(--coral)">left→right</span>: reuses element ✗<br>
+          <span style="color:var(--green)">right→left</span>: each used once ✓<br>
+          <span style="color:var(--text3)">2D table avoids this entirely.</span>
+        </div>
+      </div>
+
+      <!-- complexity -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.8rem 1rem">
+        <div style="font-size:.63rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">Why DP wins</div>
+        <div style="font-family:var(--mono);font-size:.76rem;color:var(--text2);line-height:1.8">
+          Brute force: <span style="color:var(--coral)">2ⁿ</span> &nbsp; n=30→<span style="color:var(--coral)">1B</span> ✗<br>
+          DP: <span style="color:var(--green)">n×sum</span> &nbsp; n=200,s=1k→<span style="color:var(--green)">200K</span> ✓
+        </div>
+      </div>
+
+      <!-- NOTE -->
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:32px;line-height:1.6">
+        Press ▶ Run. Use ← → to step, Space to pause.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<!-- RELATED -->
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems — continue the DP journey</div>
+  <div class="related-grid">
+    <a class="rel-card" href="combination-sum.html">
+      <div class="rel-top"><span class="rel-num">#08 · Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">39. Combination Sum</div>
+      <div class="rel-desc">Find all combinations that sum to target. Backtracking with repetition — the search-all companion to this decision problem.</div>
+      <span class="rel-arrow">← Simpler (find any, not list)</span>
+    </a>
+    <a class="rel-card" href="subset-sum-2.html" style="opacity:.6;pointer-events:none">
+      <div class="rel-top"><span class="rel-num">#10 · Medium</span><span class="badge b-topic">DP</span></div>
+      <div class="rel-title">Partition Equal Subset Sum</div>
+      <div class="rel-desc">LC #416. Can you split the array into two halves with equal sum? Direct application of Subset Sum DP.</div>
+      <span class="rel-arrow" style="color:var(--text3)">Coming soon →</span>
+    </a>
+    <a class="rel-card" href="target-sum.html" style="opacity:.6;pointer-events:none">
+      <div class="rel-top"><span class="rel-num">#11 · Medium</span><span class="badge b-topic">DP</span></div>
+      <div class="rel-title">Target Sum (LC #494)</div>
+      <div class="rel-desc">Assign + or - to each element to reach target. Count the ways — extension of Subset Sum into counting.</div>
+      <span class="rel-arrow" style="color:var(--text3)">Coming soon →</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · GeeksForGeeks Subset Sum</p></footer>
+
+<script>
+function toggleTheme(){const h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');if(V.built)renderTable();}
+function switchTab(n,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1','sv2'].forEach((id,j)=>document.getElementById(id).style.display=j===i?'block':'none');document.querySelectorAll('.vtabs .vtab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy',1500);}
+
+const SPDS=[900,550,280,140,60];
+const SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+const spSlider=document.getElementById('speed-sl');
+spSlider.addEventListener('input',()=>document.getElementById('speed-lbl').textContent=SPNAMES[spSlider.value-1]);
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepFwd();}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBack();}
+  else if(e.key===' '){e.preventDefault();togglePlay();}
+});
+
+const V={arr:[],target:0,steps:[],si:0,timer:null,dp:[],built:false,dpFinal:[]};
+
+// ══ STEP BUILDER ══════════════════════════════════
+function buildSteps(arr,target){
+  const n=arr.length, s=[];
+  const dp=Array.from({length:n+1},()=>new Array(target+1).fill(false));
+
+  // Base cases
+  for(let i=0;i<=n;i++){
+    dp[i][0]=true;
+    s.push({t:'base',i,j:0,val:true,cl:0,
+      dpSnap:dp.map(r=>[...r]),skipRef:{i:-1,j:-1},inclRef:{i:-1,j:-1},
+      // FIX #1: specific think question
+      think:null,
+      note:`dp[${i}][0] = True — sum 0 always reachable (empty subset)`});
+  }
+
+  for(let i=1;i<=n;i++){
+    for(let j=1;j<=target;j++){
+      const elem=arr[i-1];
+      const skipResult=dp[i-1][j];
+      const canInclude=elem<=j;
+      const includeResult=canInclude?dp[i-1][j-elem]:false;
+      dp[i][j]=skipResult||includeResult;
+
+      s.push({
+        t:'set',i,j,val:dp[i][j],elem,
+        skipResult,canInclude,includeResult,
+        // FIX #1: specific question tied to dp[i][j]
+        think:`🤔 Can we make sum = ${j} using first ${i} element${i>1?'s':''} (including ${elem})?`,
+        // FIX #2: exact dependency cells
+        skipRef:{i:i-1,j},
+        inclRef:canInclude?{i:i-1,j:j-elem}:{i:-1,j:-1},
+        cl: dp[i][j]?5:3,
+        note: canInclude
+          ? `Skip ${elem}→dp[${i-1}][${j}]=${skipResult?'T':'F'}  OR  Include ${elem}→dp[${i-1}][${j-elem}]=${includeResult?'T':'F'}  →  ${dp[i][j]?'✓ TRUE':'✗ FALSE'}`
+          : `Skip ${elem}→dp[${i-1}][${j}]=${skipResult?'T':'F'}  (${elem}>${j}, can't include)  →  ${dp[i][j]?'✓ TRUE':'✗ FALSE'}`,
+        dpSnap:dp.map(r=>[...r])
+      });
+    }
+  }
+
+  const ans=dp[n][target];
+  s.push({t:'done',i:n,j:target,val:ans,elem:null,cl:-1,
+    skipRef:{i:-1,j:-1},inclRef:{i:-1,j:-1},
+    think:null,
+    note:`Answer: dp[${n}][${target}] = ${ans?"TRUE ✓":"FALSE ✗"}`,
+    dpSnap:dp.map(r=>[...r])});
+  return s;
+}
+
+// FIX #3: step-by-step path reconstruction
+function buildPathSteps(arr,target,dpFinal){
+  const steps=[];
+  let i=arr.length,j=target;
+  while(i>0&&j>0){
+    if(dpFinal[i-1][j]){
+      steps.push({action:'skip',elem:arr[i-1],i,j,from:{i:i-1,j}});
+      i--;
+    } else {
+      steps.push({action:'take',elem:arr[i-1],i,j,from:{i:i-1,j:j-arr[i-1]}});
+      j-=arr[i-1];i--;
+    }
+  }
+  return steps;
+}
+
+// FIX #4: failure analysis
+function buildFailureReason(arr,target,dpFinal){
+  const maxReachable=[];
+  for(let j=0;j<=target;j++){if(dpFinal[arr.length][j])maxReachable.push(j);}
+  const largest=maxReachable[maxReachable.length-1]||0;
+  return {largest,total:arr.reduce((a,b)=>a+b,0)};
+}
+
+// ══ JUMP TO ═══════════════════════════════════════
+function jumpTo(type){
+  if(!V.steps.length)return;
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  let idx=-1;
+  if(type==='first-true') idx=V.steps.findIndex(s=>s.t==='set'&&s.val===true&&s.j>0);
+  else if(type==='answer') idx=V.steps.findIndex(s=>s.t==='done');
+  else if(type==='done') idx=V.steps.length-1;
+  if(idx<0){document.getElementById('bt-note').textContent='No such step for this input.';return;}
+  resetState();
+  while(V.si<=idx&&V.si<V.steps.length)applyStep();
+}
+
+// ══ RENDER TABLE — FIX #2: dep cells as dashed outline, FIX #6: prev row fade ══
+let curI=-1,curJ=-1,skipRefI=-1,skipRefJ=-1,inclRefI=-1,inclRefJ=-1;
+
+function renderTable(){
+  const n=V.arr.length,target=V.target;
+  const wrap=document.getElementById('dp-table-wrap');
+  if(!wrap)return;
+
+  let html='<table class="dp-table"><thead><tr><th style="padding:4px 8px;color:var(--text3);font-size:10px;text-align:left">elem↓ sum→</th>';
+  for(let j=0;j<=target;j++) html+=`<th>${j}</th>`;
+  html+='</tr></thead><tbody>';
+
+  for(let i=0;i<=n;i++){
+    const elemLabel=i===0?'∅':String(V.arr[i-1]);
+    const isCurrentRow=i===curI;
+    // FIX #6: previous row gets a subtle highlight (dependency row)
+    const isPrevRow=i===curI-1&&curI>0;
+    const rowStyle=isPrevRow?'background:rgba(239,159,39,.04)':'';
+    html+=`<tr style="${rowStyle}"><th style="padding:4px 10px;color:${isCurrentRow?'#a090ff':'var(--text3)'};font-size:10px;text-align:left;white-space:nowrap;font-weight:${isCurrentRow?'700':'400'}">${elemLabel}</th>`;
+
+    for(let j=0;j<=target;j++){
+      const val=V.dp[i]?.[j];
+      const isCur=i===curI&&j===curJ;
+      const isAnswer=V.steps[V.si-1]?.t==='done'&&i===n&&j===target;
+      // FIX #2: dependency cells shown with dashed amber outline
+      const isSkipRef=i===skipRefI&&j===skipRefJ&&!isCur;
+      const isInclRef=i===inclRefI&&j===inclRefJ&&!isCur&&inclRefI>=0;
+
+      let cls='dp-cell-false';
+      if(isAnswer) cls='dp-cell-answer';
+      else if(isCur) cls='dp-cell-active';
+      else if(val===true) cls='dp-cell-true';
+
+      // dependency outline via inline style
+      let extra='';
+      if(isSkipRef) extra=' style="outline:2px dashed #EF9F27;outline-offset:1px"';
+      else if(isInclRef) extra=' style="outline:2px dashed #5DCAA5;outline-offset:1px"';
+
+      const display=val===null?'·':val?'T':'F';
+      html+=`<td class="${cls}"${extra}>${display}</td>`;
+    }
+    html+='</tr>';
+  }
+  html+='</tbody></table>';
+  wrap.innerHTML=html;
+}
+
+function renderArrayStrip(){
+  const strip=document.getElementById('arr-strip');
+  strip.innerHTML='';
+  V.arr.forEach((v,i)=>{
+    const el=document.createElement('div');
+    el.className='arr-el'+(i+1===curI?' current':'');
+    el.textContent=v;el.title=`arr[${i}]=${v}`;
+    strip.appendChild(el);
+  });
+  const lbl=document.createElement('span');
+  lbl.style.cssText='font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:8px';
+  lbl.textContent=`target = ${V.target}`;
+  strip.appendChild(lbl);
+}
+
+// ══ APPLY STEP ════════════════════════════════════
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  const s=V.steps[V.si];
+  curI=s.i; curJ=s.j;
+  skipRefI=s.skipRef?.i??-1; skipRefJ=s.skipRef?.j??-1;
+  inclRefI=s.inclRef?.i??-1; inclRefJ=s.inclRef?.j??-1;
+
+  if(s.dpSnap) V.dp=s.dpSnap.map(r=>[...r]);
+  else if(s.t==='base'){if(!V.dp[s.i])V.dp[s.i]=new Array(V.target+1).fill(null);V.dp[s.i][0]=true;}
+
+  for(let i=0;i<=6;i++){const e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+
+  // FIX #1: specific think question always tied to dp[i][j]
+  const tq=document.getElementById('think-q');
+  if(s.think&&tq&&s.t==='set'){tq.textContent=s.think;tq.style.display='block';}
+  else if(tq){tq.style.display='none';}
+
+  // FIX #2: show exact dependency cells as text with arrows
+  const db=document.getElementById('dep-box');
+  if(db&&s.t==='set'){
+    let depHtml=`<span style="color:#EF9F27">-- --</span> Skip: dp[${s.i-1}][${s.j}] = <strong style="color:${s.skipResult?'#4af7b0':'#f76a8a'}">${s.skipResult?'T':'F'}</strong>`;
+    if(s.canInclude){
+      depHtml+=`<br><span style="color:#5DCAA5">-- --</span> Include: dp[${s.i-1}][${s.j-s.elem}] = <strong style="color:${s.includeResult?'#4af7b0':'#f76a8a'}">${s.includeResult?'T':'F'}</strong>`;
+    } else {
+      depHtml+=`<br><span style="color:#5a5870">-- --</span> Include: ${s.elem}>${s.j}, skipped`;
+    }
+    db.innerHTML=depHtml;db.style.display='block';
+  } else if(db){db.style.display='none';}
+
+  // Cell explanation
+  document.getElementById('cur-i').textContent=s.i;
+  document.getElementById('cur-j').textContent=s.j;
+  document.getElementById('cur-elem').textContent=s.elem!==null&&s.elem!==undefined?s.elem:'—';
+  const ex=document.getElementById('cur-explain');
+  if(s.t==='base'){
+    ex.textContent='Base case: sum=0 is always reachable (pick the empty subset). Entire left column = True.';
+  } else if(s.t==='set'){
+    ex.innerHTML=`Result: <strong style="color:${s.val?'#4af7b0':'#f76a8a'}">${s.val?'True ✓ — at least one path works':'False ✗ — neither skip nor include leads to sum '+s.j}</strong>`;
+  } else if(s.t==='done'){
+    ex.textContent=`dp[${s.i}][${s.j}] is the bottom-right cell — the final answer.`;
+  }
+
+  renderTable();renderArrayStrip();updateProgress();
+
+  if(s.t==='done'){
+    setStatus('done',s.val);showResult(s.val);
+    curI=s.i;curJ=s.j;skipRefI=-1;skipRefJ=-1;inclRefI=-1;inclRefJ=-1;
+    renderTable();
+    document.getElementById('pattern-panel').style.display='block';
+
+    if(s.val&&V.dpFinal.length){
+      // FIX #3: step-by-step path reconstruction
+      const pathSteps=buildPathSteps(V.arr,V.target,V.dpFinal);
+      const pt=document.getElementById('path-trace');
+      if(pathSteps.length){
+        let html='<div style="margin-bottom:6px;color:var(--text3);font-size:.72rem">Tracing backwards from dp[n][target]:</div>';
+        const taken=[];
+        pathSteps.forEach(ps=>{
+          if(ps.action==='take'){
+            taken.push(ps.elem);
+            html+=`<div>dp[${ps.i}][${ps.j}] → <span style="color:var(--green)">TAKE ${ps.elem}</span> → look at dp[${ps.from.i}][${ps.from.j}]</div>`;
+          } else {
+            html+=`<div>dp[${ps.i}][${ps.j}] → <span style="color:var(--text3)">SKIP ${ps.elem}</span> → look at dp[${ps.from.i}][${ps.from.j}]</div>`;
+          }
+        });
+        html+=`<div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">Subset: [${taken.join(', ')}]  →  ${taken.join(' + ')} = ${taken.reduce((a,b)=>a+b,0)} ✓</div>`;
+        pt.innerHTML=html;
+        document.getElementById('path-panel').style.display='block';
+      }
+      document.getElementById('fail-panel').style.display='none';
+    } else if(!s.val){
+      // FIX #4: failure reasoning
+      const fp=document.getElementById('fail-panel');
+      const ft=document.getElementById('fail-trace');
+      const reason=buildFailureReason(V.arr,V.target,V.dpFinal);
+      ft.innerHTML=`<div>Every possible subset has been evaluated in the table.</div>
+        <div style="margin-top:4px">Largest reachable sum: <strong style="color:var(--amber)">${reason.largest}</strong></div>
+        <div>Sum of all elements: <strong style="color:var(--text)">${reason.total}</strong></div>
+        <div style="margin-top:4px;color:var(--coral)">${reason.total<V.target?`Even taking ALL elements (${reason.total}) is less than target (${V.target}) — impossible.`:`Target ${V.target} falls in a gap — no combination of [${V.arr.join(', ')}] can sum to exactly ${V.target}.`}</div>`;
+      fp.style.display='block';
+      document.getElementById('path-panel').style.display='none';
+    }
+  } else {
+    setStatus('run');
+    document.getElementById('result-banner').style.display='none';
+    document.getElementById('pattern-panel').style.display='none';
+    document.getElementById('path-panel').style.display='none';
+    document.getElementById('fail-panel').style.display='none';
+  }
+
+  V.si++;return V.si<V.steps.length;
+}
+
+function showResult(val){
+  const b=document.getElementById('result-banner');
+  b.className='result-banner '+(val?'true':'false');
+  b.textContent=val
+    ?`✓ TRUE — A subset of [${V.arr.join(', ')}] sums to ${V.target}`
+    :`✗ FALSE — No subset of [${V.arr.join(', ')}] sums to ${V.target}`;
+  b.style.display='block';
+}
+
+function resetState(){
+  V.si=0;V.dp=Array.from({length:V.arr.length+1},()=>new Array(V.target+1).fill(null));
+  curI=-1;curJ=-1;skipRefI=-1;skipRefJ=-1;inclRefI=-1;inclRefJ=-1;
+  document.getElementById('result-banner').style.display='none';
+  document.getElementById('pattern-panel').style.display='none';
+  document.getElementById('path-panel').style.display='none';
+  document.getElementById('fail-panel').style.display='none';
+  document.getElementById('think-q').style.display='none';
+  document.getElementById('dep-box').style.display='none';
+}
+
+function stepBack(){
+  if(!V.built||V.si<=1)return;
+  if(V.timer){clearInterval(V.timer);V.timer=null;renderBtn();}
+  const tgt=V.si-2;resetState();
+  while(V.si<=tgt&&V.si<V.steps.length)applyStep();
+}
+function togglePlay(){if(V.timer){clearInterval(V.timer);V.timer=null;renderBtn();}else startAuto();}
+function startAuto(){V.timer=setInterval(()=>{const more=applyStep();if(!more){clearInterval(V.timer);V.timer=null;renderBtn();}},SPDS[spSlider.value-1]);renderBtn();}
+function renderBtn(){const b=document.getElementById('btn-step');if(b)b.textContent=V.timer?'⏸ Pause':'⏭ Step';}
+
+function updateProgress(){
+  const total=V.steps.length,cur=V.si,pct=total?Math.round(cur/total*100):0;
+  const fill=document.getElementById('prog-fill');if(fill)fill.style.width=pct+'%';
+  document.getElementById('prog-label').textContent=`Step ${cur} / ${total}`;
+  document.getElementById('prog-pct').textContent=pct+'%';
+  document.getElementById('st-stat').textContent=`${cur}/${total}`;
+}
+
+function setStatus(s,val){
+  const dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Filling DP table…';}
+  else if(s==='done'){dot.style.cssText=`width:8px;height:8px;border-radius:50%;background:${val?'#4af7b0':'#f76a8a'};flex-shrink:0`;txt.textContent=val?'Done — subset EXISTS':'Done — no valid subset';}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#3a3a5e;flex-shrink:0';txt.textContent='Ready';}
+}
+
+function loadS(arr,sum){document.getElementById('arr-inp').value=arr.join(',');document.getElementById('sum-inp').value=sum;runViz();}
+
+function runViz(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  const raw=document.getElementById('arr-inp').value;
+  V.arr=raw.split(',').map(x=>parseInt(x.trim())).filter(x=>!isNaN(x)&&x>0).slice(0,7);
+  V.target=Math.min(parseInt(document.getElementById('sum-inp').value)||5,20);
+  if(!V.arr.length){document.getElementById('bt-note').textContent='Enter at least one number.';return;}
+
+  // Pre-compute final dp for path reconstruction and failure analysis
+  const n=V.arr.length;
+  V.dpFinal=Array.from({length:n+1},()=>new Array(V.target+1).fill(false));
+  for(let i=0;i<=n;i++)V.dpFinal[i][0]=true;
+  for(let i=1;i<=n;i++)for(let j=1;j<=V.target;j++){
+    V.dpFinal[i][j]=V.dpFinal[i-1][j];
+    if(V.arr[i-1]<=j)V.dpFinal[i][j]=V.dpFinal[i][j]||V.dpFinal[i-1][j-V.arr[i-1]];
+  }
+
+  V.steps=buildSteps(V.arr,V.target);
+  V.si=0;V.dp=Array.from({length:n+1},()=>new Array(V.target+1).fill(null));
+  V.built=true;curI=-1;curJ=-1;skipRefI=-1;skipRefJ=-1;inclRefI=-1;inclRefJ=-1;
+  for(let i=0;i<=6;i++){const e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  document.getElementById('cur-i').textContent='—';document.getElementById('cur-j').textContent='—';
+  document.getElementById('cur-elem').textContent='—';document.getElementById('cur-explain').textContent='—';
+  document.getElementById('result-banner').style.display='none';
+  document.getElementById('pattern-panel').style.display='none';
+  document.getElementById('path-panel').style.display='none';
+  document.getElementById('fail-panel').style.display='none';
+  document.getElementById('think-q').style.display='none';
+  document.getElementById('dep-box').style.display='none';
+  document.getElementById('bt-note').textContent='Press ▶ Run or ← → to step. Space = play/pause.';
+  setStatus('ready');updateProgress();renderTable();renderArrayStrip();
+  document.getElementById('btn-step').disabled=false;
+  document.getElementById('btn-reset').disabled=false;
+  startAuto();
+}
+
+function stepFwd(){if(V.timer){clearInterval(V.timer);V.timer=null;renderBtn();}else applyStep();}
+
+function resetViz(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  resetState();
+  for(let i=0;i<=6;i++){const e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  document.getElementById('cur-i').textContent='—';document.getElementById('cur-j').textContent='—';
+  document.getElementById('cur-elem').textContent='—';document.getElementById('cur-explain').textContent='—';
+  document.getElementById('bt-note').textContent='Reset. Press ▶ Run or ← → keys.';
+  setStatus('ready');updateProgress();renderTable();renderArrayStrip();renderBtn();
+}
+
+const ss=document.createElement('style');
+ss.textContent='@keyframes popIn{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',()=>{
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadS([3,4,2],5);
+});
+</script>
+</body>
+</html>
