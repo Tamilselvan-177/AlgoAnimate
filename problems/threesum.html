@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,118 +7,88 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
-  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
-  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
-  --accent:#7c6af7;--accent2:#a594f9;
-  --green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);
-  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);
-  --coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);
-  --purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);
-  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);
-  --radius:10px;--radius-lg:16px;
-  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
-  --canvas-bg:#0a0a0f;--canvas-border:#2a2a3e;--ph-color:#3a3a5e;
-}
-[data-theme="light"]{
-  --bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;
-  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
-  --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
-  --accent:#5b48e8;--accent2:#7c6af7;
-  --green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);
-  --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);
-  --coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);
-  --purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);
-  --teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);
-  --canvas-bg:#f5f2ee;--canvas-border:#d0cdc8;--ph-color:#b0ada8;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .3s,color .3s}
-
-nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap;transition:background .3s}
-.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
-.nav-logo span{color:var(--accent)}
-.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}
-.nav-back:hover{color:var(--accent)}
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);--coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);--purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--canvas-bg:#0a0a0f;--canvas-border:#2a2a3e;--ph-color:#3a3a5e;}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);--coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);--purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);--canvas-bg:#f5f2ee;--canvas-border:#d0cdc8;--ph-color:#b0ada8;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap;transition:background .25s}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
 .nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-.badge{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-family:var(--mono);font-weight:500}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
 .b-lc{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
 .b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
 .b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
-
-/* Theme toggle */
-.theme-toggle{background:var(--bg3);border:1px solid var(--border2);border-radius:20px;padding:5px 12px;font-size:0.75rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
-.theme-toggle:hover{border-color:var(--accent);color:var(--accent)}
-
-.hero{padding:2.5rem 2rem 0;max-width:1100px;margin:0 auto}
-.hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
-.lc-number{font-size:0.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:0.5rem;font-weight:700}
-.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:0.8rem}
-.hero-sub{font-size:0.92rem;color:var(--text2);max-width:620px;line-height:1.75}
-
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .2s}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:0.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap;height:fit-content}
+.time-est span{color:var(--amber)}
 .tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
 .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
-.tab{padding:0.7rem 1.2rem;font-size:0.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
-.tab:hover{color:var(--text)}
-.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
-
-.sections{max-width:1100px;margin:0 auto;padding:2rem}
-.section{display:none}.section.active{display:block}
-
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
 .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
-.card h3{font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
 .prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
 @media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
-.prose{font-size:0.88rem;color:var(--text2);line-height:1.85}
-.prose strong{color:var(--text);font-weight:500}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
 .prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
-.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:0.8rem;border-left:3px solid var(--border2)}
-.ex-label{font-size:0.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
 .ex-io{color:var(--text2);margin-bottom:3px}
 .cr-list{display:flex;flex-direction:column;gap:6px}
-.cr{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;font-family:var(--mono);color:var(--text2)}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
 .cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
 .sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
-.cx-row{display:flex;gap:8px}
-.cx{padding:4px 12px;border-radius:20px;font-size:0.73rem;font-family:var(--mono)}
-.cx-t{background:var(--purple-bg);color:var(--accent2)}
-.cx-s{background:var(--green-bg);color:var(--green)}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
 .code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:0.8rem;line-height:1.95;color:var(--text2)}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
 .kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
-.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
 .copy-btn:hover{color:var(--text);background:var(--bg4)}
 .vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
 .vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
 .vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .vsec{display:none}.vsec.on{display:block}
-.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:0.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
 .tip strong{color:var(--accent2)}
-.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
-.cbtn:hover{border-color:var(--accent);color:var(--accent)}
-.cbtn:disabled{opacity:.3;cursor:not-allowed}
-.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-.cbtn.primary:hover{background:var(--accent2)}
-.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:0.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
 .sbtn:hover{border-color:var(--accent);color:var(--accent)}
-.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:0.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
 .grid-inp:focus{border-color:var(--accent)}
-.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
 .run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 .code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
-.code-hl pre{padding:1.1rem 1.3rem;font-family:var(--mono);font-size:0.79rem;line-height:2.1}
+.code-hl pre{padding:1.1rem 1.3rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
 .hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
 .hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
-.hl.active{background:rgba(124,106,247,0.22);color:var(--text)}
-
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
 footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
 footer a{color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
-
 <nav>
   <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
   <div class="nav-meta">
@@ -128,16 +98,27 @@ footer a{color:var(--accent);text-decoration:none}
     <span class="badge b-topic">Sorting</span>
   </div>
   <div style="display:flex;align-items:center;gap:10px">
-    <button class="theme-toggle" onclick="toggleTheme()" id="theme-btn">☀️ Light</button>
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark / light"></button>
     <a href="../index.html" class="nav-back">← All Problems</a>
   </div>
 </nav>
 
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=two-pointers">Two Pointers</a><span>/</span>
+  <span style="color:var(--text2)">3Sum</span>
+</div>
+
 <div class="hero">
-  <div class="hero-tag">Problem #15</div>
-  <div class="lc-number">LeetCode 15</div>
-  <h1>3Sum</h1>
-  <p class="hero-sub">Find all unique triplets in an array that sum to zero. The classic sort + two-pointer problem — fix one element, then squeeze two pointers inward to hunt for the complement.</p>
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #10</div>
+      <div class="lc-number">LeetCode 15</div>
+      <h1>3Sum</h1>
+      <p class="hero-sub">Find all unique triplets in an array that sum to zero. The classic <strong style="color:var(--text)">sort + two-pointer</strong> pattern — fix one element, then squeeze two pointers inward to find the complement.</p>
+    </div>
+    <div class="time-est">&#9201; <span>~10 min</span> to understand</div>
+  </div>
 </div>
 
 <div class="tabs-wrap">
@@ -151,54 +132,35 @@ footer a{color:var(--accent);text-decoration:none}
 
 <div class="sections">
 
-<!-- ═══ PROBLEM ═══ -->
+<!-- PROBLEM -->
 <div class="section active" id="tab-problem">
   <div class="prob-grid">
     <div class="card">
       <h3>Problem Statement</h3>
-      <div class="prose">
-        Given an integer array <strong>nums</strong>, return all the triplets <strong>[nums[i], nums[j], nums[k]]</strong> such that i ≠ j, i ≠ k, j ≠ k, and nums[i] + nums[j] + nums[k] == 0.<br><br>
-        The solution set must <strong>not contain duplicate triplets</strong>. Return in any order.
-      </div>
-      <div class="ex-block">
-        <div class="ex-label">Example 1</div>
-        <div class="ex-io"><strong>Input:</strong> nums = [-1,0,1,2,-1,-4]</div>
-        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[-1,-1,2],[-1,0,1]]</span></div>
-        <div style="font-size:.72rem;color:var(--text3);margin-top:5px;font-family:var(--mono)">-1+(-1)+2=0 and -1+0+1=0</div>
-      </div>
-      <div class="ex-block" style="margin-top:8px">
-        <div class="ex-label">Example 2</div>
-        <div class="ex-io"><strong>Input:</strong> nums = [0,1,1]</div>
-        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[]</span></div>
-        <div style="font-size:.72rem;color:var(--text3);margin-top:5px;font-family:var(--mono)">No valid triplet sums to 0</div>
-      </div>
-      <div class="ex-block" style="margin-top:8px">
-        <div class="ex-label">Example 3</div>
-        <div class="ex-io"><strong>Input:</strong> nums = [0,0,0]</div>
-        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[0,0,0]]</span></div>
-        <div style="font-size:.72rem;color:var(--text3);margin-top:5px;font-family:var(--mono)">0+0+0=0</div>
-      </div>
+      <div class="prose">Given an integer array <strong>nums</strong>, return all unique triplets [a,b,c] such that a+b+c == 0. The solution set must <strong>not contain duplicate triplets</strong>.</div>
+      <div class="ex-block"><div class="ex-label">Example 1</div><div class="ex-io"><strong>Input:</strong> [-1,0,1,2,-1,-4]</div><div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[-1,-1,2],[-1,0,1]]</span></div><div style="font-size:.72rem;color:var(--text3);margin-top:4px;font-family:var(--mono)">-1+(-1)+2=0 and -1+0+1=0</div></div>
+      <div class="ex-block" style="margin-top:8px"><div class="ex-label">Example 2</div><div class="ex-io"><strong>Input:</strong> [0,1,1]</div><div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[]</span></div></div>
+      <div class="ex-block" style="margin-top:8px"><div class="ex-label">Example 3</div><div class="ex-io"><strong>Input:</strong> [0,0,0]</div><div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[[0,0,0]]</span></div></div>
     </div>
     <div class="card">
-      <h3>Constraints &amp; Key Facts</h3>
+      <h3>Constraints</h3>
       <div class="cr-list">
-        <div class="cr"><div class="cr-dot"></div><span>3 ≤ nums.length ≤ 3000</span></div>
-        <div class="cr"><div class="cr-dot"></div><span>-10⁵ ≤ nums[i] ≤ 10⁵</span></div>
-        <div class="cr"><div class="cr-dot"></div><span>Result must have no duplicate triplets</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>3 &le; nums.length &le; 3000</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>-10&sup5; &le; nums[i] &le; 10&sup5;</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>No duplicate triplets in output</span></div>
       </div>
       <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
-        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Algorithm Complexity</div>
-        <div style="color:var(--accent2)">Time: O(n²)</div>
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(n&sup2;)</div>
         <div style="color:var(--accent2)">Space: O(1) extra</div>
-        <div style="color:var(--accent2)">Sort first: O(n log n)</div>
-        <div style="color:var(--text3);margin-top:8px;font-size:.72rem">Total: O(n²) dominates</div>
+        <div style="color:var(--text3);margin-top:6px;font-size:.72rem">Sort is O(n log n), dominated by O(n&sup2;)</div>
       </div>
     </div>
   </div>
-  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution &rarr;</button>
 </div>
 
-<!-- ═══ SOLUTION ═══ -->
+<!-- SOLUTION -->
 <div class="section" id="tab-solution">
   <div class="vtabs">
     <div class="vtab on" onclick="showSol(0,this)">Two Pointers</div>
@@ -206,277 +168,220 @@ footer a{color:var(--accent);text-decoration:none}
     <div class="vtab" onclick="showSol(2,this)">Brute Force</div>
   </div>
   <div class="vsec on" id="sv0">
-    <div class="sol-header">
-      <span style="font-size:.95rem;font-weight:700">Sort + Two Pointers (Optimal)</span>
-      <div class="cx-row"><span class="cx cx-t">O(n²)</span><span class="cx cx-s">O(1) space</span></div>
-    </div>
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Sort + Two Pointers (Optimal)</span><div class="cx-row"><span class="cx cx-t">O(n&sup2;)</span><span class="cx cx-s">O(1) space</span></div></div>
     <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
     <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">threeSum</span>(nums):
-    nums.sort()            <span class="cm"># sort ascending</span>
+    nums.sort()
     res = []
-
     <span class="kw">for</span> i <span class="kw">in</span> range(len(nums) - 2):
-        <span class="cm"># skip duplicate values for the fixed element</span>
-        <span class="kw">if</span> i > 0 <span class="kw">and</span> nums[i] == nums[i - 1]:
-            <span class="kw">continue</span>
-        <span class="kw">if</span> nums[i] > 0:  <span class="cm"># sorted: no triple can sum to 0</span>
-            <span class="kw">break</span>
-
+        <span class="kw">if</span> i > 0 <span class="kw">and</span> nums[i] == nums[i - 1]: <span class="kw">continue</span>
+        <span class="kw">if</span> nums[i] > 0: <span class="kw">break</span>
         L, R = i + 1, len(nums) - 1
         <span class="kw">while</span> L < R:
             total = nums[i] + nums[L] + nums[R]
             <span class="kw">if</span> total == 0:
                 res.append([nums[i], nums[L], nums[R]])
-                <span class="cm"># skip duplicates on both sides</span>
                 <span class="kw">while</span> L < R <span class="kw">and</span> nums[L] == nums[L+1]: L += 1
                 <span class="kw">while</span> L < R <span class="kw">and</span> nums[R] == nums[R-1]: R -= 1
                 L += 1; R -= 1
-            <span class="kw">elif</span> total < 0:
-                L += 1  <span class="cm"># need bigger sum</span>
-            <span class="kw">else</span>:
-                R -= 1  <span class="cm"># need smaller sum</span>
-
+            <span class="kw">elif</span> total < 0: L += 1
+            <span class="kw">else</span>: R -= 1
     <span class="kw">return</span> res</pre></div>
   </div>
   <div class="vsec" id="sv1">
-    <div class="sol-header">
-      <span style="font-size:.95rem;font-weight:700">Hash Set Approach</span>
-      <div class="cx-row"><span class="cx cx-t">O(n²)</span><span class="cx cx-s">O(n) space</span></div>
-    </div>
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Hash Set</span><div class="cx-row"><span class="cx cx-t">O(n&sup2;)</span><span class="cx cx-s">O(n) space</span></div></div>
     <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
     <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">threeSum</span>(nums):
-    nums.sort()
-    res = []
-
+    nums.sort(); res = []
     <span class="kw">for</span> i <span class="kw">in</span> range(len(nums) - 2):
-        <span class="kw">if</span> i > 0 <span class="kw">and</span> nums[i] == nums[i-1]:
-            <span class="kw">continue</span>
-        seen = set()
-        j = i + 1
+        <span class="kw">if</span> i > 0 <span class="kw">and</span> nums[i] == nums[i-1]: <span class="kw">continue</span>
+        seen = set(); j = i + 1
         <span class="kw">while</span> j < len(nums):
-            complement = -nums[i] - nums[j]
-            <span class="kw">if</span> complement <span class="kw">in</span> seen:
-                res.append([nums[i], complement, nums[j]])
-                <span class="cm"># skip duplicates</span>
-                <span class="kw">while</span> j + 1 < len(nums) <span class="kw">and</span> nums[j] == nums[j+1]:
-                    j += 1
-            seen.add(nums[j])
-            j += 1
-
-    <span class="kw">return</span> res
-
-<span class="cm"># For each fixed i, store seen elements in a hash set.
-# When we encounter nums[j], check if its complement
-# (-nums[i] - nums[j]) was already seen.</span></pre></div>
+            comp = -nums[i] - nums[j]
+            <span class="kw">if</span> comp <span class="kw">in</span> seen:
+                res.append([nums[i], comp, nums[j]])
+                <span class="kw">while</span> j+1 < len(nums) <span class="kw">and</span> nums[j]==nums[j+1]: j+=1
+            seen.add(nums[j]); j += 1
+    <span class="kw">return</span> res</pre></div>
   </div>
   <div class="vsec" id="sv2">
-    <div class="sol-header">
-      <span style="font-size:.95rem;font-weight:700">Brute Force (O(n³))</span>
-      <div class="cx-row"><span class="cx cx-t">O(n³)</span><span class="cx cx-s">O(k) for output</span></div>
-    </div>
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Brute Force O(n&sup3;) &mdash; TLE</span><div class="cx-row"><span class="cx cx-t">O(n&sup3;)</span><span class="cx cx-s">O(k) output</span></div></div>
     <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s2')">Copy</button></div>
     <div class="code-block"><pre id="s2"><span class="kw">def</span> <span class="fn">threeSum</span>(nums):
-    n = len(nums)
-    res = set()
+    n = len(nums); res = set()
     <span class="kw">for</span> i <span class="kw">in</span> range(n):
-        <span class="kw">for</span> j <span class="kw">in</span> range(i + 1, n):
-            <span class="kw">for</span> k <span class="kw">in</span> range(j + 1, n):
-                <span class="kw">if</span> nums[i] + nums[j] + nums[k] == 0:
-                    triplet = tuple(sorted([nums[i], nums[j], nums[k]]))
-                    res.add(triplet)
-    <span class="kw">return</span> [list(t) <span class="kw">for</span> t <span class="kw">in</span> res]
-
-<span class="cm"># TLE for n > ~200 but correct.
-# Use a set of sorted tuples to avoid duplicates.</span></pre></div>
+        <span class="kw">for</span> j <span class="kw">in</span> range(i+1, n):
+            <span class="kw">for</span> k <span class="kw">in</span> range(j+1, n):
+                <span class="kw">if</span> nums[i]+nums[j]+nums[k]==0:
+                    res.add(tuple(sorted([nums[i],nums[j],nums[k]])))
+    <span class="kw">return</span> [list(t) <span class="kw">for</span> t <span class="kw">in</span> res]</pre></div>
   </div>
 </div>
 
-<!-- ═══ EXPLANATION ═══ -->
+<!-- EXPLANATION -->
 <div class="section" id="tab-explanation">
 
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
+    <span style="font-size:1rem">&#128161;</span>
+    <span><strong style="color:var(--text)">3Sum = TwoSum on a sorted array, run n times.</strong> Fix one element i, then use two pointers L and R to find the pair that sums to &minus;nums[i] in O(n).</span>
+  </div>
+
   <div class="card" style="border-left:3px solid var(--accent)">
-    <h3>Step 1 — Why sorting unlocks everything</h3>
-    <div class="prose" style="margin-bottom:1rem">
-      Sorting the array first gives us two superpowers: we can <strong>skip duplicates easily</strong> (same values are adjacent), and we can <strong>steer the two-pointer search</strong> by comparing the running total to zero.
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:1rem">
-      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem;text-align:center">
-        <div style="font-size:2rem;margin-bottom:4px">📶</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--green);font-weight:700">Sorted Order</div>
-        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2);margin-top:4px">-4,-1,-1,0,1,2</div>
+    <h3>Step 1 &mdash; Why sort first? (the key enabler)</h3>
+    <div class="prose" style="margin-bottom:1rem">Sorting does three things that make everything else possible:</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:1rem">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:6px">&#128310;</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--accent2);font-weight:700;margin-bottom:4px">Steerable search</div>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2)">sum&lt;0 &rarr; L++. sum&gt;0 &rarr; R--. Sorted order makes this deterministic.</div>
       </div>
-      <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1rem;text-align:center">
-        <div style="font-size:2rem;margin-bottom:4px">🎯</div>
-        <div style="font-family:var(--mono);font-size:.82rem;color:var(--accent2);font-weight:700">Pointer Direction</div>
-        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2);margin-top:4px">sum&lt;0 → L++ / sum&gt;0 → R--</div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:6px">&#128110;</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--green);font-weight:700;margin-bottom:4px">Adjacent duplicates</div>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2)">Equal values are neighbours. Skip with <code>while nums[i]==nums[i-1]</code>.</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;text-align:center">
+        <div style="font-size:1.4rem;margin-bottom:6px">&#9986;</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--amber);font-weight:700;margin-bottom:4px">Early break</div>
+        <div style="font-family:var(--mono);font-size:.72rem;color:var(--text2)">nums[i]&gt;0 &rarr; no triple can sum to 0. Stop entirely.</div>
       </div>
     </div>
     <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.8rem;color:var(--text2)">
-      If <span style="color:var(--accent2)">nums[i] > 0</span> and the array is sorted, we can <strong style="color:var(--text)">break early</strong> — no three elements starting at a positive value can sum to zero.
+      <span style="color:var(--text3)">Unsorted: </span><span style="color:var(--coral)">[-1,0,1,2,-1,-4]</span>
+      &nbsp;&nbsp;<span style="color:var(--accent)">&rarr; sort &rarr;</span>&nbsp;&nbsp;
+      <span style="color:var(--green)">[-4,-1,-1,0,1,2]</span>
+      <span style="color:var(--text3);font-size:.72rem;margin-left:8px">duplicates adjacent, negatives first</span>
     </div>
   </div>
 
   <div class="card" style="border-left:3px solid var(--amber)">
-    <h3>Step 2 — Fix i, squeeze L and R</h3>
+    <h3>Step 2 &mdash; The two-pointer squeeze and why it finds everything</h3>
     <div class="prose" style="margin-bottom:1rem">
-      For each outer index <code>i</code>, we set <code>L = i+1</code> and <code>R = n-1</code>. We then squeeze the window inward based on the current sum.
+      For fixed <code>nums[i]</code>, we need nums[L] + nums[R] = <strong>target = &minus;nums[i]</strong>. Because the window [L&hellip;R] is sorted:
     </div>
-    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;margin-bottom:1rem;overflow-x:auto">
-      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Trace: nums=[-4,-1,-1,0,1,2], i=1 (nums[i]=-1)</div>
-      <div><span style="color:var(--text3)">Array:</span> <span style="color:var(--coral)">-4</span> [<span style="color:var(--accent)">-1</span>] -1  0  1 [<span style="color:var(--green)">2</span>]  →  L=2,R=5, sum=0 ✓ → record [-1,-1,2]</div>
-      <div style="padding-left:1.5rem">skip dup L, skip dup R → L=3, R=4</div>
-      <div style="padding-left:1.5rem">sum = -1+0+1 = 0 ✓ → record [-1,0,1]</div>
-      <div style="padding-left:1.5rem">L=4,R=3 → <span style="color:var(--coral)">L≥R, inner loop done</span></div>
-      <div><span style="color:var(--text3)">i=2:</span> nums[2]==nums[1] → <span style="color:var(--amber)">skip (duplicate fixed element)</span></div>
-      <div><span style="color:var(--text3)">Result:</span> <span style="color:var(--green)">[[-1,-1,2],[-1,0,1]]</span></div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.1rem;font-family:var(--mono);font-size:.8rem;line-height:2.2;margin-bottom:1rem">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Decision at each (L, R) pair</div>
+      <div><span style="color:var(--accent2)">nums[L]+nums[R] == target</span> &rarr; record, skip dupes, L++, R--</div>
+      <div><span style="color:var(--green)">nums[L]+nums[R] &lt; target</span> &rarr; too small &rarr; <strong style="color:var(--green)">L++</strong> (get a bigger left)</div>
+      <div><span style="color:var(--coral)">nums[L]+nums[R] &gt; target</span> &rarr; too big &rarr; <strong style="color:var(--coral)">R--</strong> (get a smaller right)</div>
     </div>
-    <div class="prose">The inner two-pointer loop runs at most O(n) for each fixed <code>i</code>, giving us <strong>O(n²) overall</strong> — far better than the O(n³) brute force.</div>
+    <div class="prose">Each pointer moves at most n steps. For each of n fixed values of i, the inner loop is O(n). Total = <strong>O(n&sup2;)</strong> vs O(n&sup3;) brute force.</div>
   </div>
 
   <div class="card" style="border-left:3px solid var(--green)">
-    <h3>Step 3 — Handling duplicates without a set</h3>
-    <div class="prose" style="margin-bottom:1rem">
-      We deduplicate in two places: the <strong>outer loop</strong> (skip if nums[i] == nums[i-1]) and the <strong>inner loop</strong> after finding a triplet.
-    </div>
+    <h3>Step 3 &mdash; Deduplication: the trickiest part</h3>
+    <div class="prose" style="margin-bottom:1rem">Without dedup, [-1,-1,0,1,1] would produce [-1,0,1] twice. We handle this at <strong>two independent levels</strong>:</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
       <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
-        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✓ Outer dedup</div>
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Level 1 &mdash; Outer loop (i)</div>
         <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">
-          if i > 0 and nums[i] == nums[i-1]:<br>
-          &nbsp;&nbsp;continue<br>
-          <span style="color:var(--green)">→ skip repeated fix point</span>
+          <span style="color:var(--green)">if i &gt; 0 and nums[i] == nums[i-1]:<br>&nbsp;&nbsp;continue</span><br><br>
+          Skip if this anchor is the same value as the previous one. Run TwoSum only once per unique anchor.
         </div>
       </div>
       <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
-        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✓ Inner dedup</div>
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Level 2 &mdash; After finding triplet</div>
         <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">
-          while nums[L]==nums[L+1]: L++<br>
-          while nums[R]==nums[R-1]: R--<br>
-          <span style="color:var(--green)">→ skip repeated partners</span>
+          <span style="color:var(--green)">while nums[L]==nums[L+1]: L++<br>while nums[R]==nums[R-1]: R--</span><br><br>
+          Skip past equal values on both sides before advancing.
         </div>
       </div>
     </div>
-    <div class="prose">Deduplication is O(1) per skip because we only move pointers forward — we never go back.</div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:1.9;color:var(--text2)">
+      <span style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Why &ldquo;i &gt; 0&rdquo; in the outer guard matters</span>
+      i=0: always process (no previous element to compare)<br>
+      i&gt;0: skip only if same as previous &rarr; first occurrence runs, all copies skip
+    </div>
   </div>
 
   <div class="card" style="border-left:3px solid var(--teal)">
-    <h3>Step 4 — Two Pointers vs Hash Set vs Brute Force</h3>
+    <h3>Step 4 &mdash; Full trace: [-4,-1,-1,0,1,2]</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto;margin-bottom:.5rem">
+      <div><span style="color:var(--accent2)">i=0</span> val=<span style="color:var(--coral)">-4</span> &nbsp;L=1,R=5 &nbsp;sum=-3&lt;0&rarr;L++ &rarr; sum=-2&lt;0&rarr;L++ &rarr; sum=-1&lt;0&rarr;L++ &rarr; L&ge;R done</div>
+      <div><span style="color:var(--accent2)">i=1</span> val=<span style="color:var(--accent2)">-1</span> &nbsp;L=2,R=5 &nbsp;sum=0 &#10003; <span style="color:var(--green)">&rarr; record [-1,-1,2]</span> &rarr; L=3,R=4</div>
+      <div style="padding-left:1.5rem">L=3,R=4 &nbsp;sum=0 &#10003; <span style="color:var(--green)">&rarr; record [-1,0,1]</span> &rarr; L=4,R=3 done</div>
+      <div><span style="color:var(--amber)">i=2</span> val=<span style="color:var(--amber)">-1</span> == nums[1] <span style="color:var(--amber)">&rarr; skip (outer dedup)</span></div>
+      <div><span style="color:var(--accent2)">i=3</span> val=<span style="color:var(--accent2)">0</span> &nbsp;L=4,R=5 &nbsp;sum=3&gt;0&rarr;R-- &rarr; L&ge;R done</div>
+      <div><span style="color:var(--coral)">i=4</span> val=<span style="color:var(--coral)">1</span> &gt; 0 <span style="color:var(--coral)">&rarr; break</span></div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">Result: [[-1,-1,2], [-1,0,1]]</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 &mdash; The kSum family: pattern generalisation</h3>
+    <div class="prose" style="margin-bottom:1rem">3Sum is one instance of a general pattern. Each level wraps the previous one:</div>
     <div style="overflow-x:auto">
       <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.8rem">
         <thead><tr style="border-bottom:1px solid var(--border2)">
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Problem</th>
           <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Approach</th>
           <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Time</th>
-          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Space</th>
-          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Practical</th>
+          <th style="text-align:left;padding:9px 12px;color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em">Core idea</th>
         </tr></thead>
         <tbody>
           <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Two Pointers</td>
-            <td style="padding:9px 12px;color:var(--green)">O(n²)</td>
-            <td style="padding:9px 12px;color:var(--green)">O(1)</td>
-            <td style="padding:9px 12px;color:var(--green)">✓ Best — passes n=3000</td>
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">2Sum (sorted)</td>
+            <td style="padding:9px 12px;color:var(--green)">Two pointers</td>
+            <td style="padding:9px 12px;color:var(--green)">O(n)</td>
+            <td style="padding:9px 12px;color:var(--text2)">L+R squeeze on sorted array</td>
           </tr>
           <tr style="border-bottom:1px solid var(--border)">
-            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Hash Set</td>
-            <td style="padding:9px 12px;color:var(--amber)">O(n²)</td>
-            <td style="padding:9px 12px;color:var(--amber)">O(n)</td>
-            <td style="padding:9px 12px;color:var(--amber)">≈ Same speed, more memory</td>
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">3Sum (this)</td>
+            <td style="padding:9px 12px;color:var(--amber)">Fix i, run 2Sum</td>
+            <td style="padding:9px 12px;color:var(--amber)">O(n&sup2;)</td>
+            <td style="padding:9px 12px;color:var(--text2)">n iterations &times; O(n) = O(n&sup2;)</td>
           </tr>
           <tr>
-            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">Brute Force</td>
-            <td style="padding:9px 12px;color:var(--coral)">O(n³)</td>
-            <td style="padding:9px 12px;color:var(--text2)">O(k)</td>
-            <td style="padding:9px 12px;color:var(--coral)">✗ TLE for n &gt; 200</td>
+            <td style="padding:9px 12px;color:var(--accent2);font-weight:700">4Sum</td>
+            <td style="padding:9px 12px;color:var(--coral)">Fix i,j &rarr; run 2Sum</td>
+            <td style="padding:9px 12px;color:var(--coral)">O(n&sup3;)</td>
+            <td style="padding:9px 12px;color:var(--text2)">n&sup2; iterations &times; O(n) = O(n&sup3;)</td>
           </tr>
         </tbody>
       </table>
     </div>
+    <div style="margin-top:.9rem;padding:.8rem 1rem;background:var(--bg3);border-radius:var(--radius);font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      <span style="color:var(--accent2)">Pattern:</span> kSum = fix one element + (k-1)Sum on the rest. Sort once, dedup at every level.
+    </div>
   </div>
 
-  <!-- TWO POINTER DIAGRAM -->
-  <div class="card">
-    <h3>Two pointer squeeze for nums[i] = -1, target = 1</h3>
-    <div class="prose" style="margin-bottom:1rem">
-      After sorting [-4,-1,-1,0,1,2], fix i=1 (value -1). We need L+R to equal 1. Watch the pointers converge.
-    </div>
-    <div style="overflow-x:auto">
-      <svg viewBox="0 0 700 200" width="100%" style="display:block">
-        <!-- Array boxes -->
-        <g font-family="'JetBrains Mono',monospace" font-size="14" text-anchor="middle" dominant-baseline="central">
-          <!-- Box backgrounds -->
-          <rect x="30" y="60" width="60" height="50" rx="8" fill="rgba(240,112,96,0.1)" stroke="#5a5870" stroke-width="1.5"/>
-          <rect x="100" y="60" width="60" height="50" rx="8" fill="rgba(124,106,247,0.25)" stroke="#7c6af7" stroke-width="2.5"/>
-          <rect x="170" y="60" width="60" height="50" rx="8" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf" stroke-width="1.5"/>
-          <rect x="240" y="60" width="60" height="50" rx="8" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf" stroke-width="1.5"/>
-          <rect x="310" y="60" width="60" height="50" rx="8" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf" stroke-width="1.5"/>
-          <rect x="380" y="60" width="60" height="50" rx="8" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf" stroke-width="1.5"/>
-          <!-- Values -->
-          <text x="60" y="85" fill="#f07060">-4</text>
-          <text x="130" y="85" fill="#a594f9">-1</text>
-          <text x="200" y="85" fill="#2dd4bf">-1</text>
-          <text x="270" y="85" fill="#2dd4bf">0</text>
-          <text x="340" y="85" fill="#2dd4bf">1</text>
-          <text x="410" y="85" fill="#2dd4bf">2</text>
-          <!-- Indices -->
-          <text x="60" y="125" fill="#5a5870" font-size="11">[0]</text>
-          <text x="130" y="125" fill="#7c6af7" font-size="11">[i=1]</text>
-          <text x="200" y="125" fill="#3dd68c" font-size="11">[L]</text>
-          <text x="270" y="125" fill="#5a5870" font-size="11">[3]</text>
-          <text x="340" y="125" fill="#5a5870" font-size="11">[4]</text>
-          <text x="410" y="125" fill="#f07060" font-size="11">[R]</text>
-        </g>
-        <!-- L arrow -->
-        <g>
-          <line x1="200" y1="148" x2="200" y2="160" stroke="#3dd68c" stroke-width="2" marker-end="url(#ag)"/>
-          <text x="200" y="175" font-family="'JetBrains Mono',monospace" font-size="11" fill="#3dd68c" text-anchor="middle">L</text>
-        </g>
-        <!-- R arrow -->
-        <g>
-          <line x1="410" y1="148" x2="410" y2="160" stroke="#f07060" stroke-width="2" marker-end="url(#ar)"/>
-          <text x="410" y="175" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f07060" text-anchor="middle">R</text>
-        </g>
-        <!-- Sum label -->
-        <text x="550" y="75" font-family="'JetBrains Mono',monospace" font-size="11" fill="#9a9890">sum =</text>
-        <text x="550" y="92" font-family="'JetBrains Mono',monospace" font-size="14" fill="#a594f9" font-weight="700">-1 + (-1) + 2 = 0 ✓</text>
-        <text x="550" y="112" font-family="'JetBrains Mono',monospace" font-size="11" fill="#3dd68c">record [-1,-1,2]</text>
-        <text x="550" y="130" font-family="'JetBrains Mono',monospace" font-size="11" fill="#9a9890">then L++, R--</text>
-        <!-- Legend -->
-        <rect x="30" y="8" width="12" height="12" rx="3" fill="rgba(124,106,247,0.25)" stroke="#7c6af7"/>
-        <text x="46" y="19" font-family="'JetBrains Mono',monospace" font-size="10" fill="#9a9890">fixed (i)</text>
-        <rect x="130" y="8" width="12" height="12" rx="3" fill="rgba(45,212,191,0.1)" stroke="#2dd4bf"/>
-        <text x="146" y="19" font-family="'JetBrains Mono',monospace" font-size="10" fill="#9a9890">search window</text>
-        <defs>
-          <marker id="ag" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L6,3 z" fill="#3dd68c"/>
-          </marker>
-          <marker id="ar" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L6,3 z" fill="#f07060"/>
-          </marker>
-        </defs>
-      </svg>
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Common mistakes that cause wrong answers</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">&#10060; Forgetting i &gt; 0 guard</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7"><code>nums[i]==nums[i-1]</code> at i=0 accesses index -1 &mdash; crash or wrong result.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">&#10060; Not advancing after found</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">After dup-skipping, must do <code>L++; R--</code> or the loop stalls on the same pair forever.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">&#10060; Wrong loop bound</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Need 2 elements after i for L and R. Use <code>range(len(nums)-2)</code> not <code>range(len(nums)-1)</code>.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">&#10060; Using a set to dedup output</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Works but wastes O(n&sup2;) space. The in-place skip approach is O(1) extra and cleaner.</div>
+      </div>
     </div>
   </div>
 
   <div class="tip">
-    <strong>The 3Sum mental model:</strong>&nbsp;
-    Sort → fix <code>i</code> → run TwoSum on the rest. TwoSum on a sorted array = two pointers.
-    Skip duplicates at both levels. Early break when <code>nums[i] &gt; 0</code>.
+    <strong>The 3Sum mental model:</strong> Sort &rarr; fix <code>nums[i]</code> &rarr; two-pointer TwoSum with target=<code>&minus;nums[i]</code> on the right window &rarr; skip dupes at both levels &rarr; break when <code>nums[i]&gt;0</code>.
   </div>
+
 </div>
 
-<!-- ═══ ANIMATION ═══ -->
+<!-- ANIMATION (unchanged from original) -->
 <div class="section" id="tab-animation">
-
-  <!-- INPUT ROW -->
   <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
     <div style="display:flex;flex-direction:column;gap:4px">
-      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">nums (comma-separated, max 8 elements)</span>
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">nums (comma-separated, max 8)</span>
       <input class="grid-inp" id="nums-inp" type="text" value="-1,0,1,2,-1,-4" style="width:220px">
     </div>
-    <button class="run-btn" onclick="runViz()">▶ Load</button>
+    <button class="run-btn" onclick="runViz()">&#9654; Load</button>
   </div>
-
-  <!-- PRESET EXAMPLES -->
   <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
     <button class="sbtn" onclick="loadS([-1,0,1,2,-1,-4])">Example 1</button>
     <button class="sbtn" onclick="loadS([0,1,1])">Example 2</button>
@@ -484,52 +389,38 @@ footer a{color:var(--accent);text-decoration:none}
     <button class="sbtn" onclick="loadS([-2,0,1,1,2])">Mixed</button>
     <button class="sbtn" onclick="loadS([-4,-2,-2,-2,0,1,2,2])">n=8</button>
   </div>
-
-  <!-- STEP CONTROLS -->
   <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
-    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
-    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
-    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
-    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>&larr; Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next &rarr;</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>&#9654; Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>&#8634; Reset</button>
     <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
-      Speed
-      <input type="range" id="speed-sl" min="1" max="5" value="3" step="1" style="width:75px;accent-color:var(--accent)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" step="1" style="width:75px;accent-color:var(--accent)">
       <span id="speed-lbl">Normal</span>
+      &nbsp;<span style="color:var(--text3);font-size:.68rem"><span style="display:inline-flex;align-items:center;justify-content:center;padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span><span style="display:inline-flex;align-items:center;justify-content:center;padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span></span>
     </div>
-    <span id="step-info" style="font-family:var(--mono);font-size:.75rem;color:var(--text2);min-width:60px;text-align:right"></span>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
   </div>
-
-  <!-- MAIN LAYOUT -->
   <div style="display:grid;grid-template-columns:1fr 290px;gap:12px">
-
-    <!-- LEFT COLUMN -->
     <div style="display:flex;flex-direction:column;gap:10px">
-
-      <!-- ARRAY VIZ -->
       <div style="position:relative;border-radius:var(--radius-lg);overflow:hidden;background:var(--canvas-bg);border:1px solid var(--canvas-border);padding:1.5rem 1rem">
         <div id="arr-viz" style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap;min-height:80px;align-items:center">
-          <span style="font-family:var(--mono);font-size:13px;color:var(--ph-color)">Press ▶ Run to start</span>
+          <span style="font-family:var(--mono);font-size:13px;color:var(--ph-color)">Press &#9654; Load to start</span>
         </div>
         <div id="ptr-row" style="display:flex;justify-content:center;gap:6px;margin-top:8px;min-height:28px;flex-wrap:wrap"></div>
         <div id="sum-display" style="text-align:center;font-family:var(--mono);font-size:13px;color:var(--text3);margin-top:8px"></div>
       </div>
-
-      <!-- STATUS BAR -->
       <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
         <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph-color);flex-shrink:0"></div>
         <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
         <span id="st-stat" style="font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto"></span>
       </div>
-
-      <!-- CURRENT TRIPLET -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Current triplet being tested</div>
         <div id="cur-triplet" style="display:flex;gap:5px;flex-wrap:wrap;min-height:30px;align-items:center">
           <span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">[ ?, ?, ? ]</span>
         </div>
       </div>
-
-      <!-- RESULTS -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">
           Triplets found &nbsp;<span id="res-count" style="color:#4af7b0;font-weight:700"></span>
@@ -539,11 +430,7 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
     </div>
-
-    <!-- RIGHT COLUMN -->
     <div style="display:flex;flex-direction:column;gap:10px">
-
-      <!-- LEGEND -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Legend</div>
         <div style="display:flex;flex-direction:column;gap:7px;font-size:11px;font-family:var(--mono)">
@@ -551,263 +438,153 @@ footer a{color:var(--accent);text-decoration:none}
           <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:5px;background:rgba(61,214,140,0.25);border:2px solid #3dd68c;flex-shrink:0"></div><span style="color:var(--text2)">Left pointer (L)</span></div>
           <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:5px;background:rgba(240,112,96,0.25);border:2px solid #f07060;flex-shrink:0"></div><span style="color:var(--text2)">Right pointer (R)</span></div>
           <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:5px;background:rgba(74,247,176,0.15);border:2px solid #4af7b0;flex-shrink:0"></div><span style="color:var(--text2)">Found triplet!</span></div>
-          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);flex-shrink:0"></div><span style="color:var(--text2)">Inactive / skipped</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:22px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);flex-shrink:0"></div><span style="color:var(--text2)">Inactive</span></div>
         </div>
       </div>
-
-      <!-- CODE HIGHLIGHT -->
       <div class="code-hl">
         <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.05"><span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">threeSum</span>(nums):</span>
 <span class="hl" id="cl1">  nums.sort() <span class="cm"># sort first</span></span>
 <span class="hl" id="cl2">  <span class="kw">for</span> i <span class="kw">in</span> range(n-2):</span>
 <span class="hl" id="cl3">    <span class="kw">if</span> i>0 <span class="kw">and</span> dup: <span class="kw">continue</span></span>
 <span class="hl" id="cl4">    L, R = i+1, n-1</span>
-<span class="hl" id="cl5">    <span class="kw">while</span> L < R:</span>
+<span class="hl" id="cl5">    <span class="kw">while</span> L &lt; R:</span>
 <span class="hl" id="cl6">      <span class="kw">if</span> sum==0: record</span>
 <span class="hl" id="cl7">      <span class="kw">elif</span> sum&lt;0: L++</span>
 <span class="hl" id="cl8">      <span class="kw">else</span>: R--</span></pre>
       </div>
-
-      <!-- NOTE -->
-      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.5">
-        Set input and press ▶ Run
-      </div>
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.5">Set input and press &#9654; Load</div>
     </div>
   </div>
 </div>
 
 </div><!-- /sections -->
-<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #15 3Sum</p></footer>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems &mdash; the two-pointer family</div>
+  <div class="related-grid">
+    <a class="rel-card" href="combination-sum.html">
+      <div class="rel-top"><span class="rel-num">LC #39 &middot; Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Combination Sum</div>
+      <div class="rel-desc">Find all combinations summing to target &mdash; the backtracking cousin where repetition is allowed.</div>
+      <span class="rel-arrow">&rarr;</span>
+    </a>
+    <a class="rel-card" href="subsets.html">
+      <div class="rel-top"><span class="rel-num">LC #78 &middot; Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Subsets</div>
+      <div class="rel-desc">Generate all 2&sup;n subsets. The inclusion/exclusion idea that underlies many sum problems.</div>
+      <span class="rel-arrow">&rarr;</span>
+    </a>
+    <a class="rel-card" href="subset-sum.html">
+      <div class="rel-top"><span class="rel-num">GFG &middot; Medium</span><span class="badge b-topic">Dynamic Programming</span></div>
+      <div class="rel-title">Subset Sum (DP)</div>
+      <div class="rel-desc">Does any subset reach exactly the target? The decision-problem variant solved with a 2D DP table.</div>
+      <span class="rel-arrow">&rarr;</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate &middot; <a href="../index.html">&larr; All Problems</a> &middot; LeetCode #15 3Sum</p></footer>
 
 <script>
-// ══ THEME TOGGLE ══════════════════════════════════
-let isDark = true;
-function toggleTheme(){
-  isDark = !isDark;
-  document.documentElement.setAttribute('data-theme', isDark ? '' : 'light');
-  document.getElementById('theme-btn').textContent = isDark ? '☀️ Light' : '🌙 Dark';
-  if(V.built) renderArr();
-}
-
-// ══ TABS ══════════════════════════════════════════
-function switchTab(n,btn){
-  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
-}
-function showSol(i,btn){
-  ['sv0','sv1','sv2'].forEach((id,j)=>{
-    const el=document.getElementById(id);
-    el.style.display=j===i?'block':'none';
-  });
-  document.querySelectorAll('.vtabs .vtab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-}
+function toggleTheme(){const h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');if(V.built)renderArr();}
+function switchTab(n,btn){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1','sv2'].forEach((id,j)=>document.getElementById(id).style.display=j===i?'block':'none');document.querySelectorAll('.vtabs .vtab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
 function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(()=>event.target.textContent='Copy',1500);}
-
-// ══ SPEED ═════════════════════════════════════════
-const SPDS=[900,550,280,140,60];
-const SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+const SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
 const spSlider=document.getElementById('speed-sl');
-spSlider.addEventListener('input',()=>{document.getElementById('speed-lbl').textContent=SPNAMES[spSlider.value-1];});
-
-// ══ STATE ═════════════════════════════════════════
-const V={nums:[],sorted:[],steps:[],si:0,timer:null,built:false,results:[],
-  cur:{i:-1,L:-1,R:-1},highlight:[]};
-
-// ══ STEP BUILDER ══════════════════════════════════
-// Every pointer move = one step. No silent jumps ever.
+spSlider.addEventListener('input',()=>document.getElementById('speed-lbl').textContent=SPNAMES[spSlider.value-1]);
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+const V={nums:[],sorted:[],steps:[],si:0,timer:null,built:false,results:[]};
 function buildSteps(nums){
-  const arr=[...nums].sort((a,b)=>a-b);
-  const n=arr.length;
-  const s=[];
-
-  function push(type,i,L,R,extras){
-    s.push(Object.assign({arr:[...arr],i,L,R},extras,{type}));
-  }
-
-  push('sort',-1,-1,-1,{cl:1,note:'Step 1: Sort array → ['+arr.join(', ')+']'});
-
+  const arr=[...nums].sort((a,b)=>a-b),n=arr.length,s=[];
+  function push(type,i,L,R,e){s.push(Object.assign({arr:[...arr],i,L,R},e,{type}));}
+  push('sort',-1,-1,-1,{cl:1,note:'Sort array → ['+arr.join(', ')+']'});
   for(let i=0;i<=n-3;i++){
-
-    // Show outer loop evaluating this i
-    push('eval_i',i,-1,-1,{cl:2,note:'Outer loop i='+i+': nums['+i+']='+arr[i]});
-
-    // Duplicate outer element — skip
-    if(i>0&&arr[i]===arr[i-1]){
-      push('skip_i',i,-1,-1,{cl:3,note:'Skip i='+i+': nums['+i+']='+arr[i]+' == nums['+(i-1)+']='+arr[i-1]+' (duplicate outer element)'});
-      continue;
-    }
-
-    // Early break — sorted means no triplet can sum to 0 if nums[i]>0
-    if(arr[i]>0){
-      push('break',i,-1,-1,{cl:2,note:'nums['+i+']='+arr[i]+' > 0 and sorted → all remaining sums > 0. Break!'});
-      break;
-    }
-
-    // Fix i and set up pointers
-    let L=i+1, R=n-1;
-    push('fix_i',i,L,R,{cl:4,note:'Fix i='+i+' (val='+arr[i]+'). Init L='+L+' (val='+arr[L]+'), R='+R+' (val='+arr[R]+')'});
-
+    push('eval_i',i,-1,-1,{cl:2,note:'i='+i+': nums['+i+']='+arr[i]});
+    if(i>0&&arr[i]===arr[i-1]){push('skip_i',i,-1,-1,{cl:3,note:'Skip i='+i+': duplicate ('+arr[i]+'=='+arr[i-1]+')'});continue;}
+    if(arr[i]>0){push('break',i,-1,-1,{cl:2,note:'nums['+i+']='+arr[i]+' > 0 → break'});break;}
+    let L=i+1,R=n-1;
+    push('fix_i',i,L,R,{cl:4,note:'Fix i='+i+'('+arr[i]+') L='+L+'('+arr[L]+') R='+R+'('+arr[R]+')'});
     while(L<R){
       const total=arr[i]+arr[L]+arr[R];
-
-      // CHECK — show exactly where L and R are right now
-      push('check',i,L,R,{cl:5,total,note:'Check: '+arr[i]+' + '+arr[L]+' + '+arr[R]+' = '+total});
-
+      push('check',i,L,R,{cl:5,total,note:'Check: '+arr[i]+'+'+arr[L]+'+'+arr[R]+'='+total});
       if(total===0){
-        // FOUND — highlight the matching triplet
-        push('found',i,L,R,{cl:6,total,triplet:[arr[i],arr[L],arr[R]],
-          note:'✓ Found ['+arr[i]+', '+arr[L]+', '+arr[R]+']! Now skip duplicates on both sides.'});
-
-        // Skip L duplicates — one step per position
-        while(L<R&&arr[L]===arr[L+1]){
-          const oldL=L; L++;
-          push('skip_L_dup',i,L,R,{cl:6,note:'L dup-skip: nums['+L+']='+arr[L]+' == nums['+oldL+']='+arr[oldL]+', L++ → L='+L});
-        }
-        // Skip R duplicates — one step per position
-        while(L<R&&arr[R]===arr[R-1]){
-          const oldR=R; R--;
-          push('skip_R_dup',i,L,R,{cl:6,note:'R dup-skip: nums['+R+']='+arr[R]+' == nums['+oldR+']='+arr[oldR]+', R-- → R='+R});
-        }
-        // Advance past the matched pair
-        if(L<R){ L++; R--;
-          push('advance',i,L,R,{cl:6,note:'Advance past matched pair → L='+L+' (val='+arr[L]+'), R='+R+' (val='+(arr[R]??'—')+'). Continue.'});
-        } else { L++; R--; }
-
-      }else if(total<0){
-        // sum too small → move L right; record AFTER move so display shows new position
-        L++;
-        push('moveL',i,L,R,{cl:7,total,note:'sum='+total+' < 0 → too small, L++ → L='+L+' (val='+(L<n?arr[L]:'out')+')'});
-
-      }else{
-        // sum too big → move R left; record AFTER move so display shows new position
-        R--;
-        push('moveR',i,L,R,{cl:8,total,note:'sum='+total+' > 0 → too large, R-- → R='+R+' (val='+(R>=0?arr[R]:'out')+')'});
-      }
+        push('found',i,L,R,{cl:6,total,triplet:[arr[i],arr[L],arr[R]],note:'✓ Found ['+arr[i]+','+arr[L]+','+arr[R]+']'});
+        while(L<R&&arr[L]===arr[L+1]){const oL=L;L++;push('skip_L_dup',i,L,R,{cl:6,note:'L dup-skip '+arr[oL]+'→L='+L});}
+        while(L<R&&arr[R]===arr[R-1]){const oR=R;R--;push('skip_R_dup',i,L,R,{cl:6,note:'R dup-skip '+arr[oR]+'→R='+R});}
+        if(L<R){L++;R--;push('advance',i,L,R,{cl:6,note:'Advance → L='+L+' R='+R});}else{L++;R--;}
+      }else if(total<0){L++;push('moveL',i,L,R,{cl:7,total,note:'sum<0 → L++='+L});}
+      else{R--;push('moveR',i,L,R,{cl:8,total,note:'sum>0 → R--='+R});}
     }
-
-    push('next_i',i,L,R,{cl:2,note:'L('+L+') >= R('+R+') → inner loop done for i='+i+'. Next outer iteration.'});
+    push('next_i',i,L,R,{cl:2,note:'L≥R → done for i='+i});
   }
-
   const found=s.filter(x=>x.type==='found').length;
-  push('done',-1,-1,-1,{cl:-1,note:'✓ Finished! Found '+found+' unique triplet'+(found!==1?'s':'')+'.'});
+  push('done',-1,-1,-1,{cl:-1,note:'✓ Done! '+found+' triplet'+(found!==1?'s':'')});
   return{steps:s,sorted:arr};
 }
-
-// ══ RENDER ARRAY ══════════════════════════════════
 function renderArr(step){
   const arr=step?step.arr:(V.sorted.length?V.sorted:[]);
-  const si=step?step.i:-1;
-  const L=step?step.L:-1;
-  const R=step?step.R:-1;
-  const type=step?step.type:'';
-  const isFindStep=['found','skip_L_dup','skip_R_dup','advance'].includes(type);
-  const viz=document.getElementById('arr-viz');
-  const ptrRow=document.getElementById('ptr-row');
-  if(!arr||!arr.length){
-    viz.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph-color)">Press \u25b6 Load to start</span>';
-    ptrRow.innerHTML='';return;
-  }
-
+  const si=step?step.i:-1,L=step?step.L:-1,R=step?step.R:-1,type=step?step.type:'';
+  const isFind=['found','skip_L_dup','skip_R_dup','advance'].includes(type);
+  const viz=document.getElementById('arr-viz'),ptrRow=document.getElementById('ptr-row');
+  if(!arr||!arr.length){viz.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph-color)">Press ▶ Load to start</span>';ptrRow.innerHTML='';return;}
   viz.innerHTML='';ptrRow.innerHTML='';
   arr.forEach((v,idx)=>{
     let bg='var(--bg3)',border='1px solid var(--border2)',color='var(--text2)',shadow='';
-
-    if(idx===si){
-      // Fixed anchor element i — always purple
-      bg='rgba(124,106,247,0.35)';border='2px solid #7c6af7';color='#c792ea';shadow='0 0 12px rgba(124,106,247,0.5)';
-    } else if(isFindStep&&(idx===L||idx===R)){
-      // During found/dup-skip/advance, highlight L and R in teal (found!)
-      bg='rgba(74,247,176,0.22)';border='2px solid #4af7b0';color='#4af7b0';shadow='0 0 12px rgba(74,247,176,0.5)';
-    } else if(idx===L&&idx===R){
-      // L and R collapsed to same cell — teal
-      bg='rgba(74,247,176,0.15)';border='2px solid #4af7b0';color='#4af7b0';shadow='0 0 8px rgba(74,247,176,0.4)';
-    } else if(idx===L){
-      bg='rgba(61,214,140,0.25)';border='2px solid #3dd68c';color='#3dd68c';shadow='0 0 10px rgba(61,214,140,0.4)';
-    } else if(idx===R){
-      bg='rgba(240,112,96,0.25)';border='2px solid #f07060';color='#f07060';shadow='0 0 10px rgba(240,112,96,0.4)';
-    }
-
+    if(idx===si){bg='rgba(124,106,247,.35)';border='2px solid #7c6af7';color='#c792ea';shadow='0 0 12px rgba(124,106,247,.5)';}
+    else if(isFind&&(idx===L||idx===R)){bg='rgba(74,247,176,.22)';border='2px solid #4af7b0';color='#4af7b0';shadow='0 0 12px rgba(74,247,176,.5)';}
+    else if(idx===L&&idx===R){bg='rgba(74,247,176,.15)';border='2px solid #4af7b0';color='#4af7b0';}
+    else if(idx===L){bg='rgba(61,214,140,.25)';border='2px solid #3dd68c';color='#3dd68c';shadow='0 0 10px rgba(61,214,140,.4)';}
+    else if(idx===R){bg='rgba(240,112,96,.25)';border='2px solid #f07060';color='#f07060';shadow='0 0 10px rgba(240,112,96,.4)';}
     const box=document.createElement('div');
     box.style.cssText='width:46px;height:46px;border-radius:8px;background:'+bg+';border:'+border+';color:'+color+';display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:14px;font-weight:700;box-shadow:'+shadow+';transition:all .25s';
-    box.textContent=v;
-    viz.appendChild(box);
-
-    // Pointer labels below each cell
+    box.textContent=v;viz.appendChild(box);
     const labels=[];
-    if(idx===si) labels.push({txt:'i',c:'#a594f9'});
-    if(idx===L)  labels.push({txt:'L',c:'#3dd68c'});
-    if(idx===R&&R!==L) labels.push({txt:'R',c:'#f07060'});
-    if(idx===R&&R===L&&si!==R) labels.push({txt:'L/R',c:'#4af7b0'});
+    if(idx===si)labels.push({txt:'i',c:'#a594f9'});
+    if(idx===L)labels.push({txt:'L',c:'#3dd68c'});
+    if(idx===R&&R!==L)labels.push({txt:'R',c:'#f07060'});
+    if(idx===R&&R===L&&si!==R)labels.push({txt:'L/R',c:'#4af7b0'});
     const sp=document.createElement('div');
     sp.style.cssText='width:46px;text-align:center;font-family:var(--mono);font-size:10px;font-weight:700;height:16px;display:flex;justify-content:center;gap:2px;align-items:center';
     labels.forEach(lb=>{const s=document.createElement('span');s.style.color=lb.c;s.textContent=lb.txt;sp.appendChild(s);});
     ptrRow.appendChild(sp);
   });
-
-  // Sum display — show for any step that has a total
   const sd=document.getElementById('sum-display');
   if(step&&step.total!==undefined){
-    const t=step.total;
-    const col=t===0?'#4af7b0':t<0?'#3dd68c':'#f07060';
-    const label=t===0?' <span style="color:#4af7b0">= 0 ✓ FOUND!</span>':t<0?' <span style="color:#9a9890">< 0 → move L right</span>':' <span style="color:#9a9890">> 0 → move R left</span>';
+    const t=step.total,col=t===0?'#4af7b0':t<0?'#3dd68c':'#f07060';
+    const label=t===0?' <span style="color:#4af7b0">= 0 ✓ FOUND!</span>':t<0?' <span style="color:#9a9890">< 0 → L++</span>':' <span style="color:#9a9890">> 0 → R--</span>';
     sd.innerHTML='<span style="color:var(--text3)">sum = </span><span style="color:'+col+';font-weight:700">'+t+'</span>'+label;
-  } else { sd.innerHTML=''; }
-
-  // Current triplet display
+  }else{sd.innerHTML='';}
   const ct=document.getElementById('cur-triplet');
   if(step&&si>=0&&L>=0&&R>=0){
-    const a=arr;
-    const iStyle=(extra)=>'padding:3px 9px;border-radius:7px;font-family:var(--mono);font-size:12px;font-weight:700;'+extra;
-    ct.innerHTML=
-      '<span style="'+iStyle('border:1.5px solid #7c6af7;background:rgba(124,106,247,.15);color:#a090ff')+'">'+a[si]+'</span>'+
-      '<span style="color:var(--text3);font-family:var(--mono);padding:0 4px">+</span>'+
-      '<span style="'+iStyle('border:1.5px solid #3dd68c;background:rgba(61,214,140,.15);color:#3dd68c')+'">'+a[L]+'</span>'+
-      '<span style="color:var(--text3);font-family:var(--mono);padding:0 4px">+</span>'+
-      '<span style="'+iStyle('border:1.5px solid #f07060;background:rgba(240,112,96,.15);color:#f07060')+'">'+a[R]+'</span>';
-  } else {
-    ct.innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">[ ?, ?, ? ]</span>';
-  }
+    const a=arr,is=e=>'padding:3px 9px;border-radius:7px;font-family:var(--mono);font-size:12px;font-weight:700;'+e;
+    ct.innerHTML='<span style="'+is('border:1.5px solid #7c6af7;background:rgba(124,106,247,.15);color:#a090ff')+'">'+a[si]+'</span><span style="color:var(--text3);font-family:var(--mono);padding:0 4px">+</span><span style="'+is('border:1.5px solid #3dd68c;background:rgba(61,214,140,.15);color:#3dd68c')+'">'+a[L]+'</span><span style="color:var(--text3);font-family:var(--mono);padding:0 4px">+</span><span style="'+is('border:1.5px solid #f07060;background:rgba(240,112,96,.15);color:#f07060')+'">'+a[R]+'</span>';
+  }else{ct.innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">[ ?, ?, ? ]</span>';}
 }
-
-// ══ APPLY STEP ════════════════════════════════════
 function applyStep(){
   if(V.si>=V.steps.length)return false;
   const s=V.steps[V.si];
-
-  // code highlight
   for(let i=0;i<=8;i++){const e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
   document.getElementById('bt-note').textContent=s.note;
   document.getElementById('step-info').textContent=`${V.si+1}/${V.steps.length}`;
-
   renderArr(s);
-
-  if(s.type==='found'){
-    V.results.push(s.triplet);
-    addChip(s.triplet);
-    setStatus('found');
-  }else if(s.type==='done'){
-    setStatus('done');
-  }else{
-    setStatus('run');
-  }
-
-  V.si++;
-  updateCtrlState();
-  return V.si<V.steps.length;
+  if(s.type==='found'){V.results.push(s.triplet);addChip(s.triplet);setStatus('found');}
+  else if(s.type==='done')setStatus('done');
+  else setStatus('run');
+  V.si++;updateCtrlState();return V.si<V.steps.length;
 }
-
-// ══ UI HELPERS ════════════════════════════════════
 function addChip(t){
-  const el=document.getElementById('res-list');
-  if(el.querySelector('span'))el.innerHTML='';
+  const el=document.getElementById('res-list');if(el.querySelector('span'))el.innerHTML='';
   const c=document.createElement('div');
   c.style.cssText='padding:4px 10px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:700;background:rgba(74,247,176,.12);border:1px solid rgba(74,247,176,.3);color:#4af7b0;animation:popIn .3s cubic-bezier(.34,1.56,.64,1)';
-  c.textContent='['+t.join(',')+']';
-  el.appendChild(c);
+  c.textContent='['+t.join(',')+']';el.appendChild(c);
   document.getElementById('res-count').textContent=`(${V.results.length})`;
 }
-
 function setStatus(s){
   const dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
   if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Searching…';}
@@ -815,23 +592,16 @@ function setStatus(s){
   else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent=`Done — ${V.results.length} triplet(s)`;}
   else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph-color);flex-shrink:0';txt.textContent='Ready';}
 }
-
-// ══ PLAYBACK ══════════════════════════════════════
 let isPlaying=false;
-
 function loadS(arr){document.getElementById('nums-inp').value=arr.join(',');runViz();}
-
 function runViz(){
   stopAuto();
   const raw=document.getElementById('nums-inp').value;
   const parsed=raw.split(',').map(x=>parseInt(x.trim())).filter(x=>!isNaN(x));
   if(parsed.length<3){document.getElementById('bt-note').textContent='Need at least 3 numbers.';return;}
   if(parsed.length>8){document.getElementById('bt-note').textContent='Max 8 elements for clarity.';return;}
-
   const built=buildSteps(parsed);
-  V.nums=parsed;V.sorted=built.sorted;V.steps=built.steps;
-  V.si=0;V.results=[];V.built=true;
-
+  V.nums=parsed;V.sorted=built.sorted;V.steps=built.steps;V.si=0;V.results=[];V.built=true;
   document.getElementById('res-list').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">none yet</span>';
   document.getElementById('res-count').textContent='';
   document.getElementById('cur-triplet').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">[ ?, ?, ? ]</span>';
@@ -841,111 +611,67 @@ function runViz(){
   document.getElementById('bt-note').textContent='Use ← Prev / Next → to step, or ▶ Auto-play.';
   updateCtrlState();
 }
-
-// Step forward or backward by delta (-1 or +1)
 function stepBy(delta){
-  stopAuto();
-  if(!V.built)return;
-  if(delta>0){
-    if(V.si<V.steps.length) applyStep();
-  }else{
-    if(V.si<=0)return;
-    // Rebuild state from scratch up to si-1
-    const target=Math.max(0,V.si-1);
-    rewindTo(target);
-  }
+  stopAuto();if(!V.built)return;
+  if(delta>0){if(V.si<V.steps.length)applyStep();}
+  else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}
   updateCtrlState();
 }
-
-// Replay all steps from 0 to targetSi (exclusive)
-function rewindTo(targetSi){
+function rewindTo(t){
   V.si=0;V.results=[];
   document.getElementById('res-list').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">none yet</span>';
   document.getElementById('res-count').textContent='';
   for(let i=0;i<=8;i++){const e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
-  // silently replay up to target
-  while(V.si<targetSi) applyStepSilent();
-  // render last state visually
-  if(targetSi>0){
-    const s=V.steps[targetSi-1];
-    renderArr(s);
+  while(V.si<t)applyStepSilent();
+  if(t>0){
+    const s=V.steps[t-1];renderArr(s);
     for(let i=0;i<=8;i++){const e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
     document.getElementById('bt-note').textContent=s.note;
-    document.getElementById('step-info').textContent=`${targetSi}/${V.steps.length}`;
+    document.getElementById('step-info').textContent=`${t}/${V.steps.length}`;
     setStatus(s.type==='found'?'found':s.type==='done'?'done':'run');
   }else{
     renderArr();setStatus('ready');
-    document.getElementById('bt-note').textContent='Use ← Prev / Next → to step, or ▶ Auto-play.';
+    document.getElementById('bt-note').textContent='Use ← Prev / Next → or ▶ Auto-play.';
     document.getElementById('step-info').textContent='';
     document.getElementById('cur-triplet').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph-color)">[ ?, ?, ? ]</span>';
     document.getElementById('sum-display').textContent='';
   }
 }
-
-// Silent step: mutates V.si and V.results without touching DOM
 function applyStepSilent(){
   if(V.si>=V.steps.length)return;
   const s=V.steps[V.si];
   if(s.type==='found'){V.results.push(s.triplet);rebuildResList();}
   V.si++;
 }
-
 function rebuildResList(){
-  const el=document.getElementById('res-list');
-  el.innerHTML='';
-  V.results.forEach(t=>{
-    const c=document.createElement('div');
-    c.style.cssText='padding:4px 10px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:700;background:rgba(74,247,176,.12);border:1px solid rgba(74,247,176,.3);color:#4af7b0';
-    c.textContent='['+t.join(',')+']';
-    el.appendChild(c);
-  });
+  const el=document.getElementById('res-list');el.innerHTML='';
+  V.results.forEach(t=>{const c=document.createElement('div');c.style.cssText='padding:4px 10px;border-radius:20px;font-size:11px;font-family:var(--mono);font-weight:700;background:rgba(74,247,176,.12);border:1px solid rgba(74,247,176,.3);color:#4af7b0';c.textContent='['+t.join(',')+']';el.appendChild(c);});
   document.getElementById('res-count').textContent=V.results.length?`(${V.results.length})`:'';
 }
-
 function autoPlay(){
-  if(isPlaying){stopAuto();return;}
-  if(!V.built)return;
+  if(isPlaying){stopAuto();return;}if(!V.built)return;
   if(V.si>=V.steps.length){rewindTo(0);updateCtrlState();}
-  isPlaying=true;
-  document.getElementById('btn-auto').textContent='⏸ Pause';
-  document.getElementById('btn-auto').classList.add('primary');
-  V.timer=setInterval(()=>{
-    const more=applyStep();
-    updateCtrlState();
-    if(!more){stopAuto();}
-  },SPDS[spSlider.value-1]);
+  isPlaying=true;document.getElementById('btn-auto').textContent='⏸ Pause';document.getElementById('btn-auto').classList.add('primary');
+  V.timer=setInterval(()=>{const more=applyStep();updateCtrlState();if(!more)stopAuto();},SPDS[spSlider.value-1]);
 }
-
 function stopAuto(){
-  if(V.timer){clearInterval(V.timer);V.timer=null;}
-  isPlaying=false;
-  const btn=document.getElementById('btn-auto');
-  if(btn){btn.textContent='▶ Auto-play';btn.classList.add('primary');}
+  if(V.timer){clearInterval(V.timer);V.timer=null;}isPlaying=false;
+  const btn=document.getElementById('btn-auto');if(btn){btn.textContent='▶ Auto-play';btn.classList.add('primary');}
 }
-
-function resetViz(){
-  stopAuto();
-  if(!V.built)return;
-  rewindTo(0);
-  updateCtrlState();
-}
-
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updateCtrlState();}
 function updateCtrlState(){
-  const hasSteps=V.built&&V.steps.length>0;
-  document.getElementById('btn-prev').disabled=!hasSteps||V.si<=0;
-  document.getElementById('btn-next').disabled=!hasSteps||V.si>=V.steps.length;
-  document.getElementById('btn-auto').disabled=!hasSteps;
-  document.getElementById('btn-reset').disabled=!hasSteps;
+  const h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
 }
-
-// ══ ANIMATIONS ════════════════════════════════════
 const ss=document.createElement('style');
-ss.textContent='@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+ss.textContent='@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
 document.head.appendChild(ss);
-
 window.addEventListener('load',()=>{
-  runViz();
-  updateCtrlState();
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','light');
+  runViz();updateCtrlState();
 });
 </script>
 </body>
