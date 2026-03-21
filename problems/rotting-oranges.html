@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,267 +7,219 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#0e0e11; --bg2:#16161a; --bg3:#1e1e24; --bg4:#252530;
-    --border:rgba(255,255,255,0.09); --border2:rgba(255,255,255,0.18);
-    --text:#e8e6e0; --text2:#9a9890; --text3:#5a5856;
-    --accent:#7c6af7; --accent2:#a594f9;
-    --green:#3dd68c; --green-bg:rgba(61,214,140,0.12); --green-border:rgba(61,214,140,0.35);
-    --amber:#f5a623; --amber-bg:rgba(245,166,35,0.12); --amber-border:rgba(245,166,35,0.35);
-    --coral:#f07060; --coral-bg:rgba(240,112,96,0.12); --coral-border:rgba(240,112,96,0.35);
-    --purple-bg:rgba(124,106,247,0.12); --purple-border:rgba(124,106,247,0.35);
-    --blue:#4da6ff; --blue-bg:rgba(77,166,255,0.12); --blue-border:rgba(77,166,255,0.35);
-    --radius:10px; --radius-lg:16px;
-    --mono:'JetBrains Mono',monospace; --sans:'Syne',sans-serif;
-  }
-  @media(prefers-color-scheme:light){
-    :root{
-      --bg:#f0ede8; --bg2:#ffffff; --bg3:#e8e5e0; --bg4:#dddad5;
-      --border:rgba(0,0,0,0.09); --border2:rgba(0,0,0,0.18);
-      --text:#1a1a1e; --text2:#5a5856; --text3:#9a9890;
-      --accent:#5b48e8; --accent2:#7c6af7;
-      --green:#1a9e5c; --green-bg:rgba(26,158,92,0.1); --green-border:rgba(26,158,92,0.4);
-      --amber:#c47d0a; --amber-bg:rgba(196,125,10,0.1); --amber-border:rgba(196,125,10,0.4);
-      --coral:#d04030; --coral-bg:rgba(208,64,48,0.1); --coral-border:rgba(208,64,48,0.4);
-      --purple-bg:rgba(91,72,232,0.08); --purple-border:rgba(91,72,232,0.35);
-      --blue:#1a6abf; --blue-bg:rgba(26,106,191,0.1); --blue-border:rgba(26,106,191,0.35);
-    }
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6}
+/* ─── CSS VARIABLES (data-theme driven, like 3Sum) ─── */
+:root{
+  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
+  --accent:#7c6af7;--accent2:#a594f9;
+  --green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);
+  --coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);
+  --purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);
+  --radius:10px;--radius-lg:16px;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  /* cell colours for dark mode */
+  --cell-empty-bg:#1a1a22;--cell-empty-border:#2a2a35;
+  --cell-fresh-bg:#0e2a1a;--cell-fresh-border:#2a7a4a;
+  --cell-rot-bg:#2a100e;--cell-rot-border:#7a3028;
+  --cell-proc-bg:#2a1e08;
+  --cell-newrot-bg:#2a1208;
+  --cell-inq-bg:#1a1430;--cell-inq-border:#534ab7;
+  --grid-bg:#252530;--grid-border:rgba(255,255,255,0.18);
+}
+[data-theme="light"]{
+  --bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+  --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+  --accent:#5b48e8;--accent2:#7c6af7;
+  --green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);
+  --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);
+  --coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);
+  --purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);
+  --teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);
+  --cell-empty-bg:#eae8e4;--cell-empty-border:#d0cec8;
+  --cell-fresh-bg:#e8f7ef;--cell-fresh-border:#3a9e6a;
+  --cell-rot-bg:#fdf0ee;--cell-rot-border:#c04030;
+  --cell-proc-bg:#fef7e8;
+  --cell-newrot-bg:#fdecea;
+  --cell-inq-bg:#eeeafd;--cell-inq-border:#7c6af7;
+  --grid-bg:#dddad5;--grid-border:rgba(0,0,0,0.15);
+}
 
-  /* NAV */
-  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100}
-  .nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
-  .nav-logo span{color:var(--accent)}
-  .nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
-  .nav-back:hover{color:var(--accent)}
-  .nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-  .badge{padding:3px 10px;border-radius:20px;font-size:0.7rem;font-family:var(--mono);font-weight:500}
-  .b-lc{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
-  .b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
-  .b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
 
-  /* HERO */
-  .hero{padding:2.5rem 2rem 0;max-width:1100px;margin:0 auto}
-  .hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem}
-  .lc-number{font-size:0.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:0.5rem;font-weight:700}
-  .hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:0.8rem}
-  .hero-sub{font-size:0.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+/* ─── NAV (3Sum pattern) ─── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:10px;flex-wrap:wrap;transition:background .25s}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;transition:background .2s;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
 
-  /* TABS */
-  .tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
-  .tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
-  .tab{padding:0.7rem 1.2rem;font-size:0.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
-  .tab:hover{color:var(--text)}
-  .tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none;transition:color .2s}
+.breadcrumb a:hover{color:var(--accent)}
 
-  /* CONTENT */
-  .sections{max-width:1100px;margin:0 auto;padding:2rem}
-  .section{display:none}.section.active{display:block}
+/* ─── HERO ─── */
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:0.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:0.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:.6rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:640px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap;height:fit-content}
+.time-est span{color:var(--amber)}
 
-  /* PROBLEM */
-  .prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
-  @media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
-  .card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
-  .card h3{font-size:0.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:1rem}
-  .prose{font-size:0.88rem;color:var(--text2);line-height:1.8}
-  .prose strong{color:var(--text);font-weight:500}
-  .prose ul{padding-left:1.2rem;margin-top:0.5rem}.prose li{margin-bottom:0.3rem}
-  .ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:0.8rem;font-family:var(--mono);font-size:0.8rem;border-left:3px solid var(--border2)}
-  .ex-block .ex-label{font-size:0.68rem;color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px}
-  .ex-block .ex-io{color:var(--text2);margin-bottom:3px}
-  .ex-block .ex-io strong{color:var(--green)}
-  .ex-block .ex-note{color:var(--text3);font-size:0.75rem;margin-top:5px}
-  .constraints-list{display:flex;flex-direction:column;gap:6px}
-  .cr{display:flex;align-items:flex-start;gap:8px;font-size:0.8rem;font-family:var(--mono);color:var(--text2)}
-  .cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-lc{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
 
-  /* SOLUTION */
-  .sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
-  .cx-row{display:flex;gap:8px}
-  .cx{padding:4px 12px;border-radius:20px;font-size:0.73rem;font-family:var(--mono)}
-  .cx-t{background:var(--purple-bg);color:var(--accent2)}
-  .cx-s{background:var(--green-bg);color:var(--green)}
-  .code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
-  .code-block pre{padding:1.5rem;overflow-x:auto;font-family:var(--mono);font-size:0.8rem;line-height:1.9;color:var(--text2)}
-  .kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
-  .copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
-  .copy-btn:hover{color:var(--text);background:var(--bg4)}
+/* ─── TABS ─── */
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:1.5rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
 
-  /* EXPLANATION */
-  .exp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1rem;margin-bottom:1.5rem}
-  .ec{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem}
-  .ec-n{font-size:1.8rem;font-weight:800;color:var(--accent);font-family:var(--mono);line-height:1;margin-bottom:8px}
-  .ec-t{font-size:0.88rem;font-weight:700;margin-bottom:5px}
-  .ec-b{font-size:0.8rem;color:var(--text2);line-height:1.7}
-  .tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:0.86rem;color:var(--text2);line-height:1.7}
-  .tip strong{color:var(--accent2)}
+/* ─── SECTIONS ─── */
+.sections{max-width:1100px;margin:0 auto;padding:2rem}
+.section{display:none}.section.active{display:block}
 
-  /* ═══════════════════════════════════════════
-     ANIMATION — CRISP GRID CELLS
-  ═══════════════════════════════════════════ */
-  .anim-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem}
+/* ─── CARDS ─── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}
+.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
 
-  /* Grid container — clear separation from background */
-  .og-grid{display:inline-grid;gap:10px;padding:1.5rem;background:var(--bg4);border-radius:var(--radius-lg);border:1px solid var(--border2);margin-bottom:1.2rem}
+/* ─── SOLUTION ─── */
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}
+.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}
+.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
 
-  /* Base cell — strong background, strong border, no bleed */
-  .ogc{
-    width:72px; height:72px;
-    border-radius:12px;
-    display:flex; flex-direction:column;
-    align-items:center; justify-content:center;
-    gap:4px;
-    /* crisp solid border — no transparency bleed */
-    border:2px solid #333340;
-    background:#252530;
-    transition:background .3s, border-color .3s, transform .22s, box-shadow .22s;
-    position:relative;
-    flex-shrink:0;
-    user-select:none;
-  }
-  .ogc .cidx{position:absolute;top:4px;left:6px;font-size:9px;font-family:var(--mono);color:#5a5856}
-  .ogc .cval{font-size:1.4rem;line-height:1}
-  .ogc .cbadge{font-size:9px;font-family:var(--mono);font-weight:700;color:#5a5856;min-height:12px}
+/* ─── EXPLANATION (3Sum-style deep step cards) ─── */
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
 
-  /* FRESH orange — solid green tinted card */
-  .ogc.fresh{
-    background:#0e2a1a;
-    border-color:#2a7a4a;
-    box-shadow:inset 0 0 0 1px rgba(61,214,140,0.15);
-  }
-  .ogc.fresh .cbadge{color:#2a7a4a}
+/* ─── BUTTONS (exact 3Sum) ─── */
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}
+.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s;width:280px}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
 
-  /* ROTTEN orange — solid red tinted card */
-  .ogc.rotten{
-    background:#2a100e;
-    border-color:#7a3028;
-    box-shadow:inset 0 0 0 1px rgba(240,112,96,0.15);
-  }
-  .ogc.rotten .cbadge{color:#f07060}
+/* ─── GRID CELLS ─── */
+.og-grid{display:inline-grid;gap:10px;padding:1.5rem;background:var(--grid-bg);border-radius:var(--radius-lg);border:1px solid var(--grid-border);margin-bottom:1.2rem}
+.ogc{width:72px;height:72px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:2px solid var(--cell-empty-border);background:var(--cell-empty-bg);transition:background .25s,border-color .25s,transform .22s,box-shadow .22s;position:relative;flex-shrink:0;user-select:none}
+.ogc .cidx{position:absolute;top:4px;left:6px;font-size:9px;font-family:var(--mono);color:var(--text3)}
+.ogc .cval{font-size:1.4rem;line-height:1}
+.ogc .cbadge{font-size:9px;font-family:var(--mono);font-weight:700;color:var(--text3);min-height:12px}
+/* states */
+.ogc.fresh{background:var(--cell-fresh-bg);border-color:var(--cell-fresh-border)}
+.ogc.fresh .cbadge{color:var(--green)}
+.ogc.rotten{background:var(--cell-rot-bg);border-color:var(--cell-rot-border)}
+.ogc.rotten .cbadge{color:var(--coral)}
+.ogc.processing{background:var(--cell-proc-bg);border-color:var(--amber);border-width:2.5px;transform:scale(1.12) translateY(-4px);z-index:4;box-shadow:0 6px 20px rgba(245,166,35,0.28)}
+.ogc.processing .cbadge{color:var(--amber)}
+.ogc.newrot{background:var(--cell-newrot-bg);border-color:var(--coral);border-width:2.5px;transform:scale(1.1) translateY(-3px);z-index:3;box-shadow:0 4px 16px rgba(240,112,96,0.32)}
+.ogc.newrot .cbadge{color:var(--coral)}
+.ogc.inqueue{background:var(--cell-inq-bg);border-color:var(--cell-inq-border)}
+.ogc.inqueue .cbadge{color:var(--accent2)}
+.ogc.empty .cval{font-size:1rem}
+.ogc.isolated{background:var(--cell-rot-bg);border-color:var(--coral);animation:pulse-red 1.5s ease-in-out infinite}
+@keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(240,112,96,0)}50%{box-shadow:0 0 0 6px rgba(240,112,96,0.18)}}
 
-  /* PROCESSING — bright amber, lifted */
-  .ogc.processing{
-    background:#2a1e08;
-    border-color:var(--amber);
-    border-width:2.5px;
-    transform:scale(1.12) translateY(-4px);
-    z-index:4;
-    box-shadow:0 6px 20px rgba(245,166,35,0.25);
-  }
-  .ogc.processing .cbadge{color:var(--amber)}
+/* ─── SKIPPED neighbour states ─── */
+/* skip: empty — teal dashed (matches --teal accent, signals "checked but nothing here") */
+.ogc.skip-empty{
+  outline:2px dashed var(--teal);
+  outline-offset:3px;
+  box-shadow:0 0 8px rgba(45,212,191,0.15);
+}
+.ogc.skip-empty .cbadge{color:var(--teal) !important}
 
-  /* NEWLY ROTTING — coral, pulsing lift */
-  .ogc.newrot{
-    background:#2a1208;
-    border-color:var(--coral);
-    border-width:2.5px;
-    transform:scale(1.1) translateY(-3px);
-    z-index:3;
-    box-shadow:0 4px 16px rgba(240,112,96,0.3);
-  }
-  .ogc.newrot .cbadge{color:var(--coral)}
+/* skip: already rotten — accent purple dashed (signals "already visited/processed") */
+.ogc.skip-rotten{
+  outline:2px dashed var(--accent2);
+  outline-offset:3px;
+  box-shadow:0 0 8px rgba(124,106,247,0.18);
+}
+.ogc.skip-rotten .cbadge{color:var(--accent2) !important}
 
-  /* IN QUEUE — purple tint */
-  .ogc.inqueue{
-    background:#1a1430;
-    border-color:#534ab7;
-    border-width:2px;
-  }
-  .ogc.inqueue .cbadge{color:var(--accent2)}
 
-  /* EMPTY cell */
-  .ogc.empty{
-    background:#1a1a22;
-    border-color:#2a2a35;
-  }
-  .ogc.empty .cval{color:#3a3a48;font-size:1rem}
+/* ─── STATS / MSG / QUEUE ─── */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1.2rem 0}
+@media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--bg3);border-radius:var(--radius);padding:10px 14px;border:1px solid var(--border)}
+.stat-l{font-size:.65rem;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.stat-v{font-size:1.3rem;font-weight:700;font-family:var(--mono);color:var(--text)}
+.stat-v.ans-ok{color:var(--green)}
+.stat-v.ans-bad{color:var(--coral)}
+.msg-bar{font-family:var(--mono);font-size:.82rem;color:var(--text2);padding:10px 16px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent);margin:.8rem 0;min-height:40px;line-height:1.5}
+.queue-panel{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.2rem;margin-top:1rem}
+.qp-label{font-size:.68rem;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px}
+.q-items{display:flex;gap:6px;flex-wrap:wrap;min-height:28px;align-items:center}
+.qitem{padding:3px 9px;border-radius:6px;font-size:.72rem;font-family:var(--mono);border:1.5px solid var(--purple-border);background:var(--purple-bg);color:var(--accent2)}
+.qitem.front{border-color:var(--amber-border);background:var(--amber-bg);color:var(--amber)}
 
-  /* ISOLATED — red tint (unreachable) */
-  .ogc.isolated{
-    background:#2a0e0e;
-    border-color:#7a1f1f;
-    animation:pulse-red 1.5s ease-in-out infinite;
-  }
-  @keyframes pulse-red{0%,100%{box-shadow:0 0 0 0 rgba(240,112,96,0)}50%{box-shadow:0 0 0 6px rgba(240,112,96,0.15)}}
+/* ─── CODE HIGHLIGHT ─── */
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin:1rem 0}
+.code-hl pre{padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 6px;border-radius:4px;transition:background .2s;color:var(--text3)}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.7}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
 
-  /* Light mode overrides — important for cell clarity */
-  @media(prefers-color-scheme:light){
-    .og-grid{background:#e0ddd8;border-color:rgba(0,0,0,0.15)}
-    .ogc{background:#f5f3ef;border-color:#c8c5be}
-    .ogc.fresh{background:#e8f7ef;border-color:#3a9e6a}
-    .ogc.rotten{background:#fdf0ee;border-color:#c04030}
-    .ogc.processing{background:#fef7e8;border-color:#c47d0a;box-shadow:0 6px 20px rgba(196,125,10,0.2)}
-    .ogc.newrot{background:#fdecea;border-color:#d04030;box-shadow:0 4px 16px rgba(208,64,48,0.2)}
-    .ogc.inqueue{background:#eeeafd;border-color:#7c6af7}
-    .ogc.empty{background:#eae8e4;border-color:#d0cec8}
-    .ogc.empty .cval{color:#b0aead}
-    .ogc .cidx{color:#b0aead}
-    .ogc.fresh .cbadge{color:#1a9e5c}
-    .ogc.rotten .cbadge{color:#d04030}
-  }
+/* ─── LEGEND ─── */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem}
+.leg{display:flex;align-items:center;gap:7px;font-size:.73rem;font-family:var(--mono);color:var(--text2)}
+.ldot{width:16px;height:16px;border-radius:5px;border:2px solid;flex-shrink:0}
 
-  /* CONTROLS */
-  .anim-top{display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap;margin-bottom:1.2rem}
-  .inp-grp{display:flex;flex-direction:column;gap:4px}
-  .inp-lbl{font-size:0.68rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase}
-  .grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:8px 12px;font-family:var(--mono);font-size:0.8rem;color:var(--text);outline:none;width:300px;transition:border-color .2s}
-  .grid-inp:focus{border-color:var(--accent)}
-  .run-btn{padding:9px 22px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:0.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s;letter-spacing:0.04em;height:38px}
-  .run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
-  .sample-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.2rem}
-  .sbtn{padding:5px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:0.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
-  .sbtn:hover{border-color:var(--accent);color:var(--accent)}
+/* ─── RELATED ─── */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
 
-  /* LEGEND */
-  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1.2rem}
-  .leg{display:flex;align-items:center;gap:7px;font-size:0.73rem;font-family:var(--mono);color:var(--text2)}
-  .ldot{width:16px;height:16px;border-radius:5px;border:2px solid;flex-shrink:0}
-
-  /* STATS BAR */
-  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1.2rem 0}
-  @media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr)}}
-  .stat{background:var(--bg3);border-radius:var(--radius);padding:10px 14px;border:1px solid var(--border)}
-  .stat-l{font-size:0.65rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px}
-  .stat-v{font-size:1.3rem;font-weight:700;font-family:var(--mono);color:var(--text)}
-  .stat-v.ans-ok{color:var(--green)}
-  .stat-v.ans-bad{color:var(--coral)}
-
-  /* MSG BAR */
-  .msg-bar{font-family:var(--mono);font-size:0.82rem;color:var(--text2);padding:10px 16px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent);margin:0.8rem 0;min-height:40px;line-height:1.5}
-
-  /* CODE HIGHLIGHT */
-  .code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin:1rem 0}
-  .code-hl pre{padding:1.2rem;font-family:var(--mono);font-size:0.79rem;line-height:2.1}
-  .hl{display:block;padding:1px 6px;border-radius:4px;transition:background .2s;color:var(--text3)}
-  .hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3)}.hl .nm{color:#f78c6c}
-  .hl.active{background:rgba(124,106,247,0.2);color:var(--text)}
-
-  /* STEP CONTROLS */
-  .step-ctrls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:1rem}
-  .cbtn{padding:8px 16px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:0.78rem;color:var(--text2);cursor:pointer;transition:all .2s}
-  .cbtn:hover{border-color:var(--accent);color:var(--accent)}
-  .cbtn:disabled{opacity:0.3;cursor:not-allowed}
-  .cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
-  .cbtn.primary:hover{background:var(--accent2)}
-  .sp-wrap{display:flex;align-items:center;gap:8px;font-size:0.73rem;font-family:var(--mono);color:var(--text3);margin-left:auto}
-  .sp-wrap input{width:80px}
-
-  /* QUEUE DISPLAY */
-  .queue-panel{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1.2rem;margin-top:1rem}
-  .qp-label{font-size:0.68rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:8px}
-  .q-items{display:flex;gap:6px;flex-wrap:wrap;min-height:28px;align-items:center}
-  .qitem{padding:3px 9px;border-radius:6px;font-size:0.72rem;font-family:var(--mono);border:1.5px solid var(--purple-border);background:var(--purple-bg);color:var(--accent2)}
-  .qitem.front{border-color:var(--amber-border);background:var(--amber-bg);color:var(--amber)}
-
-  footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:0.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
-  footer a{color:var(--accent);text-decoration:none}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
 </style>
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
   <div class="nav-meta">
@@ -276,14 +228,29 @@
     <span class="badge b-topic">BFS</span>
     <span class="badge b-topic">Matrix</span>
   </div>
-  <a href="../index.html" class="nav-back">← All Problems</a>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark / light"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
 </nav>
 
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=bfs">BFS</a><span>/</span>
+  <span style="color:var(--text2)">Rotting Oranges</span>
+</div>
+
+<!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">Problem #04</div>
-  <div class="lc-number">LeetCode 994</div>
-  <h1>Rotting Oranges</h1>
-  <p class="hero-sub">Multi-source BFS. Every rotten orange spreads simultaneously — find the minimum minutes until no fresh orange remains, or return -1 if impossible.</p>
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #04</div>
+      <div class="lc-number">LeetCode 994</div>
+      <h1>Rotting Oranges</h1>
+      <p class="hero-sub">Multi-source BFS. Every rotten orange spreads simultaneously — find the minimum minutes until no fresh orange remains, or <strong style="color:var(--text)">return -1</strong> if impossible.</p>
+    </div>
+    <div class="time-est">⏱ <span>~12 min</span> to understand</div>
+  </div>
 </div>
 
 <div class="tabs-wrap">
@@ -297,97 +264,88 @@
 
 <div class="sections">
 
-  <!-- ── PROBLEM ─────────────────────────────────────── -->
-  <div class="section active" id="tab-problem">
-    <div class="prob-grid">
-      <div class="card">
-        <h3>Problem Statement</h3>
+<!-- ═══ PROBLEM ═══ -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">
+        You are given an <strong>m × n</strong> grid where each cell is:<br><br>
+        &nbsp;&nbsp;<strong>0</strong> — empty cell<br>
+        &nbsp;&nbsp;<strong>1</strong> — fresh orange<br>
+        &nbsp;&nbsp;<strong>2</strong> — rotten orange<br><br>
+        Every minute, any fresh orange <strong>4-directionally adjacent</strong> to a rotten orange becomes rotten.<br><br>
+        Return the <strong>minimum number of minutes</strong> until no fresh orange remains. Return <strong>-1</strong> if impossible.
+      </div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — output: 4</div>
+        <div class="ex-io"><strong>Input:</strong> [[2,1,1],[1,1,0],[0,1,1]]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">4</span></div>
+        <div class="ex-io" style="color:var(--text3)">Rotten spreads outward in 4 waves</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2 — output: -1</div>
+        <div class="ex-io"><strong>Input:</strong> [[2,1,1],[0,1,1],[1,0,1]]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--coral)">-1</span></div>
+        <div class="ex-io" style="color:var(--text3)">Bottom-left orange is isolated</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 3 — output: 0</div>
+        <div class="ex-io"><strong>Input:</strong> [[0,2]]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">0</span></div>
+        <div class="ex-io" style="color:var(--text3)">No fresh oranges at start</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>m == grid.length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>n == grid[i].length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ m, n ≤ 10</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>grid[i][j] ∈ {0, 1, 2}</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(m × n)</div>
+        <div style="color:var(--accent2)">Space: O(m × n)</div>
+        <div style="color:var(--text3);margin-top:6px;font-size:.72rem">Every cell is visited at most once</div>
+      </div>
+      <div style="margin-top:1.2rem">
+        <h3 style="margin-bottom:.8rem">Key observations</h3>
         <div class="prose">
-          You are given an <strong>m × n</strong> grid where each cell is one of:<br><br>
-          <ul>
-            <li><strong>0</strong> — empty cell</li>
-            <li><strong>1</strong> — fresh orange</li>
-            <li><strong>2</strong> — rotten orange</li>
-          </ul>
-          <br>
-          Every minute, any fresh orange that is <strong>4-directionally adjacent</strong> to a rotten orange becomes rotten.<br><br>
-          Return the <strong>minimum number of minutes</strong> until no fresh orange remains. Return <strong>-1</strong> if impossible.
-        </div>
-
-        <div class="ex-block">
-          <div class="ex-label">Example 1</div>
-          <div class="ex-io"><strong>Input:</strong>  [[2,1,1],[1,1,0],[0,1,1]]</div>
-          <div class="ex-io"><strong>Output: <strong style="color:var(--green)">4</strong></strong></div>
-          <div class="ex-note">Rotten spreads outward in 4 waves</div>
-        </div>
-
-        <div class="ex-block" style="margin-top:8px">
-          <div class="ex-label">Example 2</div>
-          <div class="ex-io"><strong>Input:</strong>  [[2,1,1],[0,1,1],[1,0,1]]</div>
-          <div class="ex-io"><strong>Output: <strong style="color:var(--coral)">-1</strong></strong></div>
-          <div class="ex-note">Bottom-left orange is isolated — never reachable</div>
-        </div>
-
-        <div class="ex-block" style="margin-top:8px">
-          <div class="ex-label">Example 3</div>
-          <div class="ex-io"><strong>Input:</strong>  [[0,2]]</div>
-          <div class="ex-io"><strong>Output: <strong style="color:var(--green)">0</strong></strong></div>
-          <div class="ex-note">No fresh oranges to begin with</div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Constraints</h3>
-        <div class="constraints-list">
-          <div class="cr"><div class="cr-dot"></div><span>m == grid.length</span></div>
-          <div class="cr"><div class="cr-dot"></div><span>n == grid[i].length</span></div>
-          <div class="cr"><div class="cr-dot"></div><span>1 ≤ m, n ≤ 10</span></div>
-          <div class="cr"><div class="cr-dot"></div><span>grid[i][j] is 0, 1, or 2</span></div>
-        </div>
-        <div style="margin-top:1.5rem">
-          <h3 style="margin-bottom:0.8rem">Key observations</h3>
-          <div class="prose">
-            <ul>
-              <li>Multiple rotten oranges spread <strong>simultaneously</strong> → multi-source BFS</li>
-              <li>Enqueue <strong>all</strong> rotten cells at minute 0</li>
-              <li>Process level by level — each level = 1 minute</li>
-              <li>After BFS, if <strong>fresh > 0</strong> → return -1</li>
-              <li>No visited set needed — recoloring prevents revisit</li>
-            </ul>
-          </div>
+          Multiple rotten oranges spread <strong>simultaneously</strong> → multi-source BFS.<br><br>
+          Enqueue <strong>all</strong> initial rotten cells at minute 0.<br><br>
+          After BFS, if <strong>fresh > 0</strong> → isolated orange → return -1.
         </div>
       </div>
     </div>
-    <button class="cbtn primary" onclick="switchTab('solution', document.querySelectorAll('.tab')[1])" style="margin-top:0.5rem">See Solution →</button>
   </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
 
-  <!-- ── SOLUTION ─────────────────────────────────────── -->
-  <div class="section" id="tab-solution">
-    <div class="sol-header">
-      <span style="font-size:0.95rem;font-weight:700">Multi-Source BFS</span>
-      <div class="cx-row">
-        <span class="cx cx-t">Time O(m × n)</span>
-        <span class="cx cx-s">Space O(m × n)</span>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
-      <button class="copy-btn" onclick="copyCode()">Copy</button>
-    </div>
-    <div class="code-block">
-<pre id="sol-code"><span class="kw">from</span> collections <span class="kw">import</span> deque
+<!-- ═══ SOLUTION ═══ -->
+<div class="section" id="tab-solution">
+  <div class="sol-header">
+    <span style="font-size:.95rem;font-weight:700">Multi-Source BFS</span>
+    <div class="cx-row"><span class="cx cx-t">O(m × n)</span><span class="cx cx-s">O(m × n) space</span></div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px">
+    <button class="copy-btn" onclick="copyCode()">Copy</button>
+  </div>
+  <div class="code-block"><pre id="sol-code"><span class="kw">from</span> collections <span class="kw">import</span> deque
 
 <span class="kw">def</span> <span class="fn">orangesRotting</span>(grid):
     rows, cols = len(grid), len(grid[<span class="nm">0</span>])
     q = deque()
     fresh = <span class="nm">0</span>
 
-    <span class="cm"># Step 1: seed queue with all rotten, count fresh</span>
+    <span class="cm"># Step 1: seed queue with ALL rotten, count fresh</span>
     <span class="kw">for</span> r <span class="kw">in</span> range(rows):
         <span class="kw">for</span> c <span class="kw">in</span> range(cols):
             <span class="kw">if</span> grid[r][c] == <span class="nm">2</span>: q.append((r, c, <span class="nm">0</span>))  <span class="cm"># (row, col, minute)</span>
             <span class="kw">if</span> grid[r][c] == <span class="nm">1</span>: fresh += <span class="nm">1</span>
 
-    <span class="cm"># Step 2: early exit</span>
+    <span class="cm"># Step 2: early exit — no fresh oranges</span>
     <span class="kw">if</span> fresh == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
 
     <span class="cm"># Step 3: multi-source BFS</span>
@@ -401,340 +359,557 @@
             <span class="kw">if</span> (<span class="nm">0</span> &lt;= nr &lt; rows <span class="kw">and</span>
                 <span class="nm">0</span> &lt;= nc &lt; cols <span class="kw">and</span>
                 grid[nr][nc] == <span class="nm">1</span>):
-                grid[nr][nc] = <span class="nm">2</span>           <span class="cm"># rot it</span>
+                grid[nr][nc] = <span class="nm">2</span>           <span class="cm"># rot it immediately</span>
                 fresh -= <span class="nm">1</span>
                 minutes = t + <span class="nm">1</span>
                 q.append((nr, nc, t + <span class="nm">1</span>))
 
-    <span class="kw">return</span> minutes <span class="kw">if</span> fresh == <span class="nm">0</span> <span class="kw">else</span> <span class="nm">-1</span></pre>
-    </div>
-  </div>
-
-  <!-- ── EXPLANATION ─────────────────────────────────────── -->
-  <div class="section" id="tab-explanation">
-    <div class="exp-grid">
-      <div class="ec">
-        <div class="ec-n">01</div>
-        <div class="ec-t">Why multi-source BFS?</div>
-        <div class="ec-b">All rotten oranges spread at the same time each minute. Starting BFS from one rotten cell at a time would give wrong answers. Enqueue all initial rotten cells at minute 0 so they all spread in parallel.</div>
-      </div>
-      <div class="ec">
-        <div class="ec-n">02</div>
-        <div class="ec-t">Level = 1 minute</div>
-        <div class="ec-b">Each BFS "level" represents one minute of spreading. Cells enqueued with timestamp t rot at minute t. Their neighbours rot at t+1. The maximum t across all rotted cells is the answer.</div>
-      </div>
-      <div class="ec">
-        <div class="ec-n">03</div>
-        <div class="ec-t">No visited set needed</div>
-        <div class="ec-b">We recolor fresh → rotten (1 → 2) immediately on enqueue. A rotten cell will never match grid[nr][nc] == 1 again, so it can never be re-enqueued. The grid itself is the visited set.</div>
-      </div>
-      <div class="ec">
-        <div class="ec-n">04</div>
-        <div class="ec-t">The -1 case</div>
-        <div class="ec-b">After BFS drains, any remaining fresh cells are unreachable — surrounded entirely by empty cells. Check fresh > 0 after the loop and return -1.</div>
-      </div>
-    </div>
-    <div class="tip">
-      <strong>Key insight:</strong> The answer is the BFS distance from the nearest initial rotten orange to the farthest reachable fresh orange. Multi-source BFS computes all these shortest distances in a single O(m×n) pass — the same idea as "distance transform" in image processing.
-    </div>
-  </div>
-
-  <!-- ── ANIMATION ─────────────────────────────────────── -->
-  <div class="section" id="tab-animation">
-    <div class="anim-top">
-      <div class="inp-grp">
-        <span class="inp-lbl">Grid rows (semicolon-separated)</span>
-        <input class="grid-inp" id="grid-inp" type="text" value="2,1,1;1,1,0;0,1,1" placeholder="e.g. 2,1,1;1,1,0;0,1,1">
-      </div>
-      <button class="run-btn" onclick="initAnim()">Run</button>
-    </div>
-
-    <div style="margin-bottom:1rem">
-      <span style="font-size:0.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.06em;margin-right:8px">Samples:</span>
-      <div class="sample-row" style="display:inline-flex;margin-bottom:0">
-        <button class="sbtn" onclick="loadSample('2,1,1;1,1,0;0,1,1')">Ex 1 → 4</button>
-        <button class="sbtn" onclick="loadSample('2,1,1;0,1,1;1,0,1')">Ex 2 → -1</button>
-        <button class="sbtn" onclick="loadSample('0,2')">Ex 3 → 0</button>
-        <button class="sbtn" onclick="loadSample('1,2,1,1,1;0,0,1,0,1;0,0,1,0,0')">Wide</button>
-        <button class="sbtn" onclick="loadSample('2,2;1,1')">2×2</button>
-      </div>
-    </div>
-
-    <div class="legend">
-      <div class="leg"><div class="ldot" style="background:#2a100e;border-color:var(--coral)"></div>rotten 🍊</div>
-      <div class="leg"><div class="ldot" style="background:#0e2a1a;border-color:#2a7a4a"></div>fresh 🍊</div>
-      <div class="leg"><div class="ldot" style="background:#2a1e08;border-color:var(--amber)"></div>processing</div>
-      <div class="leg"><div class="ldot" style="background:#2a1208;border-color:var(--coral)"></div>newly rotting</div>
-      <div class="leg"><div class="ldot" style="background:#1a1a22;border-color:#2a2a35"></div>empty □</div>
-    </div>
-
-    <div class="anim-wrap">
-      <!-- GRID -->
-      <div id="og-grid-wrap" style="overflow-x:auto;padding-bottom:4px">
-        <div class="og-grid" id="og-grid"></div>
-      </div>
-
-      <!-- STATS -->
-      <div class="stats-bar">
-        <div class="stat"><div class="stat-l">Minute</div><div class="stat-v" id="sv-min">—</div></div>
-        <div class="stat"><div class="stat-l">Fresh left</div><div class="stat-v" id="sv-fresh">—</div></div>
-        <div class="stat"><div class="stat-l">Processing</div><div class="stat-v" id="sv-cur" style="font-size:0.95rem;padding-top:3px">—</div></div>
-        <div class="stat"><div class="stat-l">Answer</div><div class="stat-v" id="sv-ans">—</div></div>
-      </div>
-
-      <!-- MSG -->
-      <div class="msg-bar" id="anim-msg">Configure input above and press Run</div>
-
-      <!-- QUEUE -->
-      <div class="queue-panel">
-        <div class="qp-label">BFS Queue (front → back)</div>
-        <div class="q-items" id="q-items"></div>
-      </div>
-
-      <!-- CODE HIGHLIGHT -->
-      <div class="code-hl">
-        <pre><span class="hl" id="cl0"><span class="kw">for</span> each cell: <span class="kw">if</span> rotten → enqueue;  count fresh</span>
-<span class="hl" id="cl1"><span class="kw">if</span> fresh == 0: <span class="kw">return</span> 0</span>
-<span class="hl" id="cl2"><span class="kw">while</span> q:  r,c,t = q.<span class="fn">popleft</span>()</span>
-<span class="hl" id="cl3">  <span class="kw">for</span> dr,dc <span class="kw">in</span> dirs:  check neighbour</span>
-<span class="hl" id="cl4">    <span class="kw">if</span> in_bounds <span class="kw">and</span> fresh: rot it, fresh−=1, enqueue</span>
-<span class="hl" id="cl5"><span class="kw">return</span> minutes <span class="kw">if</span> fresh==0 <span class="kw">else</span> -1</span></pre>
-      </div>
-
-      <!-- STEP CONTROLS -->
-      <div class="step-ctrls">
-        <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
-        <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
-        <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>Auto-play</button>
-        <button class="cbtn" id="btn-reset" onclick="resetAnim()" disabled>Reset</button>
-        <div class="sp-wrap">Speed <input type="range" min="1" max="5" value="3" step="1" id="speed-sl" style="width:75px"></div>
-      </div>
-    </div>
-  </div>
-
+    <span class="kw">return</span> minutes <span class="kw">if</span> fresh == <span class="nm">0</span> <span class="kw">else</span> <span class="nm">-1</span></pre></div>
 </div>
 
-<footer>
-  <p>AlgoAnimate · <a href="../index.html">← All Problems</a> · Pure HTML/CSS/JS</p>
-</footer>
+<!-- ═══ EXPLANATION (3Sum-style deep step cards) ═══ -->
+<div class="section" id="tab-explanation">
+
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
+    <span>💡</span>
+    <span><strong style="color:var(--text)">BFS level = 1 minute.</strong> Enqueue all rotten cells at t=0 so they spread in lockstep — that's what "simultaneously" means in code.</span>
+  </div>
+
+  <!-- STEP 1 -->
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — Why multi-source BFS?</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      The problem says rotten oranges spread <strong>simultaneously</strong>. If you ran single-source BFS from one rotten orange, then another, you'd compute the wrong times — later sources might reach a cell earlier than your first BFS said.
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">❌ Wrong — sequential BFS</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">Run BFS from source A, then from source B.<br>Cell X might be found at t=3 from A, but<br>t=1 from B — you'd record the wrong time.</div>
+      </div>
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✅ Correct — multi-source BFS</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">Enqueue ALL sources at t=0 together.<br>BFS naturally finds the shortest distance<br>from the nearest rotten source to each cell.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      <span style="color:var(--accent2)">Think of it like:</span> adding a virtual super-source node connected to all initial rotten cells at cost 0. BFS from the super-source gives the correct minimum-time spreading.
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — BFS level = 1 minute</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      Each BFS "level" represents exactly one minute of real-world time. We store the timestamp <code>t</code> directly in the queue entry <code>(row, col, t)</code>.
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.1rem;font-family:var(--mono);font-size:.8rem;line-height:2.2;margin-bottom:1rem">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">How timestamps flow through the queue</div>
+      <div><span style="color:var(--coral)">t=0</span>&nbsp; initial rotten cells → enqueued at minute 0</div>
+      <div><span style="color:var(--amber)">t=1</span>&nbsp; their fresh neighbours → rot at minute 1</div>
+      <div><span style="color:var(--green)">t=2</span>&nbsp; neighbours of those → rot at minute 2</div>
+      <div style="color:var(--text3);font-size:.72rem;margin-top:4px">The final answer = max t across all cells that rotted</div>
+    </div>
+    <div class="prose">
+      <code>minutes = t + 1</code> is updated every time a fresh orange rots. After the loop, <code>minutes</code> holds the last time any orange rotted — which is the answer.
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — No visited set needed (the grid IS the visited set)</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      Standard BFS needs a visited set to prevent revisiting. Here we get that for free:
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:1rem">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">The trick</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">We immediately set <code>grid[nr][nc] = 2</code> on enqueue — before it's even processed. So the check <code>grid[nr][nc] == 1</code> will never be true again for that cell.</div>
+      </div>
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Why it's safe</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">Rotten cells (2) and empty cells (0) are never enqueued. Only fresh (1) → rotten (2) transitions happen. Recoloring on enqueue = O(1) visited tracking.</div>
+      </div>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:1.9;color:var(--text2)">
+      <span style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Compare to standard BFS visited pattern</span>
+      Standard BFS: <span style="color:var(--amber)">visited.add(node)</span> before enqueue<br>
+      This problem: <span style="color:var(--green)">grid[nr][nc] = 2</span> before enqueue — same effect, zero overhead
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — The -1 case: isolated oranges</h3>
+    <div class="prose" style="margin-bottom:1rem">
+      After BFS drains completely, check if <code>fresh > 0</code>. If yes, those oranges are completely surrounded by empty cells — no rotten orange can ever reach them.
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto;margin-bottom:.5rem">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Example that returns -1: [[2,1,1],[0,1,1],[1,0,1]]</div>
+      <div><span style="color:var(--accent2)">Rotten:</span> (0,0) only</div>
+      <div><span style="color:var(--amber)">Reachable fresh:</span> (0,1),(0,2),(1,1),(1,2) → all rot by t=4</div>
+      <div><span style="color:var(--coral)">Unreachable:</span> (2,0) — blocked by empty cell (1,0) and (2,1)</div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:8px;color:var(--coral)">fresh = 1 after BFS → return -1</div>
+    </div>
+    <div class="prose">Always <strong>count fresh before BFS</strong> and decrement on every rotting — final check is <code>O(1)</code>, not a second grid scan.</div>
+  </div>
+
+  <!-- STEP 5 — edge cases -->
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 — Edge cases that trip people up</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">❌ No fresh from the start</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">If <code>fresh == 0</code> initially, return 0 immediately — even if the queue is empty. Don't fall through to the BFS loop.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">❌ No rotten oranges</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Queue is empty, BFS loop never runs, <code>minutes = 0</code>. If <code>fresh > 0</code> we correctly return -1. The pattern handles it without special casing.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">❌ minutes stays 0</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7"><code>minutes</code> is only updated when a fresh orange rots. If all fresh oranges were already adjacent to rotten at t=0, minutes correctly stays 0 after the early-exit check.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">❌ Mutating input grid</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">This solution mutates the grid. If the problem requires non-destructive, deep-copy the grid first or use a separate visited array.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>The mental model:</strong> Think of rotting as water flooding — all sources release water simultaneously at t=0. The answer is how many seconds until the last dry cell gets wet (or -1 if some cells are in sealed pockets). Multi-source BFS is exactly "flood fill from multiple starting points at the same time."
+  </div>
+</div>
+
+<!-- ═══ ANIMATION ═══ -->
+<div class="section" id="tab-animation">
+
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
+    <span>💡</span>
+    <span><strong style="color:var(--text)">Multi-source BFS = flood fill from all rotten oranges simultaneously.</strong> Watch the queue grow level by level.</span>
+  </div>
+
+  <!-- INPUT -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.6rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Grid rows (semicolon-separated)</span>
+      <input class="grid-inp" id="grid-inp" type="text" value="2,1,1;1,1,0;0,1,1">
+    </div>
+    <button class="run-btn" onclick="initAnim()">▶ Load</button>
+  </div>
+
+  <!-- SAMPLES -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadSample('2,1,1;1,1,0;0,1,1')">Ex 1 → 4</button>
+    <button class="sbtn" onclick="loadSample('2,1,1;0,1,1;1,0,1')">Ex 2 → -1</button>
+    <button class="sbtn" onclick="loadSample('0,2')">Ex 3 → 0</button>
+    <button class="sbtn" onclick="loadSample('1,2,1,1,1;0,0,1,0,1;0,0,1,0,0')">Wide</button>
+    <button class="sbtn" onclick="loadSample('2,2;1,1')">2×2</button>
+  </div>
+
+  <!-- ═══ CONTROL BAR — exact 3Sum pattern ═══ -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetAnim()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" step="1" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      &nbsp;<span style="color:var(--text3);font-size:.68rem">
+        <span style="display:inline-flex;align-items:center;justify-content:center;padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="display:inline-flex;align-items:center;justify-content:center;padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="leg"><div class="ldot" style="background:var(--cell-rot-bg);border-color:var(--coral)"></div>rotten 🦠</div>
+    <div class="leg"><div class="ldot" style="background:var(--cell-fresh-bg);border-color:var(--cell-fresh-border)"></div>fresh 🍊</div>
+    <div class="leg"><div class="ldot" style="background:var(--cell-proc-bg);border-color:var(--amber)"></div>processing</div>
+    <div class="leg"><div class="ldot" style="background:var(--cell-newrot-bg);border-color:var(--coral)"></div>newly rotting</div>
+    <div class="leg"><div class="ldot" style="background:var(--cell-inq-bg);border-color:var(--cell-inq-border)"></div>in queue</div>
+    <div class="leg"><div class="ldot" style="background:var(--cell-empty-bg);border-color:var(--cell-empty-border)"></div>empty □</div>
+    <div class="leg"><div class="ldot" style="background:var(--teal-bg);border:2px dashed var(--teal)"></div>skip: empty</div>
+    <div class="leg"><div class="ldot" style="background:var(--purple-bg);border:2px dashed var(--accent2)"></div>skip: rotten</div>
+  </div>
+
+  <!-- GRID -->
+  <div style="overflow-x:auto;padding-bottom:4px">
+    <div class="og-grid" id="og-grid"></div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat"><div class="stat-l">Minute</div><div class="stat-v" id="sv-min">—</div></div>
+    <div class="stat"><div class="stat-l">Fresh left</div><div class="stat-v" id="sv-fresh">—</div></div>
+    <div class="stat"><div class="stat-l">Processing</div><div class="stat-v" id="sv-cur" style="font-size:.95rem;padding-top:3px">—</div></div>
+    <div class="stat"><div class="stat-l">Answer</div><div class="stat-v" id="sv-ans">—</div></div>
+  </div>
+
+  <!-- MSG -->
+  <div class="msg-bar" id="anim-msg">Set input above and press ▶ Load</div>
+
+  <!-- QUEUE -->
+  <div class="queue-panel">
+    <div class="qp-label">BFS Queue (front → back)</div>
+    <div class="q-items" id="q-items"></div>
+  </div>
+
+  <!-- CODE HIGHLIGHT -->
+  <div class="code-hl">
+    <pre>
+<span class="hl" id="cl0"><span class="kw">for</span> each cell: <span class="kw">if</span> rotten → enqueue(t=0);  count fresh</span>
+<span class="hl" id="cl1"><span class="kw">if</span> fresh == 0: <span class="kw">return</span> 0  <span class="cm"># no fresh → done immediately</span></span>
+<span class="hl" id="cl2"><span class="kw">while</span> q: &nbsp;r,c,t = q.<span class="fn">popleft</span>()</span>
+<span class="hl" id="cl3">  <span class="kw">for</span> dr,dc <span class="kw">in</span> dirs: &nbsp;nr,nc = r+dr, c+dc</span>
+<span class="hl" id="cl4">    <span class="kw">if</span> in_bounds <span class="kw">and</span> fresh: grid[nr][nc]=2; fresh−=1; enqueue(t+1)</span>
+<span class="hl" id="cl5"><span class="kw">return</span> minutes <span class="kw">if</span> fresh==0 <span class="kw">else</span> -1</span></pre>
+  </div>
+
+  <!-- NOTE BOX -->
+  <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.6;margin-top:.6rem">
+    Set input and press ▶ Load
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<!-- RELATED -->
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems — the BFS family</div>
+  <div class="related-grid">
+    <a class="rel-card" href="number-of-islands.html">
+      <div class="rel-top"><span class="rel-num">LC #200 · Medium</span><span class="badge b-topic">BFS/DFS</span></div>
+      <div class="rel-title">Number of Islands</div>
+      <div class="rel-desc">Count connected components in a grid. The classic flood-fill problem that underpins Rotting Oranges.</div>
+      <span class="rel-arrow">←</span>
+    </a>
+    <a class="rel-card" href="walls-and-gates.html">
+      <div class="rel-top"><span class="rel-num">LC #286 · Medium</span><span class="badge b-topic">BFS</span></div>
+      <div class="rel-title">Walls and Gates</div>
+      <div class="rel-desc">Fill each empty room with its distance to nearest gate. Same multi-source BFS pattern — different domain.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="01-matrix.html">
+      <div class="rel-top"><span class="rel-num">LC #542 · Medium</span><span class="badge b-topic">BFS</span></div>
+      <div class="rel-title">01 Matrix</div>
+      <div class="rel-desc">Distance of each cell from nearest 0. Multi-source BFS from all zeros — identical skeleton to this problem.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #994 Rotting Oranges</p></footer>
 
 <script>
-// ── TAB SWITCHING ─────────────────────────────────────────
-function switchTab(name, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
+/* ─── THEME (3Sum pattern) ─── */
+function toggleTheme(){
+  const h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+
+/* ─── TABS ─── */
+function switchTab(name,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
 }
 
-// ── COPY ──────────────────────────────────────────────────
-function copyCode() {
+/* ─── COPY ─── */
+function copyCode(){
   navigator.clipboard.writeText(document.getElementById('sol-code').innerText);
-  event.target.textContent = 'Copied!';
-  setTimeout(() => event.target.textContent = 'Copy', 1500);
+  event.target.textContent='Copied!';
+  setTimeout(()=>event.target.textContent='Copy',1500);
 }
 
-// ── PARSE GRID INPUT ─────────────────────────────────────
-function parseGrid(str) {
-  return str.trim().split(';').map(row =>
-    row.split(',').map(v => parseInt(v.trim())).filter(v => !isNaN(v))
-  ).filter(r => r.length > 0);
+/* ─── SPEED ─── */
+const SPDS=[900,580,320,180,75];
+const SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+const spSlider=document.getElementById('speed-sl');
+spSlider.addEventListener('input',()=>document.getElementById('speed-lbl').textContent=SPNAMES[spSlider.value-1]);
+
+/* ─── KEYBOARD (3Sum pattern) ─── */
+document.addEventListener('keydown',e=>{
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+/* ─── STATE ─── */
+let steps=[],cur=0,timer=null,isPlaying=false;
+let ROWS=0,COLS=0;
+
+/* ─── PARSE ─── */
+function parseGrid(str){
+  return str.trim().split(';').map(row=>
+    row.split(',').map(v=>parseInt(v.trim())).filter(v=>!isNaN(v))
+  ).filter(r=>r.length>0);
 }
 
-// ── LOAD SAMPLE ───────────────────────────────────────────
-function loadSample(str) {
-  document.getElementById('grid-inp').value = str;
+function loadSample(str){
+  document.getElementById('grid-inp').value=str;
   initAnim();
 }
 
-// ═══════════════════════════════════════════════════════
-// STEP BUILDER
-// ═══════════════════════════════════════════════════════
-let steps = [], cur = 0, timer = null;
-let ROWS = 0, COLS = 0;
+/* ─── BUILD STEPS ─── */
+function buildSteps(origGrid){
+  const R=origGrid.length,C=origGrid[0].length;
+  const g=origGrid.map(r=>[...r]);
+  const minAt={};
+  const stps=[];
+  let fresh=0;
+  const q=[];
 
-function buildSteps(origGrid) {
-  const R = origGrid.length, C = origGrid[0].length;
-  const g = origGrid.map(r => [...r]);
-  const minAt = {}; // key -> minute rotted
-  const stps = [];
-  let fresh = 0;
-  const q = [];
-
-  // init
-  for (let r = 0; r < R; r++) for (let c = 0; c < C; c++) {
-    if (g[r][c] === 2) { q.push([r, c, 0]); minAt[`${r},${c}`] = 0; }
-    if (g[r][c] === 1) fresh++;
+  for(let r=0;r<R;r++)for(let c=0;c<C;c++){
+    if(g[r][c]===2){q.push([r,c,0]);minAt[`${r},${c}`]=0;}
+    if(g[r][c]===1)fresh++;
   }
-  stps.push({ cl:0, q:[...q.map(x=>[...x])], g:g.map(r=>[...r]), cur:null, newly:null, fresh, minAt:{...minAt}, msg:`Init: found ${q.length} rotten source(s), ${fresh} fresh orange(s)` });
+  stps.push({cl:0,q:[...q.map(x=>[...x])],g:g.map(r=>[...r]),cur:null,newly:null,
+    skipped:[],oob:null,fresh,minAt:{...minAt},
+    msg:`Init: found ${q.length} rotten source(s) and ${fresh} fresh orange(s). All rotten enqueued at t=0.`});
 
-  if (fresh === 0) {
-    stps.push({ cl:1, q:[], g:g.map(r=>[...r]), cur:null, newly:null, fresh:0, minAt:{...minAt}, msg:'No fresh oranges → return 0 immediately', ans:0 });
+  if(fresh===0){
+    stps.push({cl:1,q:[],g:g.map(r=>[...r]),cur:null,newly:null,
+      skipped:[],oob:null,fresh:0,minAt:{...minAt},
+      msg:'No fresh oranges at start → return 0 immediately.',ans:0});
     return stps;
   }
-  stps.push({ cl:2, q:[...q.map(x=>[...x])], g:g.map(r=>[...r]), cur:null, newly:null, fresh, minAt:{...minAt}, msg:`minutes = 0 — begin BFS` });
+  stps.push({cl:2,q:[...q.map(x=>[...x])],g:g.map(r=>[...r]),cur:null,newly:null,
+    skipped:[],oob:null,fresh,minAt:{...minAt},
+    msg:`minutes = 0 — starting BFS with ${q.length} source(s) in queue.`});
 
-  let minutes = 0;
-  const dirs = [[1,0],[-1,0],[0,1],[0,-1]];
-  let qi = 0;
+  let minutes=0;
+  // [dr,dc,label]
+  const dirs=[[1,0,'↓ down'],[-1,0,'↑ up'],[0,1,'→ right'],[0,-1,'← left']];
+  let qi=0;
 
-  while (qi < q.length) {
-    const [row, col, t] = q[qi++];
-    stps.push({ cl:2, q:q.slice(qi).map(x=>[...x]), g:g.map(r=>[...r]), cur:[row,col], newly:null, fresh, minAt:{...minAt}, msg:`popleft → (${row},${col}) at minute ${t}` });
-    stps.push({ cl:3, q:q.slice(qi).map(x=>[...x]), g:g.map(r=>[...r]), cur:[row,col], newly:null, fresh, minAt:{...minAt}, msg:`Check 4 neighbours of (${row},${col})` });
+  while(qi<q.length){
+    const [row,col,t]=q[qi++];
+    stps.push({cl:2,q:q.slice(qi).map(x=>[...x]),g:g.map(r=>[...r]),cur:[row,col],newly:null,
+      skipped:[],oob:null,fresh,minAt:{...minAt},
+      msg:`popleft → (${row},${col}) at t=${t}. Queue has ${q.length-qi} item(s) remaining.`});
 
-    for (const [dr, dc] of dirs) {
-      const nr = row+dr, nc = col+dc;
-      if (nr>=0&&nr<R&&nc>=0&&nc<C&&g[nr][nc]===1) {
-        g[nr][nc] = 2;
-        fresh--;
-        minutes = t + 1;
-        minAt[`${nr},${nc}`] = t + 1;
-        q.push([nr, nc, t+1]);
-        stps.push({ cl:4, q:q.slice(qi).map(x=>[...x]), g:g.map(r=>[...r]), cur:[row,col], newly:[nr,nc], fresh, minAt:{...minAt}, msg:`(${nr},${nc}) rots at minute ${t+1}. Fresh left: ${fresh}` });
+    // check all 4 neighbours one at a time — each step only shows THIS direction's skip
+    for(const[dr,dc,dlabel]of dirs){
+      const nr=row+dr,nc=col+dc;
+
+      if(nr<0||nr>=R||nc<0||nc>=C){
+        // out of bounds — no cell to highlight, just msg
+        stps.push({cl:3,q:q.slice(qi).map(x=>[...x]),g:g.map(r=>[...r]),cur:[row,col],newly:null,
+          skipped:[],oob:null,fresh,minAt:{...minAt},
+          msg:`${dlabel} from (${row},${col}) → out of bounds — skip.`});
+        continue;
       }
+
+      const val=g[nr][nc];
+      if(val===0){
+        // show only this one cell with skip-empty, cleared next step
+        stps.push({cl:3,q:q.slice(qi).map(x=>[...x]),g:g.map(r=>[...r]),cur:[row,col],newly:null,
+          skipped:[{r:nr,c:nc,reason:'empty'}],oob:null,fresh,minAt:{...minAt},
+          msg:`${dlabel} → (${nr},${nc}) is empty — no orange here, skip.`});
+        continue;
+      }
+      if(val===2){
+        // show only this one cell with skip-rotten, cleared next step
+        stps.push({cl:3,q:q.slice(qi).map(x=>[...x]),g:g.map(r=>[...r]),cur:[row,col],newly:null,
+          skipped:[{r:nr,c:nc,reason:'rotten'}],oob:null,fresh,minAt:{...minAt},
+          msg:`${dlabel} → (${nr},${nc}) is already rotten — skip.`});
+        continue;
+      }
+
+      // fresh → rot it
+      g[nr][nc]=2;
+      fresh--;
+      minutes=t+1;
+      minAt[`${nr},${nc}`]=t+1;
+      q.push([nr,nc,t+1]);
+      stps.push({cl:4,q:q.slice(qi).map(x=>[...x]),g:g.map(r=>[...r]),cur:[row,col],newly:[nr,nc],
+        skipped:[],oob:null,fresh,minAt:{...minAt},
+        msg:`${dlabel} → (${nr},${nc}) is fresh 🍊 — rots at t=${t+1}. Fresh remaining: ${fresh}.`});
     }
   }
 
-  const ans = fresh === 0 ? minutes : -1;
-  stps.push({ cl:5, q:[], g:g.map(r=>[...r]), cur:null, newly:null, fresh, minAt:{...minAt}, msg: ans === -1 ? `${fresh} fresh orange(s) unreachable → return -1` : `All oranges rotted → return ${ans}`, ans });
+  const ans=fresh===0?minutes:-1;
+  stps.push({cl:5,q:[],g:g.map(r=>[...r]),cur:null,newly:null,
+    skipped:[],oob:null,fresh,minAt:{...minAt},
+    msg:ans===-1?`BFS complete. ${fresh} fresh orange(s) unreachable → return -1.`:`BFS complete. All oranges rotted → return ${ans}.`,
+    ans});
   return stps;
 }
 
-// ═══════════════════════════════════════════════════════
-// RENDER
-// ═══════════════════════════════════════════════════════
-function initAnim() {
-  if (timer) { clearInterval(timer); timer = null; }
-  const raw = document.getElementById('grid-inp').value;
-  const grid = parseGrid(raw);
-  if (!grid.length || !grid[0].length) return;
-  ROWS = grid.length; COLS = grid[0].length;
+/* ─── RENDER ─── */
+function initAnim(){
+  stopAuto();
+  const raw=document.getElementById('grid-inp').value;
+  const grid=parseGrid(raw);
+  if(!grid.length||!grid[0].length)return;
+  ROWS=grid.length;COLS=grid[0].length;
 
-  // rebuild DOM cells
-  const wrap = document.getElementById('og-grid');
-  wrap.style.gridTemplateColumns = `repeat(${COLS}, 72px)`;
-  wrap.innerHTML = '';
-  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-    const cell = document.createElement('div');
-    cell.className = 'ogc';
-    cell.id = `cell-${r}-${c}`;
-    cell.innerHTML = `<span class="cidx">${r},${c}</span><span class="cval"></span><span class="cbadge"></span>`;
+  const wrap=document.getElementById('og-grid');
+  wrap.style.gridTemplateColumns=`repeat(${COLS}, 72px)`;
+  wrap.innerHTML='';
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const cell=document.createElement('div');
+    cell.className='ogc';cell.id=`cell-${r}-${c}`;
+    cell.innerHTML=`<span class="cidx">${r},${c}</span><span class="cval"></span><span class="cbadge"></span>`;
     wrap.appendChild(cell);
   }
 
-  steps = buildSteps(grid);
-  cur = 0;
+  steps=buildSteps(grid);
+  cur=0;
   renderStep();
-  ['btn-prev','btn-next','btn-auto','btn-reset'].forEach(id => document.getElementById(id).disabled = false);
+  ['btn-prev','btn-next','btn-auto','btn-reset'].forEach(id=>document.getElementById(id).disabled=false);
+  updateCtrlState();
 }
 
-function renderStep() {
-  if (!steps.length) return;
-  const s = steps[cur];
+function renderStep(){
+  if(!steps.length)return;
+  const s=steps[cur];
 
   // cells
-  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++) {
-    const cell = document.getElementById(`cell-${r}-${c}`);
-    if (!cell) continue;
-    const v = s.g[r][c];
-    const key = `${r},${c}`;
-    const mt = s.minAt[key];
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const cell=document.getElementById(`cell-${r}-${c}`);
+    if(!cell)continue;
+    const v=s.g[r][c];
+    const key=`${r},${c}`;
+    const mt=s.minAt[key];
+    const inQ=s.q.some(x=>x[0]===r&&x[1]===c);
 
-    // reset classes
-    cell.className = 'ogc';
-    const inQ = s.q.some(x => x[0]===r && x[1]===c);
+    // find if this cell is in the skipped list
+    const skipEntry=s.skipped?s.skipped.find(sk=>sk.r===r&&sk.c===c):null;
 
-    if (v === 0) {
+    cell.className='ogc';
+
+    if(v===0){
       cell.classList.add('empty');
-      cell.querySelector('.cval').textContent = '□';
-      cell.querySelector('.cbadge').textContent = '';
-    } else if (v === 1) {
-      cell.classList.add('fresh');
-      cell.querySelector('.cval').textContent = '🍊';
-      cell.querySelector('.cbadge').textContent = 'fresh';
-    } else {
-      if (s.newly && s.newly[0]===r && s.newly[1]===c) {
-        cell.classList.add('newrot');
-        cell.querySelector('.cbadge').textContent = mt !== undefined ? `t=${mt}` : 'rotting!';
-      } else if (s.cur && s.cur[0]===r && s.cur[1]===c) {
-        cell.classList.add('processing');
-        cell.querySelector('.cbadge').textContent = mt !== undefined ? `t=${mt}` : 'rotten';
-      } else if (inQ) {
-        cell.classList.add('inqueue');
-        cell.querySelector('.cbadge').textContent = mt !== undefined ? `t=${mt}` : 'rotten';
-      } else {
-        cell.classList.add('rotten');
-        cell.querySelector('.cbadge').textContent = mt !== undefined ? `t=${mt}` : 'rotten';
+      cell.querySelector('.cval').textContent='□';
+      if(skipEntry){
+        cell.classList.add('skip-empty');
+        cell.querySelector('.cbadge').textContent='✗ empty';
+      }else{
+        cell.querySelector('.cbadge').textContent='';
       }
-      cell.querySelector('.cval').textContent = '🦠';
+    }else if(v===1){
+      cell.classList.add('fresh');
+      cell.querySelector('.cval').textContent='🍊';
+      cell.querySelector('.cbadge').textContent='fresh';
+    }else{
+      // rotten
+      if(s.newly&&s.newly[0]===r&&s.newly[1]===c){
+        cell.classList.add('newrot');
+        cell.querySelector('.cval').textContent='🦠';
+        cell.querySelector('.cbadge').textContent=mt!==undefined?`t=${mt}`:'rotting!';
+      }else if(s.cur&&s.cur[0]===r&&s.cur[1]===c){
+        cell.classList.add('processing');
+        cell.querySelector('.cval').textContent='🦠';
+        cell.querySelector('.cbadge').textContent=mt!==undefined?`t=${mt}`:'rotten';
+      }else if(skipEntry){
+        // already rotten, being checked as neighbour — show skip-rotten
+        cell.classList.add('rotten');
+        cell.classList.add('skip-rotten');
+        cell.querySelector('.cval').textContent='🦠';
+        cell.querySelector('.cbadge').textContent='✗ rotten';
+      }else if(inQ){
+        cell.classList.add('inqueue');
+        cell.querySelector('.cval').textContent='🦠';
+        cell.querySelector('.cbadge').textContent=mt!==undefined?`t=${mt}`:'rotten';
+      }else{
+        cell.classList.add('rotten');
+        cell.querySelector('.cval').textContent='🦠';
+        cell.querySelector('.cbadge').textContent=mt!==undefined?`t=${mt}`:'rotten';
+      }
     }
   }
 
   // queue
-  const qbox = document.getElementById('q-items');
-  if (!s.q || s.q.length === 0) {
-    qbox.innerHTML = '<span style="font-size:0.75rem;color:var(--text3);font-family:var(--mono)">empty</span>';
-  } else {
-    qbox.innerHTML = s.q.slice(0, 18).map((x, i) =>
-      `<span class="qitem${i===0?' front':''}">(${x[0]},${x[1]})</span>`
-    ).join('') + (s.q.length > 18 ? `<span style="font-size:0.72rem;color:var(--text3);font-family:var(--mono)">+${s.q.length-18} more</span>` : '');
+  const qbox=document.getElementById('q-items');
+  if(!s.q||s.q.length===0){
+    qbox.innerHTML='<span style="font-size:.75rem;color:var(--text3);font-family:var(--mono)">empty</span>';
+  }else{
+    qbox.innerHTML=s.q.slice(0,18).map((x,i)=>
+      `<span class="qitem${i===0?' front':''}">(${x[0]},${x[1]}) t=${x[2]}</span>`
+    ).join('')+(s.q.length>18?`<span style="font-size:.72rem;color:var(--text3);font-family:var(--mono)">+${s.q.length-18} more</span>`:'');
   }
 
   // stats
-  document.getElementById('sv-min').textContent = s.minAt ? Math.max(0, ...Object.values(s.minAt)) : 0;
-  document.getElementById('sv-fresh').textContent = s.fresh;
-  document.getElementById('sv-cur').textContent = s.cur ? `(${s.cur[0]},${s.cur[1]})` : '—';
+  const maxT=s.minAt&&Object.keys(s.minAt).length>0?Math.max(0,...Object.values(s.minAt)):0;
+  document.getElementById('sv-min').textContent=maxT;
+  document.getElementById('sv-fresh').textContent=s.fresh;
+  document.getElementById('sv-cur').textContent=s.cur?`(${s.cur[0]},${s.cur[1]})`:'—';
+  const ansEl=document.getElementById('sv-ans');
+  if(s.ans!==undefined){
+    ansEl.textContent=s.ans;
+    ansEl.className='stat-v '+(s.ans===-1?'ans-bad':'ans-ok');
+  }else{ansEl.textContent='—';ansEl.className='stat-v';}
 
-  const ansEl = document.getElementById('sv-ans');
-  if (s.ans !== undefined) {
-    ansEl.textContent = s.ans;
-    ansEl.className = 'stat-v ' + (s.ans === -1 ? 'ans-bad' : 'ans-ok');
-  } else {
-    ansEl.textContent = '—';
-    ansEl.className = 'stat-v';
-  }
+  // msg + note
+  document.getElementById('anim-msg').textContent=s.msg;
+  document.getElementById('bt-note').textContent=s.msg;
 
-  // msg
-  document.getElementById('anim-msg').textContent = s.msg;
+  // step counter
+  document.getElementById('step-info').textContent=`${cur+1}/${steps.length}`;
 
   // code highlight
-  for (let i = 0; i <= 5; i++) {
-    const e = document.getElementById('cl'+i);
-    if (e) e.classList.toggle('active', i === s.cl);
+  for(let i=0;i<=5;i++){
+    const e=document.getElementById('cl'+i);
+    if(e)e.classList.toggle('active',i===s.cl);
   }
 
-  // buttons
-  document.getElementById('btn-prev').disabled = cur === 0;
-  document.getElementById('btn-next').disabled = cur === steps.length - 1;
-  document.getElementById('btn-auto').textContent = timer ? 'Pause' : 'Auto-play';
+  updateCtrlState();
 }
 
-function stepBy(d) {
-  cur = Math.max(0, Math.min(steps.length-1, cur+d));
-  renderStep();
-  if (cur === steps.length-1 && timer) { clearInterval(timer); timer = null; renderStep(); }
-}
-
-function autoPlay() {
-  if (timer) { clearInterval(timer); timer = null; renderStep(); return; }
-  if (cur === steps.length-1) cur = 0;
-  const speeds = [900, 580, 320, 180, 75];
-  const sl = parseInt(document.getElementById('speed-sl').value) - 1;
-  timer = setInterval(() => {
-    if (cur >= steps.length-1) { clearInterval(timer); timer = null; renderStep(); return; }
-    cur++; renderStep();
-  }, speeds[sl]);
+/* ─── CONTROLS (exact 3Sum pattern) ─── */
+function stepBy(delta){
+  stopAuto();if(!steps.length)return;
+  cur=Math.max(0,Math.min(steps.length-1,cur+delta));
   renderStep();
 }
 
-function resetAnim() {
-  if (timer) { clearInterval(timer); timer = null; }
-  cur = 0; renderStep();
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}
+  if(!steps.length)return;
+  if(cur>=steps.length-1)cur=0;
+  isPlaying=true;
+  document.getElementById('btn-auto').textContent='⏸ Pause';
+  document.getElementById('btn-auto').classList.add('primary');
+  timer=setInterval(()=>{
+    if(cur>=steps.length-1){stopAuto();return;}
+    cur++;renderStep();
+  },SPDS[spSlider.value-1]);
 }
 
-// auto-load example 1
-window.addEventListener('load', () => loadSample('2,1,1;1,1,0;0,1,1'));
+function stopAuto(){
+  if(timer){clearInterval(timer);timer=null;}
+  isPlaying=false;
+  const btn=document.getElementById('btn-auto');
+  if(btn){btn.textContent='▶ Auto-play';btn.classList.add('primary');}
+}
+
+function resetAnim(){
+  stopAuto();if(!steps.length)return;
+  cur=0;renderStep();
+}
+
+function updateCtrlState(){
+  const h=steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||cur<=0;
+  document.getElementById('btn-next').disabled=!h||cur>=steps.length-1;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+/* ─── INIT ─── */
+window.addEventListener('load',()=>{
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadSample('2,1,1;1,1,0;0,1,1');
+});
 </script>
 </body>
 </html>
