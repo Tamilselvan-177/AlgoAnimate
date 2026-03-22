@@ -260,6 +260,46 @@ footer a{color:var(--accent);text-decoration:none}
     </div>
   </div>
 
+  <!-- STEP 4: FULL TRACE -->
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Full trace: word = "SEE" in Example 1 grid</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto">
+      <div><span style="color:var(--text3)">Scan for 'S'… found at (1,0) and (1,3)</span></div>
+      <div><span style="color:var(--accent2)">Start (1,0)</span>: board[1][0]='S' ✓ → try neighbours for 'E'</div>
+      <div style="padding-left:1.4rem">(0,0)='A' <span style="color:var(--coral)">✗</span> &nbsp; (2,0)='A' <span style="color:var(--coral)">✗</span> &nbsp; (1,1)='F' <span style="color:var(--coral)">✗</span> → all fail from (1,0)</div>
+      <div><span style="color:var(--accent2)">Start (1,3)</span>: board[1][3]='S' ✓ → try neighbours for 'E'</div>
+      <div style="padding-left:1.4rem">(0,3)='E' <span style="color:var(--green)">✓</span> → mark '#', try neighbours for second 'E'</div>
+      <div style="padding-left:2.8rem">(0,2)='C' <span style="color:var(--coral)">✗</span> &nbsp; (1,3)='#' <span style="color:var(--coral)">✗</span> (visited) &nbsp; up = OOB → all fail</div>
+      <div style="padding-left:2.8rem">↩ backtrack — restore (0,3)='E'</div>
+      <div style="padding-left:1.4rem">(2,3)='E' <span style="color:var(--green)">✓</span> → mark '#', try neighbours for second 'E'</div>
+      <div style="padding-left:2.8rem">(1,3)='#' <span style="color:var(--coral)">✗</span> (visited) &nbsp; (2,2)='E' <span style="color:var(--green)">✓</span> → idx=3 == len("SEE")</div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">→ <strong>return True ✓</strong> — path: (1,3) → (2,3) → (2,2)</div>
+    </div>
+  </div>
+
+  <!-- COMMON MISTAKES -->
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 — Common mistakes</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Not restoring board</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Forgetting <code>board[r][c] = tmp</code> corrupts the board for future DFS calls starting from other cells.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Wrong base case order</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Check <code>idx == len(word)</code> BEFORE bounds check — otherwise a word that ends exactly at the edge returns False.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Revisiting same cell</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Without marking visited, "AAAAAA" on a grid of A's would incorrectly reuse the same cell multiple times.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Only trying first match</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Must try every cell as a start. The first cell matching <code>word[0]</code> might not lead to the full word.</div>
+      </div>
+    </div>
+  </div>
+
   <!-- STATIC DFS CALL TREE — word="SEE", board=ABCE/SFCS/ADEE -->
   <div class="card" style="border-left:3px solid var(--accent2);padding:1rem 1.2rem">
     <h3 style="margin-bottom:.4rem">DFS call tree — word = "SEE", board = ABCE / SFCS / ADEE</h3>
