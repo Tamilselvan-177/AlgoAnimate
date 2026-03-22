@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>79. Word Search — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+/* grid */
+.grid-wrap{display:inline-flex;flex-direction:column;gap:4px}
+.grid-row{display:flex;gap:4px}
+.grid-cell{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-family:var(--mono);font-size:15px;font-weight:700;border:2px solid transparent;transition:all .18s;user-select:none}
+.gc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+.gc-try{background:rgba(124,106,247,.25);border-color:#7c6af7;color:#c792ea;transform:scale(1.08);box-shadow:0 0 10px rgba(124,106,247,.4)}
+.gc-path{background:rgba(74,247,176,.2);border-color:#4af7b0;color:#4af7b0}
+.gc-fail{background:rgba(247,106,138,.18);border-color:#f76a8a;color:#f76a8a;transform:scale(.95)}
+.gc-found{background:rgba(74,247,176,.25);border-color:#4af7b0;color:#4af7b0;transform:scale(1.1);box-shadow:0 0 14px rgba(74,247,176,.45)}
+[data-theme="light"] .gc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+[data-theme="light"] .gc-try{background:rgba(91,72,232,.15);border-color:#5b48e8;color:#5b48e8}
+[data-theme="light"] .gc-path{background:rgba(13,148,136,.15);border-color:#0d9488;color:#0d9488}
+[data-theme="light"] .gc-fail{background:rgba(208,64,48,.12);border-color:#d04030;color:#d04030}
+[data-theme="light"] .gc-found{background:rgba(13,148,136,.15);border-color:#0d9488;color:#0d9488}
+/* word pills */
+.word-progress{display:flex;gap:5px;flex-wrap:wrap;align-items:center}
+.wchar{padding:5px 11px;border-radius:8px;font-family:var(--mono);font-size:15px;font-weight:700;border:2px solid var(--border2);background:var(--bg3);color:var(--text3);transition:all .2s;min-width:34px;text-align:center}
+.wchar.matched{border-color:#4af7b0;background:rgba(74,247,176,.15);color:#4af7b0}
+.wchar.current{border-color:#7c6af7;background:rgba(124,106,247,.2);color:#c792ea;transform:scale(1.12)}
+.wchar.failed{border-color:#f76a8a;background:rgba(247,106,138,.15);color:#f76a8a}
+/* tree canvas box */
+.tree-box{background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.tree-hdr{font-size:.6rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;padding:.5rem 1rem .3rem;flex-shrink:0}
+.tree-leg{display:flex;gap:10px;padding:0 1rem .4rem;font-size:10px;font-family:var(--mono);flex-wrap:wrap;flex-shrink:0}
+.tz{position:absolute;top:6px;right:8px;display:flex;gap:3px;z-index:10}
+.tzb{width:24px;height:24px;border-radius:6px;border:1px solid var(--cvb);background:rgba(20,20,30,.85);color:#aaa;font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;font-family:var(--mono)}
+.tzb:hover{color:#fff;border-color:var(--accent)}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">LC #79 · Medium</span>
+    <span class="badge b-topic">Backtracking</span>
+    <span class="badge b-topic">DFS</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=backtracking">Backtracking</a><span>/</span>
+  <span style="color:var(--text2)">Word Search</span>
+</div>
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #11</div>
+      <div class="lc-number">LeetCode 79</div>
+      <h1>Word Search</h1>
+      <p class="hero-sub">Given a 2D grid of characters, determine if a given word exists by following a path of <strong style="color:var(--text)">adjacent cells</strong>. Each cell may only be used once. The classic backtracking on a grid.</p>
+    </div>
+    <div class="time-est">&#9201; <span>~12 min</span></div>
+  </div>
+</div>
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">Given an <strong>m × n</strong> grid of characters <code>board</code> and a string <code>word</code>, return <strong>true</strong> if word exists in the grid.<br><br>
+      Word must be constructed from letters of sequentially <strong>adjacent cells</strong> (horiz/vert). The <strong>same cell may not be used more than once</strong>.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1</div>
+        <div class="ex-io"><strong>board</strong> = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]]</div>
+        <div class="ex-io"><strong>word</strong> = "ABCCED" → <span style="color:var(--green)">true</span></div>
+        <div class="ex-io"><strong>word</strong> = "SEE" → <span style="color:var(--green)">true</span></div>
+        <div class="ex-io"><strong>word</strong> = "ABCB" → <span style="color:var(--coral)">false</span> (can't revisit B)</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ m, n ≤ 6</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ word.length ≤ 15</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>Uppercase English letters only</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(m·n·4<sup>L</sup>)</div>
+        <div style="color:var(--accent2)">Space: O(L) recursion depth</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">In-place marking</div>
+    <div class="vtab" onclick="showSol(1,this)">Explicit visited</div>
+  </div>
+  <div class="vsec on" id="sv0">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Backtracking — mark in-place</span><div class="cx-row"><span class="cx cx-t">O(m·n·4<sup>L</sup>)</span><span class="cx cx-s">O(L)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">exist</span>(board, word):
+    m, n = len(board), len(board[0])
+    <span class="kw">def</span> <span class="fn">dfs</span>(r, c, idx):
+        <span class="kw">if</span> idx == len(word): <span class="kw">return True</span>
+        <span class="kw">if</span> r < 0 <span class="kw">or</span> r >= m <span class="kw">or</span> c < 0 <span class="kw">or</span> c >= n: <span class="kw">return False</span>
+        <span class="kw">if</span> board[r][c] != word[idx]: <span class="kw">return False</span>
+        tmp = board[r][c]
+        board[r][c] = <span class="nm">'#'</span>           <span class="cm"># mark visited</span>
+        found = (dfs(r+1,c,idx+1) <span class="kw">or</span> dfs(r-1,c,idx+1)
+              <span class="kw">or</span> dfs(r,c+1,idx+1) <span class="kw">or</span> dfs(r,c-1,idx+1))
+        board[r][c] = tmp             <span class="cm"># restore (backtrack)</span>
+        <span class="kw">return</span> found
+    <span class="kw">return</span> any(dfs(r,c,0) <span class="kw">for</span> r <span class="kw">in</span> range(m) <span class="kw">for</span> c <span class="kw">in</span> range(n))</pre></div>
+  </div>
+  <div class="vsec" id="sv1">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Explicit visited array</span><div class="cx-row"><span class="cx cx-t">O(m·n·4<sup>L</sup>)</span><span class="cx cx-s">O(m·n)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">exist</span>(board, word):
+    m, n = len(board), len(board[0])
+    vis = [[<span class="kw">False</span>]*n <span class="kw">for</span> _ <span class="kw">in</span> range(m)]
+    <span class="kw">def</span> <span class="fn">dfs</span>(r, c, idx):
+        <span class="kw">if</span> idx == len(word): <span class="kw">return True</span>
+        <span class="kw">if not</span> (0 <= r < m <span class="kw">and</span> 0 <= c < n): <span class="kw">return False</span>
+        <span class="kw">if</span> vis[r][c] <span class="kw">or</span> board[r][c] != word[idx]: <span class="kw">return False</span>
+        vis[r][c] = <span class="kw">True</span>
+        found = any(dfs(r+dr,c+dc,idx+1) <span class="kw">for</span> dr,dc <span class="kw">in</span> [(1,0),(-1,0),(0,1),(0,-1)])
+        vis[r][c] = <span class="kw">False</span>
+        <span class="kw">return</span> found
+    <span class="kw">return</span> any(dfs(r,c,0) <span class="kw">for</span> r <span class="kw">in</span> range(m) <span class="kw">for</span> c <span class="kw">in</span> range(n))</pre></div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — Try every cell as start</h3>
+    <div class="prose">We don't know where the word starts, so we try <strong>every cell</strong>. For each cell that matches <code>word[0]</code>, launch a DFS.</div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Three base cases</h3>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:.5rem">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✓ Found</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2)">idx == len(word)<br><span style="color:var(--text3)">All chars matched</span></div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ OOB</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2)">r/c out of bounds<br><span style="color:var(--text3)">Left the grid</span></div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Mismatch</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2)">board[r][c] ≠ word[idx]<br><span style="color:var(--text3)">Wrong char or visited</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Mark → recurse → unmark</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.82rem;line-height:2;margin-top:.5rem">
+      tmp = board[r][c]<br>
+      board[r][c] = <span style="color:var(--amber)">'#'</span>&nbsp;&nbsp;<span style="color:var(--text3)"># mark — blocks revisit</span><br>
+      found = dfs(down) or dfs(up) or dfs(right) or dfs(left)<br>
+      board[r][c] = tmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:var(--text3)"># restore ← backtrack</span>
+    </div>
+  </div>
+
+  <!-- STATIC DFS CALL TREE — word="SEE", board=ABCE/SFCS/ADEE -->
+  <div class="card" style="border-left:3px solid var(--accent2);padding:1rem 1.2rem">
+    <h3 style="margin-bottom:.4rem">DFS call tree — word = "SEE", board = ABCE / SFCS / ADEE</h3>
+    <div style="font-size:.78rem;color:var(--text2);margin-bottom:.9rem;font-family:var(--sans)">
+      Solid edge = recurse deeper &nbsp;·&nbsp; Dashed edge = pruned (mismatch) &nbsp;·&nbsp;
+      <span style="color:#7c6af7">●</span> exploring &nbsp;
+      <span style="color:#4af7b0">●</span> matched ✓ &nbsp;
+      <span style="color:#f76a8a">●</span> pruned ✗
+    </div>
+    <div style="overflow-x:auto">
+      <svg viewBox="0 0 900 420" width="100%" style="display:block;font-family:'JetBrains Mono',monospace">
+        <defs>
+          <!-- glow filters -->
+          <filter id="gp"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="gg"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+          <filter id="gr"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        </defs>
+
+        <!-- ── ROOT: scan node ── -->
+        <!-- scan → (0,0)S  (0,1)A  (0,2)C  (0,3)E  (1,0)S  (1,3)S  (2,3)E -->
+        <!-- Only S-cells and E-cells are relevant; pruned nodes shown for non-S -->
+
+        <!-- LEVEL 0: scan root (no circle, just label) -->
+        <text x="450" y="18" text-anchor="middle" font-size="10" fill="#5a5870" letter-spacing="1">SCAN FOR 'S' (word[0])</text>
+
+        <!-- LEVEL 1: starting cells tried — only show the interesting ones -->
+        <!-- (0,0)=A pruned, (0,1)=B pruned ... skip boring ones, show (1,0)=S and (1,3)=S -->
+
+        <!-- Edges from scan to level-1 nodes -->
+        <!-- to (0,0)A - pruned -->
+        <line x1="450" y1="22" x2="100" y2="68" stroke="rgba(247,106,138,.4)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <!-- to (1,0)S - matched -->
+        <path d="M450,22 C450,45 260,45 260,68" fill="none" stroke="rgba(124,106,247,.7)" stroke-width="2"/>
+        <!-- to (1,3)S - matched -->
+        <path d="M450,22 C450,45 620,45 620,68" fill="none" stroke="rgba(124,106,247,.7)" stroke-width="2"/>
+        <!-- to other pruned cells (dotted lines, faint) -->
+        <line x1="450" y1="22" x2="370" y2="68" stroke="rgba(247,106,138,.25)" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="450" y1="22" x2="450" y2="68" stroke="rgba(247,106,138,.25)" stroke-width="1" stroke-dasharray="3,4"/>
+        <line x1="450" y1="22" x2="540" y2="68" stroke="rgba(247,106,138,.25)" stroke-width="1" stroke-dasharray="3,4"/>
+
+        <!-- (0,0)=A pruned -->
+        <circle cx="100" cy="86" r="18" fill="#f76a8a" stroke="#ff90a8" stroke-width="2" filter="url(#gr)"/>
+        <text x="100" y="90" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#fff">A✗</text>
+        <text x="100" y="110" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(0,0)</text>
+
+        <!-- other pruned starters (faint, smaller) -->
+        <circle cx="370" cy="86" r="14" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" opacity=".5"/>
+        <text x="370" y="90" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#fff" opacity=".7">B✗</text>
+        <text x="370" y="106" text-anchor="middle" font-size="7" fill="rgba(120,120,170,.45)">(0,1)</text>
+
+        <circle cx="450" cy="86" r="14" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" opacity=".5"/>
+        <text x="450" y="90" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#fff" opacity=".7">C✗</text>
+        <text x="450" y="106" text-anchor="middle" font-size="7" fill="rgba(120,120,170,.45)">(0,2)</text>
+
+        <circle cx="540" cy="86" r="14" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" opacity=".5"/>
+        <text x="540" y="90" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#fff" opacity=".7">E✗</text>
+        <text x="540" y="106" text-anchor="middle" font-size="7" fill="rgba(120,120,170,.45)">(0,3)</text>
+
+        <!-- (1,0)=S matched — start DFS for SEE -->
+        <circle cx="260" cy="86" r="20" fill="#4af7b0" stroke="#7affc8" stroke-width="2.5" filter="url(#gg)"/>
+        <text x="260" y="90" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#02180f">S✓</text>
+        <text x="260" y="112" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,0)</text>
+
+        <!-- (1,3)=S matched — start DFS for SEE -->
+        <circle cx="620" cy="86" r="20" fill="#4af7b0" stroke="#7affc8" stroke-width="2.5" filter="url(#gg)"/>
+        <text x="620" y="90" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#02180f">S✓</text>
+        <text x="620" y="112" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,3)</text>
+
+        <!-- ── LEVEL 2: from (1,0)S try 4 dirs for 'E' ── -->
+        <!-- up=(0,0)A✗  down=(2,0)A✗  right=(1,1)F✗  left=OOB -->
+        <!-- all pruned -->
+        <path d="M260,106 C260,135 170,135 170,158" fill="none" stroke="rgba(247,106,138,.45)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M260,106 C260,135 260,135 260,158" fill="none" stroke="rgba(247,106,138,.45)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M260,106 C260,135 350,135 350,158" fill="none" stroke="rgba(247,106,138,.45)" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <circle cx="170" cy="176" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="170" y="180" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">A✗</text>
+        <text x="170" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(0,0)</text>
+
+        <circle cx="260" cy="176" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="260" y="180" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">A✗</text>
+        <text x="260" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(2,0)</text>
+
+        <circle cx="350" cy="176" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="350" y="180" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">F✗</text>
+        <text x="350" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,1)</text>
+
+        <!-- label: all from (1,0)S fail → backtrack -->
+        <text x="255" y="220" text-anchor="middle" font-size="9" fill="rgba(247,106,138,.7)" font-style="italic">↩ all neighbours fail for 'E' — backtrack</text>
+
+        <!-- ── LEVEL 2: from (1,3)S try 4 dirs for 'E' ── -->
+        <!-- up=(0,3)E✓  down=(2,3)E✓  left=(1,2)C✗  right=OOB -->
+        <path d="M620,106 C620,135 520,135 520,158" fill="none" stroke="rgba(247,106,138,.45)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M620,106 C620,135 620,135 620,158" fill="none" stroke="rgba(124,106,247,.8)" stroke-width="2"/>
+        <path d="M620,106 C620,135 730,135 730,158" fill="none" stroke="rgba(124,106,247,.8)" stroke-width="2"/>
+
+        <!-- (1,2)=C pruned -->
+        <circle cx="520" cy="176" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="520" y="180" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">C✗</text>
+        <text x="520" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,2)</text>
+
+        <!-- (0,3)=E matched -->
+        <circle cx="620" cy="176" r="20" fill="#4af7b0" stroke="#7affc8" stroke-width="2.5" filter="url(#gg)"/>
+        <text x="620" y="180" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#02180f">E✓</text>
+        <text x="620" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(0,3)</text>
+
+        <!-- (2,3)=E matched -->
+        <circle cx="730" cy="176" r="20" fill="#4af7b0" stroke="#7affc8" stroke-width="2.5" filter="url(#gg)"/>
+        <text x="730" y="180" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#02180f">E✓</text>
+        <text x="730" y="198" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(2,3)</text>
+
+        <!-- ── LEVEL 3: from (0,3)E try dirs for 'E' ── -->
+        <!-- (0,3)E needs third 'E': neighbours: up=OOB, left=(0,2)C✗, down=(1,3)=# visited, right=OOB -->
+        <path d="M620,196 C620,225 590,225 590,258" fill="none" stroke="rgba(247,106,138,.45)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M620,196 C620,225 650,225 650,258" fill="none" stroke="rgba(247,106,138,.4)" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+        <circle cx="590" cy="276" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="590" y="280" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">C✗</text>
+        <text x="590" y="298" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(0,2)</text>
+
+        <circle cx="650" cy="276" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="650" y="280" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">#✗</text>
+        <text x="650" y="298" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,3)vis</text>
+
+        <text x="618" y="320" text-anchor="middle" font-size="9" fill="rgba(247,106,138,.7)" font-style="italic">↩ no 'E' reachable — backtrack</text>
+
+        <!-- ── LEVEL 3: from (2,3)E try dirs for 'E' ── -->
+        <!-- (2,3)E needs third 'E': up=(1,3)=# visited, left=(2,2)E✓ → FOUND! -->
+        <path d="M730,196 C730,225 760,225 760,258" fill="none" stroke="rgba(247,106,138,.4)" stroke-width="1.5" stroke-dasharray="4,4"/>
+        <path d="M730,196 C730,225 820,225 820,258" fill="none" stroke="rgba(124,106,247,.85)" stroke-width="2.5"/>
+
+        <circle cx="760" cy="276" r="17" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5" filter="url(#gr)"/>
+        <text x="760" y="280" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="700" fill="#fff">#✗</text>
+        <text x="760" y="298" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(1,3)vis</text>
+
+        <!-- (2,2)=E FOUND -->
+        <circle cx="830" cy="276" r="22" fill="#4af7b0" stroke="#7affc8" stroke-width="3" filter="url(#gg)"/>
+        <text x="830" y="280" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="700" fill="#02180f">E✓</text>
+        <text x="830" y="302" text-anchor="middle" font-size="8" fill="rgba(120,120,170,.6)">(2,2)</text>
+
+        <!-- FOUND banner -->
+        <rect x="750" y="320" width="160" height="32" rx="10" fill="rgba(74,247,176,.18)" stroke="rgba(74,247,176,.5)" stroke-width="1.5"/>
+        <text x="830" y="340" text-anchor="middle" font-size="11" font-weight="700" fill="#4af7b0">✓ FOUND: S→E→E</text>
+
+        <!-- path annotation -->
+        <text x="830" y="366" text-anchor="middle" font-size="9" fill="rgba(120,120,170,.7)">(1,3)→(2,3)→(2,2)</text>
+
+        <!-- LEGEND bottom-left -->
+        <g transform="translate(10,390)">
+          <circle cx="8" cy="8" r="7" fill="#7c6af7" stroke="#a090ff" stroke-width="1.5"/>
+          <text x="20" y="12" font-size="9" fill="#5a5870">exploring</text>
+          <circle cx="80" cy="8" r="7" fill="#4af7b0" stroke="#7affc8" stroke-width="1.5"/>
+          <text x="92" y="12" font-size="9" fill="#5a5870">matched ✓</text>
+          <circle cx="170" cy="8" r="7" fill="#f76a8a" stroke="#ff90a8" stroke-width="1.5"/>
+          <text x="182" y="12" font-size="9" fill="#5a5870">pruned ✗</text>
+          <line x1="255" y1="8" x2="275" y2="8" stroke="#7c6af7" stroke-width="2"/>
+          <text x="280" y="12" font-size="9" fill="#5a5870">recurse</text>
+          <line x1="330" y1="8" x2="350" y2="8" stroke="rgba(120,120,150,.6)" stroke-width="1.5" stroke-dasharray="3,3"/>
+          <text x="355" y="12" font-size="9" fill="#5a5870">pruned path</text>
+        </g>
+      </svg>
+    </div>
+    <div style="font-size:.8rem;color:var(--text2);margin-top:.7rem;line-height:1.7">
+      Starting from <code>(1,3)='S'</code>: we find <code>'E'</code> at both <code>(0,3)</code> and <code>(2,3)</code>. From <code>(0,3)</code> no second <code>'E'</code> is reachable. From <code>(2,3)</code>, cell <code>(2,2)='E'</code> completes the word — <strong style="color:#4af7b0">SEE found!</strong>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Pattern:</strong> mark → recurse → unmark. The same template works for Sudoku, N-Queens, and permutations.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Word (max 6)</span>
+      <input class="grid-inp" id="word-inp" type="text" value="SEE" style="width:100px" maxlength="6" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Board (rows, use |)</span>
+      <input class="grid-inp" id="board-inp" type="text" value="ABCE|SFCS|ADEE" style="width:230px" oninput="this.value=this.value.toUpperCase()">
+    </div>
+    <button class="run-btn" onclick="runViz()">&#9654; Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadS('ABCE|SFCS|ADEE','SEE')">SEE ✓</button>
+    <button class="sbtn" onclick="loadS('ABCE|SFCS|ADEE','ABCCED')">ABCCED ✓</button>
+    <button class="sbtn" onclick="loadS('ABCE|SFCS|ADEE','ABCB')">ABCB ✗</button>
+    <button class="sbtn" onclick="loadS('AB|CD','BD')">BD ✓</button>
+    <button class="sbtn" onclick="loadS('ABC|DEF','BEF')">BEF ✓</button>
+  </div>
+  <!-- controls bar -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+  <!-- main: grid left, tree right -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.5rem;display:flex;justify-content:center;align-items:center;min-height:180px">
+        <div id="grid-viz"><span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+        <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0"></div>
+        <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Word progress</div>
+        <div id="word-progress" class="word-progress"><span style="font-family:var(--mono);font-size:12px;color:var(--ph)">—</span></div>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Current path</div>
+        <div id="cur-path" style="font-family:var(--mono);font-size:12px;color:var(--text2);min-height:20px">—</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="tree-box" style="flex:1;min-height:300px">
+        <div class="tree-hdr">DFS call tree — drag · scroll to zoom</div>
+        <div class="tree-leg">
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:#7c6af7;box-shadow:0 0 6px #7c6af7;display:inline-block;flex-shrink:0"></span><span style="color:var(--ph)">exploring</span></span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:#4af7b0;box-shadow:0 0 6px #4af7b0;display:inline-block;flex-shrink:0"></span><span style="color:var(--ph)">matched ✓</span></span>
+          <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:50%;background:#f76a8a;display:inline-block;flex-shrink:0"></span><span style="color:var(--ph)">pruned ✗</span></span>
+        </div>
+        <div class="tz">
+          <button class="tzb" onclick="ATREE.zoom(1.2)">+</button>
+          <button class="tzb" onclick="ATREE.zoom(1/1.2)">−</button>
+          <button class="tzb" onclick="ATREE.resetView()">⌂</button>
+        </div>
+        <canvas id="anim-cv" style="display:block;width:100%;flex:1;cursor:grab"></canvas>
+      </div>
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">exist</span>(board, word):</span>
+<span class="hl" id="cl1">  <span class="kw">return</span> any(dfs(r,c,<span class="nm">0</span>) <span class="kw">for</span> r,c <span class="kw">in</span> cells)</span>
+<span class="hl" id="cl2"><span class="kw">def</span> <span class="fn">dfs</span>(r, c, idx):</span>
+<span class="hl" id="cl3">  <span class="kw">if</span> idx == len(word): <span class="kw">return True</span></span>
+<span class="hl" id="cl4">  <span class="kw">if</span> OOB <span class="kw">or</span> board[r][c] != word[idx]: <span class="kw">return False</span></span>
+<span class="hl" id="cl5">  tmp = board[r][c]; board[r][c] = <span class="nm">'#'</span></span>
+<span class="hl" id="cl6">  found = (dfs(r+<span class="nm">1</span>,c,idx+<span class="nm">1</span>) <span class="kw">or</span> dfs(r-<span class="nm">1</span>,c,idx+<span class="nm">1</span>)</span>
+<span class="hl" id="cl6b">        <span class="kw">or</span> dfs(r,c+<span class="nm">1</span>,idx+<span class="nm">1</span>) <span class="kw">or</span> dfs(r,c-<span class="nm">1</span>,idx+<span class="nm">1</span>))</span>
+<span class="hl" id="cl7">  board[r][c] = tmp  <span class="cm"># restore</span></span>
+<span class="hl" id="cl8">  <span class="kw">return</span> found</span></pre>
+      </div>
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="subsets.html">
+      <div class="rel-top"><span class="rel-num">LC #78 · Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Subsets</div>
+      <div class="rel-desc">Mark-recurse-unmark in its simplest form — the same backtracking template.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="combination-sum.html">
+      <div class="rel-top"><span class="rel-num">LC #39 · Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Combination Sum</div>
+      <div class="rel-desc">Backtracking on a number line — prune when remaining goes negative.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="flood-fill.html">
+      <div class="rel-top"><span class="rel-num">LC #733 · Easy</span><span class="badge b-topic">DFS</span></div>
+      <div class="rel-title">Flood Fill</div>
+      <div class="rel-desc">DFS on a 2D grid — same traversal, no backtracking needed.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #79 Word Search</p></footer>
+
+<script>
+// ══════════════════════════════════════════════════
+// SHARED CONSTANTS
+const FILL={active:'#7c6af7',matched:'#4af7b0',pruned:'#f76a8a',found:'#4af7b0',idle:'#2a2a3e'};
+const STRK={active:'#a090ff',matched:'#7affc8',pruned:'#ff90a8',found:'#7affc8',idle:'#3a3a5a'};
+const TXT ={active:'#fff',  matched:'#02180f', pruned:'#fff',   found:'#02180f', idle:'#6a6a9a'};
+const GLOW={active:{c:'#7c6af7',b:20},matched:{c:'#4af7b0',b:14},pruned:{c:'#f76a8a',b:10},found:{c:'#4af7b0',b:18},idle:{c:null,b:0}};
+const NW=54,NH=74,NR=20;
+
+// ══════════════════════════════════════════════════
+// TREE ENGINE FACTORY
+function makeTree(cvId){
+  const cv=document.getElementById(cvId);
+  if(!cv) return null;
+  const ctx=cv.getContext('2d');
+  let pan={x:0,y:0},sc=1,drag={on:false,sx:0,sy:0,px:0,py:0};
+  let nodes={},edges=[],activeId=null;
+
+  function sz(){cv.width=cv.offsetWidth||400;cv.height=cv.offsetHeight||300;}
+
+  // pan/zoom
+  function onMD(e){drag.on=true;drag.sx=e.clientX;drag.sy=e.clientY;drag.px=pan.x;drag.py=pan.y;cv.style.cursor='grabbing';}
+  function onMM(e){if(!drag.on)return;pan.x=drag.px+(e.clientX-drag.sx);pan.y=drag.py+(e.clientY-drag.sy);draw();}
+  function onMU(){drag.on=false;cv.style.cursor='grab';}
+  function onTS(e){if(e.touches.length!==1)return;drag.on=true;drag.sx=e.touches[0].clientX;drag.sy=e.touches[0].clientY;drag.px=pan.x;drag.py=pan.y;}
+  function onTM(e){if(!drag.on||e.touches.length!==1)return;pan.x=drag.px+(e.touches[0].clientX-drag.sx);pan.y=drag.py+(e.touches[0].clientY-drag.sy);draw();}
+  function onTE(){drag.on=false;}
+  function onWH(e){
+    e.preventDefault();
+    const f=e.deltaY<0?1.12:1/1.12;
+    const r=cv.getBoundingClientRect();
+    const mx=e.clientX-r.left,my=e.clientY-r.top;
+    pan.x=mx-(mx-pan.x)*f;pan.y=my-(my-pan.y)*f;
+    sc=Math.max(.1,Math.min(sc*f,5));draw();
+  }
+  cv.addEventListener('mousedown',onMD);
+  window.addEventListener('mousemove',onMM);
+  window.addEventListener('mouseup',onMU);
+  cv.addEventListener('touchstart',onTS,{passive:true});
+  cv.addEventListener('touchmove',onTM,{passive:true});
+  cv.addEventListener('touchend',onTE);
+  cv.addEventListener('wheel',onWH,{passive:false});
+
+  function zoom(f){const cx=cv.width/2,cy=cv.height/2;pan.x=cx-(cx-pan.x)*f;pan.y=cy-(cy-pan.y)*f;sc=Math.max(.1,Math.min(sc*f,5));draw();}
+  function resetView(){pan={x:0,y:0};sc=1;autoFit();draw();}
+
+  function layout(){
+    if(!Object.keys(nodes).length)return;
+    const ch={},roots=[];
+    Object.keys(nodes).forEach(id=>{ch[id]=[];});
+    edges.forEach(e=>{if(nodes[e.from]&&nodes[e.to])ch[String(e.from)].push(String(e.to));});
+    const hasP=new Set(edges.map(e=>String(e.to)));
+    Object.keys(nodes).forEach(id=>{if(!hasP.has(String(id)))roots.push(String(id));});
+    const sw={};
+    function cw(id){const c=ch[id]||[];if(!c.length){sw[id]=NW;return NW;}let t=0;c.forEach(x=>{t+=cw(x);});sw[id]=Math.max(NW,t);return sw[id];}
+    roots.forEach(r=>cw(r));
+    const dep={};
+    function ad(id,d){dep[id]=d;(ch[id]||[]).forEach(c=>ad(c,d+1));}
+    roots.forEach(r=>ad(r,0));
+    function ax(id,xl){const w=sw[id]||NW,c=ch[id]||[];nodes[id].x=xl+w/2;nodes[id].y=NR+14+(dep[id]||0)*NH;let cx=xl;c.forEach(c2=>{ax(c2,cx);cx+=sw[c2];});}
+    const tot=roots.reduce((s,r)=>s+(sw[r]||NW),0);
+    let xo=Math.max(4,(Math.max(cv.width||600,800)-tot)/2);
+    roots.forEach(r=>{ax(r,xo);xo+=sw[r];});
+  }
+
+  function autoFit(){
+    const nds=Object.values(nodes);if(!nds.length){pan={x:0,y:0};sc=1;return;}
+    let mnx=Infinity,mxx=-Infinity,mny=Infinity,mxy=-Infinity;
+    nds.forEach(n=>{mnx=Math.min(mnx,n.x-NR);mxx=Math.max(mxx,n.x+NR);mny=Math.min(mny,n.y-NR);mxy=Math.max(mxy,n.y+NR+12);});
+    const tw=mxx-mnx+40,th=mxy-mny+40;
+    const W=cv.width||500,H=cv.height||350;
+    sc=Math.min(W/tw,H/th,.98);
+    pan.x=(W-tw*sc)/2-mnx*sc+20*sc;
+    pan.y=(H-th*sc)/2-mny*sc+20*sc;
+  }
+
+  function draw(){
+    const W=cv.width,H=cv.height;
+    ctx.clearRect(0,0,W,H);
+    if(!Object.keys(nodes).length){
+      ctx.fillStyle='rgba(58,58,94,.15)';ctx.font="12px 'JetBrains Mono',monospace";
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText('Tree will appear here',W/2,H/2);
+      ctx.textBaseline='alphabetic';return;
+    }
+    ctx.save();ctx.translate(pan.x,pan.y);ctx.scale(sc,sc);
+    // edges
+    edges.forEach(e=>{
+      const f=nodes[e.from],t=nodes[e.to];if(!f||!t)return;
+      const x1=f.x,y1=f.y+NR,x2=t.x,y2=t.y-NR,my2=(y1+y2)/2;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1,my2,x2,my2,x2,y2);
+      ctx.setLineDash([]);
+      if(e.type==='dashed'){ctx.strokeStyle='rgba(100,100,130,.5)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);}
+      else{
+        const ts=t.state;
+        if(ts==='matched'||ts==='found'){ctx.strokeStyle='rgba(74,247,176,.65)';ctx.lineWidth=2;}
+        else if(ts==='active'){ctx.strokeStyle='rgba(124,106,247,.85)';ctx.lineWidth=2;}
+        else if(ts==='pruned'){ctx.strokeStyle='rgba(247,106,138,.5)';ctx.lineWidth=1.5;ctx.setLineDash([5,4]);}
+        else{ctx.strokeStyle='rgba(90,90,120,.35)';ctx.lineWidth=1.5;}
+      }
+      ctx.stroke();ctx.setLineDash([]);
+      if(t.edgeLbl){
+        const mx=(x1+x2)/2,emy=(y1+y2)/2;
+        ctx.fillStyle='rgba(180,180,220,.8)';ctx.font="bold 10px 'JetBrains Mono',monospace";
+        ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(t.edgeLbl,mx,emy-7);
+      }
+    });
+    // nodes
+    Object.values(nodes).forEach(n=>{
+      const st=n.state||'idle';const g=GLOW[st]||GLOW.idle;
+      ctx.shadowBlur=0;if(g.c){ctx.shadowColor=g.c;ctx.shadowBlur=g.b;}
+      ctx.beginPath();ctx.arc(n.x,n.y,NR,0,Math.PI*2);
+      ctx.fillStyle=FILL[st]||FILL.idle;ctx.fill();
+      ctx.strokeStyle=STRK[st]||STRK.idle;ctx.lineWidth=n.id===activeId?3:2;ctx.stroke();
+      ctx.shadowBlur=0;
+      ctx.fillStyle=TXT[st]||TXT.idle;ctx.font="bold 13px 'JetBrains Mono',monospace";
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText((n.lbl||'?').toUpperCase(),n.x,n.y);
+      ctx.fillStyle='rgba(120,120,170,.55)';ctx.font="8px 'JetBrains Mono',monospace";
+      ctx.fillText('('+n.r+','+n.c+')',n.x,n.y+NR+9);
+    });
+    ctx.restore();ctx.textBaseline='alphabetic';
+  }
+
+  function setTree(n,e,aid){nodes=n;edges=e;activeId=aid;layout();draw();}
+  function clear(){nodes={};edges=[];activeId=null;draw();}
+  function fitDraw(){layout();autoFit();draw();}
+  function redraw(){layout();draw();}
+
+  return{sz,draw,setTree,clear,fitDraw,redraw,zoom,resetView};
+}
+
+// ══════════════════════════════════════════════════
+// STEP BUILDER
+function parseBoard(str){
+  const rows=str.toUpperCase().split('|').map(r=>r.trim()).filter(Boolean);
+  if(!rows.length)return null;
+  const n=rows[0].length;
+  if(rows.some(r=>r.length!==n))return null;
+  return rows.map(r=>r.split(''));
+}
+
+function buildSteps(board,word){
+  const m=board.length,n=board[0].length,steps=[];
+  const cloneS=s=>s.map(r=>[...r]);
+  const init=board.map(r=>r.map(()=>'idle'));
+  let nc=0,found=false;
+  let TN={},TE=[];
+
+  function cloneTree(aid){
+    const cn={};Object.keys(TN).forEach(k=>cn[k]={...TN[k]});
+    return{nodes:cn,edges:[...TE.map(e=>({...e}))],activeId:aid};
+  }
+
+  function quickLayout(){
+    const ch={},roots=[];
+    Object.keys(TN).forEach(id=>{ch[id]=[];});
+    TE.forEach(e=>{if(TN[e.from]&&TN[e.to])ch[String(e.from)].push(String(e.to));});
+    const hasP=new Set(TE.map(e=>String(e.to)));
+    Object.keys(TN).forEach(id=>{if(!hasP.has(String(id)))roots.push(String(id));});
+    const sw={};
+    function cw(id){const c=ch[id]||[];if(!c.length){sw[id]=NW;return NW;}let t=0;c.forEach(x=>{t+=cw(x);});sw[id]=Math.max(NW,t);return sw[id];}
+    roots.forEach(r=>cw(r));
+    const dep={};
+    function ad(id,d){dep[id]=d;(ch[id]||[]).forEach(c=>ad(c,d+1));}
+    roots.forEach(r=>ad(r,0));
+    function ax(id,xl){const w=sw[id]||NW,c=ch[id]||[];TN[id].x=xl+w/2;TN[id].y=NR+14+(dep[id]||0)*NH;let cx=xl;c.forEach(c2=>{ax(c2,cx);cx+=sw[c2];});}
+    const tot=roots.reduce((s,r)=>s+(sw[r]||NW),0);
+    let xo=Math.max(4,(800-tot)/2);
+    roots.forEach(r=>{ax(r,xo);xo+=sw[r];});
+  }
+
+  steps.push({type:'scan',state:cloneS(init),path:[],idx:0,r:-1,c:-1,cl:0,
+    note:'Scan all cells for \''+word[0]+'\'…',tree:cloneTree(null)});
+
+  function dfs(r,c,idx,path,cs,pid,elbl){
+    if(found)return;
+    const myId=nc++;
+    TN[myId]={id:myId,lbl:board[r][c],r,c,idx,state:'active',edgeLbl:elbl||null};
+    if(pid!==null&&pid!==undefined) TE.push({from:pid,to:myId,type:'solid'});
+    quickLayout();
+
+    const tryS=cloneS(cs);tryS[r][c]='try';
+    steps.push({type:'try',state:cloneS(tryS),path:[...path],idx,r,c,cl:4,
+      note:'Try ('+r+','+c+')=\''+board[r][c]+'\' — need \''+word[idx]+'\' ['+( idx+1)+'/'+word.length+']',
+      tree:cloneTree(myId)});
+
+    if(board[r][c]!==word[idx]){
+      TN[myId].state='pruned';
+      const fe=TE.find(x=>x.to===myId);if(fe)fe.type='dashed';
+      quickLayout();
+      const fs=cloneS(tryS);fs[r][c]='fail';
+      steps.push({type:'fail',state:cloneS(fs),path:[...path],idx,r,c,cl:4,
+        note:'✗ \''+board[r][c]+'\' ≠ \''+word[idx]+'\' — pruned',tree:cloneTree(pid!==null?pid:null)});
+      return;
+    }
+
+    TN[myId].state='matched';quickLayout();
+    const np=[...path,[r,c]];
+    const ps=cloneS(cs);np.forEach(function(p){ps[p[0]][p[1]]='path';});
+
+    if(idx===word.length-1){
+      found=true;TN[myId].state='found';quickLayout();
+      const fos=cloneS(ps);np.forEach(function(p){fos[p[0]][p[1]]='found';});
+      steps.push({type:'found',state:cloneS(fos),path:np,idx:idx+1,r,c,cl:3,
+        note:'✓ FOUND! Path: '+np.map(function(p){return'('+p[0]+','+p[1]+')'}).join('→'),
+        tree:cloneTree(myId)});
+      return;
+    }
+
+    steps.push({type:'match',state:cloneS(ps),path:np,idx:idx+1,r,c,cl:5,
+      note:'✓ \''+board[r][c]+'\' matches — mark, explore 4 dirs for \''+word[idx+1]+'\'',
+      tree:cloneTree(myId)});
+
+    var dirs=[[1,0,'↓'],[0,1,'→'],[-1,0,'↑'],[0,-1,'←']];
+    for(var di=0;di<dirs.length;di++){
+      if(found)break;
+      var dr=dirs[di][0],dc=dirs[di][1],arrow=dirs[di][2];
+      var nr=r+dr,nc2=c+dc;
+      if(nr<0||nr>=m||nc2<0||nc2>=n)continue;
+      if(np.some(function(p){return p[0]===nr&&p[1]===nc2;}))continue;
+      dfs(nr,nc2,idx+1,np,ps,myId,arrow+word[idx+1]);
+    }
+
+    if(!found){
+      TN[myId].state='matched';
+      const bs=cloneS(cs);path.forEach(function(p){bs[p[0]][p[1]]='path';});bs[r][c]='idle';
+      quickLayout();
+      steps.push({type:'backtrack',state:cloneS(bs),path:[...path],idx,r,c,cl:7,
+        note:'↩ Backtrack from ('+r+','+c+') — restore, try next',tree:cloneTree(pid!==null?pid:null)});
+    }
+  }
+
+  var stop=false;
+  for(var r=0;r<m&&!stop;r++){
+    for(var c2=0;c2<n&&!stop;c2++){
+      if(found){stop=true;break;}
+      steps.push({type:'try_start',state:cloneS(init),path:[],idx:0,r,c:c2,cl:1,
+        note:'Try start ('+r+','+c2+')=\''+board[r][c2]+'\'',tree:cloneTree(null)});
+      dfs(r,c2,0,[],cloneS(init),null,null);
+    }
+  }
+  if(!found){
+    steps.push({type:'not_found',state:cloneS(init),path:[],idx:0,r:-1,c:-1,cl:-1,
+      note:'✗ All cells exhausted — \''+word+'\' not in board',tree:cloneTree(null)});
+  }
+  return steps;
+}
+
+// ══════════════════════════════════════════════════
+// GLOBALS — set in window.load
+var ATREE=null;
+var V={board:[],word:'',steps:[],si:0,timer:null,built:false};
+var isPlaying=false;
+
+// ══════════════════════════════════════════════════
+// TAB / UTIL
+function toggleTheme(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+  if(ATREE)ATREE.draw();
+}
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
+  if(n==='animation'){setTimeout(function(){if(ATREE){ATREE.sz();ATREE.draw();}},40);}
+}
+function showSol(i,btn){
+  ['sv0','sv1'].forEach(function(id,j){document.getElementById(id).style.display=j===i?'block':'none';});
+  document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');
+}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
+
+// ══════════════════════════════════════════════════
+// ANIMATION
+function renderGrid(step){
+  var wrap=document.getElementById('grid-viz');
+  if(!V.board.length){wrap.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
+  var st=step?step.state:V.board.map(function(r){return r.map(function(){return'idle';});});
+  var div=document.createElement('div');div.className='grid-wrap';
+  V.board.forEach(function(row,r){
+    var rd=document.createElement('div');rd.className='grid-row';
+    row.forEach(function(ch,c){
+      var cd=document.createElement('div');cd.className='grid-cell gc-'+(st[r][c]||'idle');cd.textContent=ch;rd.appendChild(cd);
+    });
+    div.appendChild(rd);
+  });
+  wrap.innerHTML='';wrap.appendChild(div);
+}
+function renderWP(step){
+  var el=document.getElementById('word-progress');
+  if(!V.word){el.innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph)">—</span>';return;}
+  var idx=step?step.idx:0,type=step?step.type:'';
+  el.innerHTML='';
+  V.word.split('').forEach(function(ch,i){
+    var d=document.createElement('div');d.className='wchar';
+    if(type==='found'){d.classList.add('matched');}
+    else if(type==='not_found'){d.classList.add('failed');}
+    else if(i<idx){d.classList.add('matched');}
+    else if(i===idx&&(type==='try'||type==='match')){d.classList.add('current');}
+    d.textContent=ch;el.appendChild(d);
+  });
+}
+function renderPath(step){
+  document.getElementById('cur-path').textContent=
+    (step&&step.path&&step.path.length)?step.path.map(function(p){return'('+p[0]+','+p[1]+')';}).join(' → '):'—';
+}
+function setStatus(s){
+  var dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Searching…';}
+  else if(s==='found'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Found! ✓';}
+  else if(s==='notfound'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#f76a8a;flex-shrink:0';txt.textContent='Not found ✗';}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0';txt.textContent='Ready';}
+}
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent=(V.si+1)+'/'+V.steps.length;
+  if(s.tree&&ATREE){ATREE.setTree(s.tree.nodes,s.tree.edges,s.tree.activeId);if(V.si<=1)ATREE.fitDraw();else ATREE.redraw();}
+  renderGrid(s);renderWP(s);renderPath(s);
+  if(s.type==='found')setStatus('found');
+  else if(s.type==='not_found')setStatus('notfound');
+  else setStatus('run');
+  V.si++;updCtrl();return V.si<V.steps.length;
+}
+function rewindTo(t){
+  V.si=0;
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  while(V.si<t&&V.si<V.steps.length)V.si++;
+  if(t>0){
+    var s=V.steps[t-1];
+    if(s.tree&&ATREE){ATREE.setTree(s.tree.nodes,s.tree.edges,s.tree.activeId);ATREE.fitDraw();}
+    renderGrid(s);renderWP(s);renderPath(s);
+    for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    document.getElementById('bt-note').textContent=s.note;
+    document.getElementById('step-info').textContent=t+'/'+V.steps.length;
+    setStatus(s.type==='found'?'found':s.type==='not_found'?'notfound':'run');
+  } else {
+    if(ATREE)ATREE.clear();
+    renderGrid(null);renderWP(null);renderPath(null);
+    setStatus('ready');
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+    document.getElementById('step-info').textContent='';
+    document.getElementById('cur-path').textContent='—';
+  }
+}
+function loadS(b,w){document.getElementById('board-inp').value=b;document.getElementById('word-inp').value=w;runViz();}
+function runViz(){
+  stopAuto();
+  var board=parseBoard(document.getElementById('board-inp').value);
+  var word=document.getElementById('word-inp').value.trim().toUpperCase();
+  if(!board){document.getElementById('bt-note').textContent='Invalid board — use | to separate rows.';return;}
+  if(!word){document.getElementById('bt-note').textContent='Enter a word.';return;}
+  if(word.length>6){document.getElementById('bt-note').textContent='Keep word ≤ 6 chars for clear animation.';return;}
+  V.board=board;V.word=word;
+  V.steps=buildSteps(board,word);V.si=0;V.built=true;
+  if(ATREE){ATREE.sz();ATREE.clear();}
+  renderGrid(null);renderWP(null);renderPath(null);
+  setStatus('ready');
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  document.getElementById('bt-note').textContent='Use ← / → to step, or ▶ Auto-play.';
+  document.getElementById('step-info').textContent='';
+  document.getElementById('cur-path').textContent='—';
+  updCtrl();
+}
+function stepBy(d){stopAuto();if(!V.built)return;if(d>0){if(V.si<V.steps.length)applyStep();}else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}updCtrl();}
+function stopAuto(){if(V.timer){clearInterval(V.timer);V.timer=null;}isPlaying=false;var b=document.getElementById('btn-auto');if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}}
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}if(!V.built)return;
+  if(V.si>=V.steps.length){rewindTo(0);updCtrl();}
+  isPlaying=true;
+  var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('primary');
+  var sl=document.getElementById('speed-sl');
+  var SPDS=[900,550,280,140,60];
+  V.timer=setInterval(function(){var m=applyStep();updCtrl();if(!m)stopAuto();},SPDS[sl.value-1]);
+}
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updCtrl();}
+
+// keyboard
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+// ══════════════════════════════════════════════════
+// INIT
+var ss=document.createElement('style');
+ss.textContent='@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+
+  // size canvases to fill their parent flex containers
+  function sizeCv(id){
+    var cv=document.getElementById(id);if(!cv)return;
+    var box=cv.closest('.tree-box');if(!box)return;
+    var taken=0;
+    box.querySelectorAll('.tree-hdr,.tree-leg').forEach(function(el){taken+=el.offsetHeight||0;});
+    cv.style.height=Math.max(200,(box.clientHeight||400)-taken-10)+'px';
+  }
+  sizeCv('anim-cv');
+
+  ATREE=makeTree('anim-cv');
+  if(ATREE){ATREE.sz();ATREE.draw();}
+
+  // speed slider
+  var sl=document.getElementById('speed-sl');
+  var SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+  sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+
+  // defaults
+  loadS('ABCE|SFCS|ADEE','SEE');
+
+  window.addEventListener('resize',function(){
+    sizeCv('anim-cv');
+    if(ATREE){ATREE.sz();ATREE.draw();}
+  });
+});
+</script>
+</body>
+</html>
