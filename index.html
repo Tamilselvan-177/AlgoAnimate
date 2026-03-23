@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>AlgoAnimate — Visual Algorithm Learning</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -106,23 +107,21 @@
   <h1>Learn algorithms<br>by <em>watching</em> them</h1>
   <p>Step-by-step animated breakdowns of every classic algorithm. Custom input, sample cases, code highlighting — no backend, no frameworks.</p>
   <div class="hero-stats">
-    <div class="hstat"><span class="hstat-n" id="problem-count">4</span><span class="hstat-l">Problems</span></div>
+    <div class="hstat"><span class="hstat-n" id="problem-count">0</span><span class="hstat-l">Problems</span></div>
     <div class="hstat"><span class="hstat-n">100%</span><span class="hstat-l">Interactive</span></div>
     <div class="hstat"><span class="hstat-n">0</span><span class="hstat-l">Dependencies</span></div>
   </div>
 </div>
 
 <div class="search-wrap">
-  <input class="search-input" type="text" id="search" placeholder="Search problems..." oninput="filterProblems()">
-  <button class="filter-btn on" onclick="setFilter('all',this)">All</button>
-  <button class="filter-btn" onclick="setFilter('array',this)">Array</button>
-  <button class="filter-btn" onclick="setFilter('graph',this)">Graph</button>
-  <button class="filter-btn" onclick="setFilter('bfs',this)">BFS</button>
-  <button class="filter-btn" onclick="setFilter('dfs',this)">DFS</button>
-  <button class="filter-btn" onclick="setFilter('backtracking',this)">Backtracking</button>
-  <button class="filter-btn" onclick="setFilter('two-pointers',this)">Two Pointers</button>
-
-
+  <input class="search-input" type="search" id="search" placeholder="Search problems..." autocomplete="off" aria-label="Search problems" oninput="filterProblems()">
+  <button type="button" class="filter-btn on" onclick="setFilter('all',this)">All</button>
+  <button type="button" class="filter-btn" onclick="setFilter('array',this)">Array</button>
+  <button type="button" class="filter-btn" onclick="setFilter('graph',this)">Graph</button>
+  <button type="button" class="filter-btn" onclick="setFilter('bfs',this)">BFS</button>
+  <button type="button" class="filter-btn" onclick="setFilter('dfs',this)">DFS</button>
+  <button type="button" class="filter-btn" onclick="setFilter('backtracking',this)">Backtracking</button>
+  <button type="button" class="filter-btn" onclick="setFilter('two-pointers',this)">Two Pointers</button>
 </div>
 
 <div class="section-label">Problems</div>
@@ -257,7 +256,7 @@
 </a>
   <div class="prob-card coming-soon" data-tags="array">
     <div class="soon-pill">Coming soon</div>
-    <div class="card-top"><span class="card-num">#05</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Array</span></div></div>
+    <div class="card-top"><span class="card-num">#16</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Array</span></div></div>
     <div class="card-title">Two Sum</div>
     <div class="card-desc">Hash map approach. Find two indices that add up to a target in one pass.</div>
     <div class="card-footer"><div class="card-tags"><span class="tag">hashmap</span></div></div>
@@ -265,7 +264,7 @@
 
   <div class="prob-card coming-soon" data-tags="graph dfs">
     <div class="soon-pill">Coming soon</div>
-    <div class="card-top"><span class="card-num">#06</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Graph</span></div></div>
+    <div class="card-top"><span class="card-num">#17</span><div class="card-badges"><span class="badge b-medium">Medium</span><span class="badge b-topic">Graph</span></div></div>
     <div class="card-title">Number of Islands</div>
     <div class="card-desc">Count connected components in a 2D binary grid using BFS/DFS.</div>
     <div class="card-footer"><div class="card-tags"><span class="tag">dfs</span><span class="tag">bfs</span></div></div>
@@ -290,6 +289,12 @@
 <script>
 let activeFilter = 'all';
 
+function updateProblemCount() {
+  const n = document.querySelectorAll('.prob-card:not(.coming-soon)').length;
+  const el = document.getElementById('problem-count');
+  if (el) el.textContent = String(n);
+}
+
 function setFilter(f, btn) {
   activeFilter = f;
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
@@ -298,7 +303,8 @@ function setFilter(f, btn) {
 }
 
 function filterProblems() {
-  const q = document.getElementById('search').value.toLowerCase();
+  const searchEl = document.getElementById('search');
+  const q = (searchEl && searchEl.value ? searchEl.value : '').toLowerCase().trim();
   document.querySelectorAll('.prob-card').forEach(card => {
     const tags = (card.dataset.tags || '').toLowerCase();
     const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
@@ -308,6 +314,10 @@ function filterProblems() {
     card.style.display = matchSearch && matchFilter ? '' : 'none';
   });
 }
+
+document.addEventListener('DOMContentLoaded', function () {
+  updateProblemCount();
+});
 </script>
 </body>
 </html>

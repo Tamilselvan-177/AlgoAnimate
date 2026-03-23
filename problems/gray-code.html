@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>89. Gray Code — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.12);--teal-border:rgba(45,212,191,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,.1);--teal-border:rgba(13,148,136,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ── ANIMATION SPECIFIC ── */
+/* bit chip strip */
+.bit-strip{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:38px}
+.bit-chip{display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--mono);flex-shrink:0;cursor:default}
+.bit-num{font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;border:2px solid var(--border2);background:var(--bg3);color:var(--text2);min-width:38px;text-align:center;transition:all .25s}
+.bit-bin{font-size:9px;color:var(--text3);letter-spacing:.08em;transition:all .25s}
+.bit-chip.current .bit-num{border-color:#7c6af7;background:rgba(124,106,247,.25);color:#c792ea;transform:scale(1.12);box-shadow:0 0 12px rgba(124,106,247,.5)}
+.bit-chip.added .bit-num{border-color:#4af7b0;background:rgba(74,247,176,.18);color:#4af7b0}
+.bit-chip.mirror .bit-num{border-color:#f5a623;background:rgba(245,166,35,.15);color:#f5a623}
+[data-theme="light"] .bit-chip.current .bit-num{border-color:#5b48e8;background:rgba(91,72,232,.12);color:#5b48e8}
+[data-theme="light"] .bit-chip.added .bit-num{border-color:#1a9e5c;background:rgba(26,158,92,.1);color:#1a9e5c}
+[data-theme="light"] .bit-chip.mirror .bit-num{border-color:#c47d0a;background:rgba(196,125,10,.1);color:#c47d0a}
+
+/* ── REFLECTION FLIP ANIMATION ── */
+.refl-pill{
+  padding:4px 10px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;
+  display:inline-flex;align-items:center;gap:5px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s, background .25s, border-color .25s;
+  transform-origin:center;
+}
+.refl-pill.orig{border:1.5px solid #7c6af7;background:rgba(124,106,247,.15);color:#a090ff}
+.refl-pill.flip{
+  border:1.5px solid #f5a623;background:rgba(245,166,35,.18);color:#f5a623;
+  /* CSS flip animation triggered by class */
+}
+.refl-pill.doing-flip{animation:pillFlip .4s cubic-bezier(.34,1.2,.64,1) forwards}
+@keyframes pillFlip{
+  0%  {transform:scaleX(1)  translateY(0);}
+  40% {transform:scaleX(-1) translateY(-4px);}
+  70% {transform:scaleX(1)  translateY(-2px);}
+  100%{transform:scaleX(1)  translateY(0);}
+}
+.refl-pill.pop-in{animation:popIn .3s cubic-bezier(.34,1.56,.64,1) forwards}
+@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+
+/* flip arrow */
+.flip-arrow{font-size:1.1rem;color:var(--amber);animation:arrowBounce .6s ease infinite alternate}
+@keyframes arrowBounce{from{transform:translateY(0)}to{transform:translateY(3px)}}
+
+/* ── XOR VALIDATOR ── */
+.xor-row{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.84rem;line-height:2.1}
+.xor-label{width:38px;font-size:.68rem;color:var(--text3);flex-shrink:0;letter-spacing:.04em;text-transform:uppercase}
+.xor-bit{width:20px;text-align:center;font-weight:700;border-radius:4px;padding:1px 0;transition:all .2s}
+.xor-bit.same{color:var(--text3)}
+.xor-bit.changed{color:#f5a623;background:rgba(245,166,35,.25);border:1px solid rgba(245,166,35,.5);animation:bitPulse .4s ease}
+@keyframes bitPulse{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.xor-bit.result-one{color:#4af7b0;background:rgba(74,247,176,.2);border:1px solid rgba(74,247,176,.4)}
+.xor-verdict{display:flex;align-items:center;gap:8px;margin-top:6px;padding:7px 12px;border-radius:10px;font-family:var(--mono);font-size:.82rem;font-weight:700}
+.verdict-valid{background:rgba(74,247,176,.12);border:1.5px solid rgba(74,247,176,.4);color:#4af7b0}
+.verdict-invalid{background:rgba(247,106,138,.12);border:1.5px solid rgba(247,106,138,.4);color:#f76a8a}
+
+/* ── OR BIT LAYER ── */
+.or-bit{width:22px;text-align:center;border-radius:4px;padding:2px 0;font-family:var(--mono);font-size:.84rem;font-weight:700;transition:all .2s}
+.or-bit.highlight-col{background:rgba(245,166,35,.22);color:#f5a623;border:1px solid rgba(245,166,35,.5)}
+.or-bit.result-col{background:rgba(74,247,176,.18);color:#4af7b0;border:1px solid rgba(74,247,176,.4)}
+.or-bit.plain{color:var(--text2)}
+.or-bit.zero{color:var(--text3)}
+
+/* diff */
+.diff-box{display:flex;gap:4px;align-items:center;font-family:var(--mono);font-size:.8rem}
+.diff-bit{padding:3px 7px;border-radius:5px;font-weight:700}
+.diff-same{color:var(--text3)}
+.diff-changed{color:#f5a623;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.4)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">LC #89 · Medium</span>
+    <span class="badge b-topic">Bit Manipulation</span>
+    <span class="badge b-topic">Math</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=bit-manipulation">Bit Manipulation</a><span>/</span>
+  <span style="color:var(--text2)">Gray Code</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #12</div>
+      <div class="lc-number">LeetCode 89</div>
+      <h1>Gray Code</h1>
+      <p class="hero-sub">Generate a sequence of 2ⁿ integers where every adjacent pair differs by <strong style="color:var(--text)">exactly one bit</strong>. The elegant reflected construction builds each level by mirroring the previous — no backtracking, no search.</p>
+    </div>
+    <div class="time-est">⏱ <span>~10 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">An <strong>n-bit Gray code sequence</strong> is a sequence of 2ⁿ integers where:<br><br>
+      <ul>
+        <li>Every integer is in range [0, 2ⁿ − 1]</li>
+        <li>The first integer is 0</li>
+        <li>No integer appears more than once</li>
+        <li>Adjacent integers differ by <strong>exactly one bit</strong></li>
+        <li>The first and last integers also differ by exactly one bit</li>
+      </ul><br>
+      Given <code>n</code>, return <strong>any valid</strong> n-bit Gray code sequence.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — n = 2</div>
+        <div class="ex-io"><strong>Output:</strong> [0, 1, 3, 2]</div>
+        <div class="ex-io" style="color:var(--text3)">Binary: 00 → 01 → 11 → 10 → (back to 00)</div>
+        <div class="ex-io" style="color:var(--text3)">Each step flips exactly one bit ✓</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2 — n = 1</div>
+        <div class="ex-io"><strong>Output:</strong> [0, 1]</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 3 — n = 3</div>
+        <div class="ex-io"><strong>Output:</strong> [0,1,3,2,6,7,5,4]</div>
+        <div class="ex-io" style="color:var(--text3)">000→001→011→010→110→111→101→100</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ n ≤ 16</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>Output must have exactly 2ⁿ integers</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>Any valid sequence is accepted</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(2ⁿ)</div>
+        <div style="color:var(--accent2)">Space: O(2ⁿ) for the output</div>
+        <div style="color:var(--text3);margin-top:6px;font-size:.72rem">Must output all 2ⁿ values — can't do better than O(2ⁿ).</div>
+      </div>
+      <div style="margin-top:1rem;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Key insight</div>
+        <div style="color:var(--text2)">This is NOT a search problem. The answer can be built <strong style="color:var(--text)">directly</strong> by the reflection trick — no backtracking needed.</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Reflection (iterative)</div>
+    <div class="vtab" onclick="showSol(1,this)">XOR formula</div>
+    <div class="vtab" onclick="showSol(2,this)">Recursive</div>
+  </div>
+
+  <div class="vsec on" id="sv0">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Reflection — build each level by mirroring</span><div class="cx-row"><span class="cx cx-t">O(2ⁿ)</span><span class="cx cx-s">O(2ⁿ)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">grayCode</span>(n: int) -> list[int]:
+    result = [<span class="nm">0</span>]
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        <span class="cm"># mirror current list in reverse</span>
+        result += [x | (<span class="nm">1</span> << i) <span class="kw">for</span> x <span class="kw">in</span> reversed(result)]
+    <span class="kw">return</span> result</pre></div>
+    <div style="margin-top:.8rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">How it grows</div>
+      n=0: [0]<br>
+      n=1: [0, <span style="color:var(--amber)">1</span>]  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 0|1=1<br>
+      n=2: [0,1, <span style="color:var(--amber)">3,2</span>]  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;← 1|2=3, 0|2=2<br>
+      n=3: [0,1,3,2, <span style="color:var(--amber)">6,7,5,4</span>]  ← reversed+4
+    </div>
+  </div>
+
+  <div class="vsec" id="sv1">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">XOR formula — i ^ (i >> 1)</span><div class="cx-row"><span class="cx cx-t">O(2ⁿ)</span><span class="cx cx-s">O(2ⁿ)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">grayCode</span>(n: int) -> list[int]:
+    <span class="cm"># Gray code of integer i = i XOR (i >> 1)</span>
+    <span class="kw">return</span> [i ^ (i >> <span class="nm">1</span>) <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span> << n)]
+
+<span class="cm"># i=0: 000 ^ 000 = 0
+# i=1: 001 ^ 000 = 1
+# i=2: 010 ^ 001 = 3
+# i=3: 011 ^ 001 = 2
+# i=4: 100 ^ 010 = 6  ← n=3 continues here</span></pre></div>
+  </div>
+
+  <div class="vsec" id="sv2">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Recursive reflection</span><div class="cx-row"><span class="cx cx-t">O(2ⁿ)</span><span class="cx cx-s">O(2ⁿ)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s2')">Copy</button></div>
+    <div class="code-block"><pre id="s2"><span class="kw">def</span> <span class="fn">grayCode</span>(n: int) -> list[int]:
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return</span> [<span class="nm">0</span>]
+    prev = grayCode(n - <span class="nm">1</span>)
+    <span class="cm"># prepend 0-bit to prev, then prepend 1-bit to reversed prev</span>
+    <span class="kw">return</span> prev + [x | (<span class="nm">1</span> << (n-<span class="nm">1</span>)) <span class="kw">for</span> x <span class="kw">in</span> reversed(prev)]</pre></div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — What makes a sequence "Gray"?</h3>
+    <div class="prose" style="margin-bottom:.8rem">Every adjacent pair must differ by <strong>exactly one bit</strong>. Including the wrap-around (last → first).</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;margin-bottom:6px">✓ Valid (n=2)</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2);line-height:2">
+          00 → 01 &nbsp;<span style="color:var(--green)">1 bit</span><br>
+          01 → 11 &nbsp;<span style="color:var(--green)">1 bit</span><br>
+          11 → 10 &nbsp;<span style="color:var(--green)">1 bit</span><br>
+          10 → 00 &nbsp;<span style="color:var(--green)">1 bit ✓ (wrap)</span>
+        </div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Invalid</div>
+        <div style="font-family:var(--mono);font-size:.82rem;color:var(--text2);line-height:2">
+          00 → 11 &nbsp;<span style="color:var(--coral)">2 bits ✗</span><br>
+          00 → 01 → 10 &nbsp;<span style="color:var(--coral)">01→10 = 2 bits ✗</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — The reflection trick</h3>
+    <div class="prose" style="margin-bottom:.8rem">Start with <code>[0]</code>. At each step, <strong>mirror</strong> the current list in reverse and prepend the new bit (1) to the mirrored half. The boundary between the two halves always has exactly one bit change because the last element of the original and the first element of the mirror are the same number — just with the new bit added.</div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2.2;overflow-x:auto">
+      <div><span style="color:var(--text3)">start:</span> [<span style="color:var(--accent2)">0</span>]</div>
+      <div><span style="color:var(--text3)">i=0:</span> &nbsp;[<span style="color:var(--accent2)">0</span>] + mirror([<span style="color:var(--amber)">0</span>|1]) = [0, <span style="color:var(--amber)">1</span>]</div>
+      <div><span style="color:var(--text3)">i=1:</span> &nbsp;[<span style="color:var(--accent2)">0,1</span>] + mirror([<span style="color:var(--amber)">1,0</span>]|2) = [0,1, <span style="color:var(--amber)">3,2</span>]</div>
+      <div><span style="color:var(--text3)">i=2:</span> &nbsp;[<span style="color:var(--accent2)">0,1,3,2</span>] + mirror([<span style="color:var(--amber)">2,3,1,0</span>]|4) = [0,1,3,2, <span style="color:var(--amber)">6,7,5,4</span>]</div>
+    </div>
+    <div style="margin-top:.8rem;padding:7px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:8px;font-family:var(--mono);font-size:.77rem;color:var(--amber)">
+      🔑 The join point (2→6, both = 010 and 110) always differs by exactly the one new bit — guaranteed by the mirror.
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Why the XOR formula works</h3>
+    <div class="prose" style="margin-bottom:.8rem">There's an elegant closed-form: <code>gray(i) = i XOR (i >> 1)</code>. This converts any integer directly to its Gray code.</div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2.2">
+      <div><span style="color:var(--text3)">i=0:</span> 000 XOR 000 = <span style="color:var(--green)">000 = 0</span></div>
+      <div><span style="color:var(--text3)">i=1:</span> 001 XOR 000 = <span style="color:var(--green)">001 = 1</span></div>
+      <div><span style="color:var(--text3)">i=2:</span> 010 XOR 001 = <span style="color:var(--green)">011 = 3</span></div>
+      <div><span style="color:var(--text3)">i=3:</span> 011 XOR 001 = <span style="color:var(--green)">010 = 2</span></div>
+      <div><span style="color:var(--text3)">i=4:</span> 100 XOR 010 = <span style="color:var(--green)">110 = 6</span></div>
+    </div>
+    <div style="margin-top:.8rem;font-size:.82rem;color:var(--text2)">The XOR formula and the reflection trick produce <strong style="color:var(--text)">the same sequence</strong> — two ways to see the same structure.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Full trace: n = 3</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto">
+      <div><span style="color:var(--text3)">Start:</span> result = [0]</div>
+      <div><span style="color:var(--accent2)">Round i=0 (bit 1):</span> reversed = [0], OR 1 → [1]</div>
+      <div style="padding-left:1.4rem">result = [0, <span style="color:var(--amber)">1</span>] &nbsp; 0↔1: <span style="color:var(--green)">1 bit diff ✓</span></div>
+      <div><span style="color:var(--accent2)">Round i=1 (bit 2):</span> reversed = [1,0], OR 2 → [3,2]</div>
+      <div style="padding-left:1.4rem">result = [0,1, <span style="color:var(--amber)">3,2</span>] &nbsp; 1↔3: <span style="color:var(--green)">1 bit ✓</span> &nbsp; 3↔2: <span style="color:var(--green)">1 bit ✓</span></div>
+      <div><span style="color:var(--accent2)">Round i=2 (bit 4):</span> reversed = [2,3,1,0], OR 4 → [6,7,5,4]</div>
+      <div style="padding-left:1.4rem">result = [0,1,3,2, <span style="color:var(--amber)">6,7,5,4</span>]</div>
+      <div style="padding-left:1.4rem">2↔6: <span style="color:var(--green)">010↔110 — 1 bit ✓ (join point)</span></div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">Final: [0,1,3,2,6,7,5,4] — wrap 4↔0: 100↔000 — 1 bit ✓</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 — Common mistakes</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Confusing n with 2ⁿ</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">n=4 means 4-bit codes, output has 2⁴=16 numbers. The loop runs n times, not 2ⁿ times.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Forgetting to reverse</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Appending forward instead of reversed breaks the 1-bit guarantee at the join point.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Wrong shift in XOR formula</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7"><code>i ^ (i >> 1)</code> not <code>i ^ i >> 1</code> (operator precedence). Always use parentheses.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Trying brute force / backtracking</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">This problem has a direct O(2ⁿ) construction. No need to search all permutations.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATIC SVG: reflection diagram for n=3 -->
+  <div class="card" style="border-left:3px solid var(--accent2);padding:1rem 1.2rem">
+    <h3 style="margin-bottom:.4rem">Reflection diagram — n = 3</h3>
+    <div style="font-size:.78rem;color:var(--text2);margin-bottom:.9rem">Each level mirrors the previous. Blue = original half, Amber = mirrored half with new bit prepended.</div>
+    <div style="overflow-x:auto">
+      <svg viewBox="0 0 820 300" width="100%" style="display:block;font-family:'JetBrains Mono',monospace">
+        <!-- Level labels -->
+        <text x="10" y="46" font-size="10" fill="#5a5870">n=0</text>
+        <text x="10" y="106" font-size="10" fill="#5a5870">n=1</text>
+        <text x="10" y="166" font-size="10" fill="#5a5870">n=2</text>
+        <text x="10" y="226" font-size="10" fill="#5a5870">n=3</text>
+
+        <!-- n=0: just [0] -->
+        <rect x="50" y="28" width="60" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="80" y="46" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#a090ff">0</text>
+        <text x="80" y="62" text-anchor="middle" font-size="8" fill="#5a5870">0</text>
+
+        <!-- n=1: [0, 1] -->
+        <rect x="50" y="88" width="60" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="80" y="106" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#a090ff">0</text>
+        <text x="80" y="122" text-anchor="middle" font-size="8" fill="#5a5870">0</text>
+
+        <rect x="120" y="88" width="60" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="150" y="106" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#f5a623">1</text>
+        <text x="150" y="122" text-anchor="middle" font-size="8" fill="#5a5870">1</text>
+
+        <!-- reflect arrow n=0 → n=1 -->
+        <path d="M80,56 C80,72 150,72 150,88" fill="none" stroke="rgba(245,166,35,.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="118" y="76" text-anchor="middle" font-size="8" fill="rgba(245,166,35,.7)">mirror+1</text>
+
+        <!-- n=2: [0,1,3,2] -->
+        <rect x="50" y="148" width="55" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="77" y="166" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#a090ff">0</text>
+        <text x="77" y="182" text-anchor="middle" font-size="8" fill="#5a5870">00</text>
+        <rect x="115" y="148" width="55" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="142" y="166" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#a090ff">1</text>
+        <text x="142" y="182" text-anchor="middle" font-size="8" fill="#5a5870">01</text>
+        <rect x="180" y="148" width="55" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="207" y="166" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#f5a623">3</text>
+        <text x="207" y="182" text-anchor="middle" font-size="8" fill="#5a5870">11</text>
+        <rect x="245" y="148" width="55" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="272" y="166" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="700" fill="#f5a623">2</text>
+        <text x="272" y="182" text-anchor="middle" font-size="8" fill="#5a5870">10</text>
+
+        <path d="M142,136 C142,140 207,140 207,148" fill="none" stroke="rgba(245,166,35,.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="178" y="143" text-anchor="middle" font-size="8" fill="rgba(245,166,35,.7)">mirror+2</text>
+
+        <!-- n=3: [0,1,3,2,6,7,5,4] -->
+        <rect x="50" y="208" width="48" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="74" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#a090ff">0</text>
+        <text x="74" y="242" text-anchor="middle" font-size="7" fill="#5a5870">000</text>
+        <rect x="104" y="208" width="48" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="128" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#a090ff">1</text>
+        <text x="128" y="242" text-anchor="middle" font-size="7" fill="#5a5870">001</text>
+        <rect x="158" y="208" width="48" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="182" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#a090ff">3</text>
+        <text x="182" y="242" text-anchor="middle" font-size="7" fill="#5a5870">011</text>
+        <rect x="212" y="208" width="48" height="28" rx="7" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1.5"/>
+        <text x="236" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#a090ff">2</text>
+        <text x="236" y="242" text-anchor="middle" font-size="7" fill="#5a5870">010</text>
+
+        <rect x="266" y="208" width="48" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="290" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#f5a623">6</text>
+        <text x="290" y="242" text-anchor="middle" font-size="7" fill="#5a5870">110</text>
+        <rect x="320" y="208" width="48" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="344" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#f5a623">7</text>
+        <text x="344" y="242" text-anchor="middle" font-size="7" fill="#5a5870">111</text>
+        <rect x="374" y="208" width="48" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="398" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#f5a623">5</text>
+        <text x="398" y="242" text-anchor="middle" font-size="7" fill="#5a5870">101</text>
+        <rect x="428" y="208" width="48" height="28" rx="7" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1.5"/>
+        <text x="452" y="226" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="700" fill="#f5a623">4</text>
+        <text x="452" y="242" text-anchor="middle" font-size="7" fill="#5a5870">100</text>
+
+        <!-- join point marker -->
+        <line x1="261" y1="200" x2="261" y2="244" stroke="rgba(74,247,176,.6)" stroke-width="1.5" stroke-dasharray="3,3"/>
+        <text x="261" y="258" text-anchor="middle" font-size="8" fill="rgba(74,247,176,.7)">join: 2↔6 = 010↔110 ✓</text>
+
+        <path d="M236,196 C236,200 290,200 290,208" fill="none" stroke="rgba(245,166,35,.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="265" y="200" text-anchor="middle" font-size="8" fill="rgba(245,166,35,.7)">mirror+4</text>
+
+        <!-- XOR formula right side -->
+        <text x="560" y="30" text-anchor="middle" font-size="10" fill="#5a5870" letter-spacing="1">XOR FORMULA: i ^ (i >> 1)</text>
+        <line x1="510" y1="36" x2="730" y2="36" stroke="rgba(90,90,100,.3)" stroke-width="1"/>
+        <!-- table rows -->
+        <text x="520" y="55" font-size="10" fill="#5a5870">i</text>
+        <text x="570" y="55" font-size="10" fill="#5a5870">binary</text>
+        <text x="640" y="55" font-size="10" fill="#5a5870">i>>1</text>
+        <text x="700" y="55" font-size="10" fill="#5a5870">gray</text>
+        <line x1="510" y1="60" x2="730" y2="60" stroke="rgba(90,90,100,.3)" stroke-width="1"/>
+        <!-- rows -->
+        <text x="520" y="76" font-size="10" fill="var(--accent2,#a594f9)">0</text><text x="570" y="76" font-size="10" fill="#5a5870">000</text><text x="640" y="76" font-size="10" fill="#5a5870">000</text><text x="700" y="76" font-size="10" fill="#4af7b0">000=0</text>
+        <text x="520" y="96" font-size="10" fill="var(--accent2,#a594f9)">1</text><text x="570" y="96" font-size="10" fill="#5a5870">001</text><text x="640" y="96" font-size="10" fill="#5a5870">000</text><text x="700" y="96" font-size="10" fill="#4af7b0">001=1</text>
+        <text x="520" y="116" font-size="10" fill="var(--accent2,#a594f9)">2</text><text x="570" y="116" font-size="10" fill="#5a5870">010</text><text x="640" y="116" font-size="10" fill="#5a5870">001</text><text x="700" y="116" font-size="10" fill="#4af7b0">011=3</text>
+        <text x="520" y="136" font-size="10" fill="var(--accent2,#a594f9)">3</text><text x="570" y="136" font-size="10" fill="#5a5870">011</text><text x="640" y="136" font-size="10" fill="#5a5870">001</text><text x="700" y="136" font-size="10" fill="#4af7b0">010=2</text>
+        <text x="520" y="156" font-size="10" fill="var(--accent2,#a594f9)">4</text><text x="570" y="156" font-size="10" fill="#5a5870">100</text><text x="640" y="156" font-size="10" fill="#5a5870">010</text><text x="700" y="156" font-size="10" fill="#4af7b0">110=6</text>
+        <text x="520" y="176" font-size="10" fill="var(--accent2,#a594f9)">5</text><text x="570" y="176" font-size="10" fill="#5a5870">101</text><text x="640" y="176" font-size="10" fill="#5a5870">010</text><text x="700" y="176" font-size="10" fill="#4af7b0">111=7</text>
+        <text x="520" y="196" font-size="10" fill="var(--accent2,#a594f9)">6</text><text x="570" y="196" font-size="10" fill="#5a5870">110</text><text x="640" y="196" font-size="10" fill="#5a5870">011</text><text x="700" y="196" font-size="10" fill="#4af7b0">101=5</text>
+        <text x="520" y="216" font-size="10" fill="var(--accent2,#a594f9)">7</text><text x="570" y="216" font-size="10" fill="#5a5870">111</text><text x="640" y="216" font-size="10" fill="#5a5870">011</text><text x="700" y="216" font-size="10" fill="#4af7b0">100=4</text>
+
+        <!-- Legend -->
+        <rect x="510" y="240" width="16" height="12" rx="3" fill="rgba(124,106,247,.2)" stroke="#7c6af7" stroke-width="1"/>
+        <text x="532" y="250" font-size="9" fill="#5a5870">original half</text>
+        <rect x="620" y="240" width="16" height="12" rx="3" fill="rgba(245,166,35,.2)" stroke="#f5a623" stroke-width="1"/>
+        <text x="642" y="250" font-size="9" fill="#5a5870">mirrored+bit</text>
+      </svg>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>The Gray code insight:</strong> Any valid sequence is accepted — no unique answer required. The reflection and XOR approaches both give the canonical sequence. In hardware, Gray codes prevent glitches in rotary encoders because only one bit changes at a time.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <!-- Input row -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">n (bits)</span>
+      <input class="grid-inp" id="n-inp" type="number" value="3" min="1" max="5" style="width:70px">
+    </div>
+    <!-- method toggle -->
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">View mode</span>
+      <div style="display:flex;gap:0">
+        <button id="mode-refl" class="cbtn primary" onclick="setMode('reflection')" style="border-radius:var(--radius) 0 0 var(--radius);padding:7px 13px">Reflection</button>
+        <button id="mode-xor"  class="cbtn"         onclick="setMode('xor')"        style="border-radius:0 var(--radius) var(--radius) 0;padding:7px 13px">XOR formula</button>
+      </div>
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadN(1)">n=1</button>
+    <button class="sbtn" onclick="loadN(2)">n=2</button>
+    <button class="sbtn" onclick="loadN(3)">n=3</button>
+    <button class="sbtn" onclick="loadN(4)">n=4</button>
+  </div>
+
+  <!-- CONTROL BAR -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+  <!-- progress bar -->
+  <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div style="display:grid;grid-template-columns:1fr 290px;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- SEQUENCE DISPLAY -->
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.1rem 1.3rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Gray code sequence</div>
+        <div id="seq-display" class="bit-strip">
+          <span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>
+        </div>
+      </div>
+
+      <!-- REFLECTION VISUAL with animated flip -->
+      <div id="refl-panel" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Reflection — watch the mirror flip</div>
+        <!-- Step 1: original -->
+        <div style="font-size:.65rem;font-family:var(--mono);color:var(--text3);margin-bottom:4px;letter-spacing:.04em">ORIGINAL</div>
+        <div id="refl-before" style="display:flex;gap:5px;flex-wrap:wrap;min-height:34px;align-items:center;margin-bottom:6px"></div>
+        <!-- flip arrow -->
+        <div id="flip-arrow-row" style="display:flex;align-items:center;gap:8px;margin-bottom:6px;opacity:0;transition:opacity .3s">
+          <span class="flip-arrow">↕</span>
+          <span style="font-family:var(--mono);font-size:.72rem;color:var(--amber)">mirror + OR bit <span id="refl-bit-lbl" style="font-weight:700"></span></span>
+        </div>
+        <!-- Step 2: mirrored+bit -->
+        <div style="font-size:.65rem;font-family:var(--mono);color:var(--text3);margin-bottom:4px;letter-spacing:.04em">MIRRORED + NEW BIT</div>
+        <div id="refl-after" style="display:flex;gap:5px;flex-wrap:wrap;min-height:34px;align-items:center"></div>
+      </div>
+
+      <!-- BIT-LAYER: OR operation column highlight -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Bit-layer — column-aligned OR</div>
+        <div id="or-view" style="line-height:2;color:var(--text2)">—</div>
+      </div>
+
+      <!-- XOR INVARIANT VALIDATOR — strong verdict -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Gray invariant — prev ⊕ curr must = exactly 1 bit</div>
+        <div id="xor-validator">
+          <span style="font-family:var(--mono);font-size:.8rem;color:var(--ph)">—</span>
+        </div>
+      </div>
+
+      <!-- BOTH METHODS SIDE BY SIDE -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Both methods — same value ✓</div>
+        <div id="both-view" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:var(--mono);font-size:.8rem">
+          <div style="background:var(--bg3);border-radius:var(--radius);padding:.5rem .8rem">
+            <div style="font-size:.65rem;color:var(--text3);margin-bottom:4px">Reflection: x | (1&lt;&lt;i)</div>
+            <div id="both-refl" style="color:var(--accent2)">—</div>
+          </div>
+          <div style="background:var(--bg3);border-radius:var(--radius);padding:.5rem .8rem">
+            <div style="font-size:.65rem;color:var(--text3);margin-bottom:4px">XOR formula: i ^ (i>>1)</div>
+            <div id="both-xor" style="color:var(--accent2)">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATUS -->
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+        <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0"></div>
+        <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+      </div>
+    </div>
+
+    <!-- RIGHT -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">grayCode</span>(n):</span>
+<span class="hl" id="cl1">  result = [<span class="nm">0</span>]</span>
+<span class="hl" id="cl2">  <span class="kw">for</span> i <span class="kw">in</span> range(n):</span>
+<span class="hl" id="cl3">    rev = <span class="fn">reversed</span>(result)</span>
+<span class="hl" id="cl4">    <span class="kw">for</span> x <span class="kw">in</span> rev:</span>
+<span class="hl" id="cl5">      result.append(x | <span class="nm">1</span>&lt;&lt;i)</span>
+<span class="hl" id="cl6">  <span class="kw">return</span> result</span></pre>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;font-family:var(--mono)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(124,106,247,.25);border:2px solid #7c6af7;flex-shrink:0"></div><span style="color:var(--text2)">Being added now</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(74,247,176,.18);border:2px solid #4af7b0;flex-shrink:0"></div><span style="color:var(--text2)">In sequence ✓</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(245,166,35,.15);border:2px solid #f5a623;flex-shrink:0"></div><span style="color:var(--text2)">Mirror source</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(240,112,96,.15);border:2px solid var(--coral);flex-shrink:0"></div><span style="color:var(--text2)">Bit being OR'd</span></div>
+        </div>
+      </div>
+
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:40px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="subsets.html">
+      <div class="rel-top"><span class="rel-num">LC #78 · Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Subsets</div>
+      <div class="rel-desc">Generate all 2ⁿ subsets — same size output as Gray Code, built by the same include/exclude idea.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="subset-sum.html">
+      <div class="rel-top"><span class="rel-num">GFG · Medium</span><span class="badge b-topic">DP</span></div>
+      <div class="rel-title">Subset Sum</div>
+      <div class="rel-desc">Another 2ⁿ-space problem — does any subset reach the target? The DP cousin of subset enumeration.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="combination-sum.html">
+      <div class="rel-top"><span class="rel-num">LC #39 · Medium</span><span class="badge b-topic">Backtracking</span></div>
+      <div class="rel-title">Combination Sum</div>
+      <div class="rel-desc">Build all combinations summing to a target — uses explicit backtracking, unlike Gray Code's direct construction.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #89 Gray Code</p></footer>
+
+<script>
+function toggleTheme(){var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');}
+function switchTab(n,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1','sv2'].forEach(function(id,j){document.getElementById(id).style.display=j===i?'block':'none';});document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
+
+var SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+var sl=document.getElementById('speed-sl');
+sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+var V={n:3,steps:[],si:0,timer:null,built:false,mode:'reflection'};
+var isPlaying=false;
+
+function toBin(num,bits){return num.toString(2).padStart(bits,'0');}
+function popcount(x){var c=0;while(x){c+=x&1;x>>>=1;}return c;}
+function changedBitIndex(xorVal){
+  // find position of the single set bit (0-indexed from MSB for display)
+  var pos=0;while(((xorVal>>pos)&1)===0)pos++;return pos;
+}
+
+// ── MODE TOGGLE ────────────────────────────────────
+function setMode(m){
+  V.mode=m;
+  document.getElementById('mode-refl').className='cbtn'+(m==='reflection'?' primary':'');
+  document.getElementById('mode-xor').className ='cbtn'+(m==='xor'?' primary':'');
+}
+
+// ── STEP BUILDER ──────────────────────────────────
+function buildSteps(n){
+  var steps=[],result=[0];
+  steps.push({type:'init',result:[0],curIdx:-1,round:-1,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:1,
+    note:'result = [0] — seed value. n='+n+', will build 2ⁿ='+(1<<n)+' codes.'});
+
+  for(var i=0;i<n;i++){
+    var len=result.length;
+    steps.push({type:'round_start',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:2,
+      note:'Round i='+i+' — mirror '+len+' item'+(len>1?'s':'')+', prepend bit '+(1<<i)+' (position '+i+')'});
+    steps.push({type:'reverse',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:3,
+      note:'reversed(result) = ['+result.slice().reverse().join(',')+'] — walk right-to-left'});
+
+    for(var j=len-1;j>=0;j--){
+      var src=result[j], newVal=src|(1<<i), prev=result[result.length-1];
+      result.push(newVal);
+      var xorVal=prev^newVal, bitIdx=changedBitIndex(xorVal);
+      // XOR index from current step count (for "both methods" panel)
+      var xorFormulaIdx=result.length-1;
+      var xorFormulaVal=xorFormulaIdx^(xorFormulaIdx>>1);
+      steps.push({type:'append',result:result.slice(),curIdx:result.length-1,round:i,
+        mirrorSrc:j,mirrorVal:src,newVal:newVal,prev:prev,
+        xorVal:xorVal,bitIdx:bitIdx,xorFormulaIdx:xorFormulaIdx,xorFormulaVal:xorFormulaVal,
+        cl:5,note:'result['+j+']='+src+' | (1<<'+i+')='+newVal+' → '+toBin(prev,n)+'⊕'+toBin(newVal,n)+'='+toBin(xorVal,n)+' — 1 bit ✓ (bit'+bitIdx+')'});
+    }
+    steps.push({type:'round_done',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:2,
+      note:'Round '+i+' done — '+result.length+' codes built'});
+  }
+  steps.push({type:'done',result:result.slice(),curIdx:-1,round:-1,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:6,
+    note:'✓ All '+(1<<n)+' Gray codes for n='+n+'. Every adjacent pair differs by exactly 1 bit.'});
+  return steps;
+}
+
+// ── RENDER: SEQUENCE CHIPS ──────────────────────────
+function renderSeq(step){
+  var el=document.getElementById('seq-display');
+  if(!step){el.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
+  var n=V.n; el.innerHTML='';
+  step.result.forEach(function(val,idx){
+    var chip=document.createElement('div');chip.className='bit-chip';
+    var isCur=(idx===step.curIdx), isMir=(idx===step.mirrorSrc&&step.type==='append');
+    if(isCur) chip.classList.add('current');
+    else if(isMir) chip.classList.add('mirror');
+    else chip.classList.add('added');
+
+    // decimal
+    var numDiv=document.createElement('div');numDiv.className='bit-num';
+    numDiv.textContent=val;
+    // binary with changed bit highlighted
+    var binDiv=document.createElement('div');binDiv.className='bit-bin';
+    var bin=toBin(val,n);
+    if(isCur&&step.type==='append'){
+      var html='';
+      for(var b=0;b<bin.length;b++){
+        var bitPos=n-1-b; // MSB first display
+        if(bitPos===step.bitIdx) html+='<span style="color:#f5a623;font-weight:900">'+bin[b]+'</span>';
+        else html+=bin[b];
+      }
+      binDiv.innerHTML=html;
+    } else {
+      binDiv.textContent=bin;
+    }
+
+    chip.appendChild(numDiv);chip.appendChild(binDiv);
+    // tooltip
+    chip.title=val+' = '+bin+' = 0b'+bin;
+    el.appendChild(chip);
+  });
+}
+
+// ── RENDER: REFLECTION PANEL with flip animation ──────
+function renderReflPanel(step){
+  var before=document.getElementById('refl-before');
+  var after=document.getElementById('refl-after');
+  var lbl=document.getElementById('refl-bit-lbl');
+  var arrowRow=document.getElementById('flip-arrow-row');
+  before.innerHTML=''; after.innerHTML=''; lbl.textContent='';
+  arrowRow.style.opacity='0';
+  if(!step||step.type==='init'||step.round<0){
+    before.innerHTML='<span style="color:var(--ph);font-family:var(--mono);font-size:12px">—</span>';return;
+  }
+  var n=V.n, round=step.round;
+  lbl.textContent='(1<<'+round+') = '+(1<<round);
+  arrowRow.style.opacity='1';
+  var halfLen=1<<round;
+  var origHalf=step.result.slice(0,halfLen);
+  // BEFORE: original half as blue pills
+  origHalf.forEach(function(v){
+    var pill=document.createElement('span');
+    pill.className='refl-pill orig';
+    pill.innerHTML=v+'<span style="font-size:8px;opacity:.55;margin-left:3px">'+toBin(v,n)+'</span>';
+    before.appendChild(pill);
+  });
+  // AFTER: mirrored half — pills animate in
+  var mirror=[].concat(origHalf).reverse();
+  var addedSoFar=(step.type==='append')?(halfLen-step.mirrorSrc):
+                 (step.type==='round_done')?halfLen:0;
+  mirror.forEach(function(v,i){
+    var newV=v|(1<<round);
+    var pill=document.createElement('span');
+    pill.className='refl-pill flip';
+    if(i<addedSoFar){
+      if(i===addedSoFar-1&&step.type==='append'){
+        pill.classList.add('doing-flip'); // newest one flips
+      } else {
+        pill.classList.add('pop-in');
+      }
+    } else {
+      pill.style.opacity='.2';
+      pill.style.borderColor='rgba(245,166,35,.25)';
+    }
+    pill.innerHTML=newV+'<span style="font-size:8px;opacity:.55;margin-left:3px">'+toBin(newV,n)+'</span>';
+    after.appendChild(pill);
+  });
+}
+
+// ── RENDER: COLUMN-ALIGNED OR ────────────────────────
+function renderOrView(step){
+  var el=document.getElementById('or-view');
+  if(!step||step.type!=='append'){el.textContent='—';return;}
+  var n=V.n,src=step.mirrorVal,bit=1<<step.round,res=step.newVal;
+  var srcBin=toBin(src,n),bitBin=toBin(bit,n),resBin=toBin(res,n);
+  el.innerHTML='';
+  function makeRow(lbl,binStr,lblColor,getFn){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:0;margin:1px 0';
+    var lspan=document.createElement('span');
+    lspan.style.cssText='width:36px;font-family:var(--mono);font-size:.68rem;color:'+(lblColor||'var(--text3)')+';flex-shrink:0';
+    lspan.textContent=lbl;row.appendChild(lspan);
+    for(var b=0;b<binStr.length;b++){
+      var bp=n-1-b;
+      var sp=document.createElement('span');
+      sp.className='or-bit '+(getFn(binStr[b],bp));
+      sp.textContent=binStr[b];row.appendChild(sp);
+    }
+    return row;
+  }
+  el.appendChild(makeRow('src',srcBin,'var(--text3)',function(c,bp){
+    if(bp===step.round)return 'highlight-col';
+    return c==='0'?'zero':'plain';
+  }));
+  el.appendChild(makeRow('|',bitBin,'var(--amber)',function(c,bp){
+    if(bp===step.round)return 'highlight-col';return 'zero';
+  }));
+  var sep=document.createElement('div');
+  sep.style.cssText='height:1px;background:var(--border2);margin:2px 0 2px 36px;width:'+(n*22)+'px';
+  el.appendChild(sep);
+  el.appendChild(makeRow('=',resBin,'var(--green)',function(c,bp){
+    if(bp===step.round)return 'result-col';
+    return c==='0'?'zero':'plain';
+  }));
+  var ann=document.createElement('div');
+  ann.style.cssText='font-family:var(--mono);font-size:.7rem;color:var(--amber);margin-top:5px;padding-left:36px';
+  ann.innerHTML='↑ only bit <strong>'+step.round+'</strong> flipped &nbsp;(added +'+bit+')';
+  el.appendChild(ann);
+}
+
+// ── RENDER: STRONG XOR VALIDATOR with verdict ─────────
+function renderXorValidator(step){
+  var el=document.getElementById('xor-validator');
+  if(!step||step.type!=='append'){
+    el.innerHTML='<span style="font-family:var(--mono);font-size:.8rem;color:var(--ph)">—</span>';return;
+  }
+  var n=V.n;
+  var prevBin=toBin(step.prev,n),curBin=toBin(step.newVal,n),xorBin=toBin(step.xorVal,n);
+  var bits=popcount(step.xorVal),valid=(bits===1);
+  el.innerHTML='';
+  function makeXorRow(labelTxt,binStr,lblColor,getBit){
+    var row=document.createElement('div');row.className='xor-row';
+    var lbl=document.createElement('span');lbl.className='xor-label';
+    lbl.style.color=lblColor;lbl.textContent=labelTxt;row.appendChild(lbl);
+    for(var b=0;b<binStr.length;b++){
+      var sp=document.createElement('span');
+      sp.className='xor-bit '+getBit(b,binStr[b]);
+      sp.textContent=binStr[b];row.appendChild(sp);
+    }
+    return row;
+  }
+  el.appendChild(makeXorRow('prev',prevBin,'var(--text2)',function(b,c){return xorBin[b]==='1'?'changed':'same';}));
+  el.appendChild(makeXorRow('curr',curBin,'var(--text2)',function(b,c){return xorBin[b]==='1'?'changed':'same';}));
+  // separator line
+  var sepRow=document.createElement('div');sepRow.className='xor-row';
+  var sepLbl=document.createElement('span');sepLbl.className='xor-label';sepLbl.style.color='var(--amber)';sepLbl.textContent='⊕';
+  var sepLine=document.createElement('span');sepLine.style.cssText='display:inline-block;height:1px;background:var(--border2);width:'+(n*20)+'px;margin:1px 0';
+  sepRow.appendChild(sepLbl);sepRow.appendChild(sepLine);el.appendChild(sepRow);
+  el.appendChild(makeXorRow('xor',xorBin,'var(--amber)',function(b,c){return c==='1'?'result-one':'same';}));
+  // VERDICT BOX
+  var verdict=document.createElement('div');
+  verdict.className='xor-verdict '+(valid?'verdict-valid':'verdict-invalid');
+  verdict.innerHTML=valid
+    ?'✓ &nbsp;<strong>1 bit changed</strong> — bit index <strong>'+step.bitIdx+'</strong> &nbsp;→ valid Gray step'
+    :'✗ &nbsp;<strong>'+bits+' bits changed</strong> — Gray invariant violated!';
+  el.appendChild(verdict);
+}
+
+// ── RENDER: BOTH METHODS ──────────────────────────────
+function renderBothMethods(step){
+  var reflEl=document.getElementById('both-refl');
+  var xorEl=document.getElementById('both-xor');
+  if(!step||step.type!=='append'){reflEl.textContent='—';xorEl.textContent='—';return;}
+  var n=V.n;
+  var match=(step.newVal===step.xorFormulaVal);
+  var matchStyle='font-weight:700;color:'+(match?'#4af7b0':'#f76a8a');
+  reflEl.innerHTML='<span style="'+matchStyle+'">'+step.newVal+'</span> <span style="color:var(--text3);font-size:.75rem">('+toBin(step.newVal,n)+')</span>';
+  xorEl.innerHTML='<span style="'+matchStyle+'">'+step.xorFormulaVal+'</span> <span style="color:var(--text3);font-size:.75rem">('+toBin(step.xorFormulaVal,n)+') '+step.xorFormulaIdx+'^('+step.xorFormulaIdx+'>>1)</span>';
+  if(match){
+    reflEl.innerHTML+=' <span style="font-size:10px;color:#4af7b0">= same ✓</span>';
+  }
+}
+
+// ── PROGRESS BAR ─────────────────────────────────────
+function updateProgress(){
+  var total=V.steps.length, cur=V.si;
+  var pct=total?Math.round(cur/total*100):0;
+  var fill=document.getElementById('prog-fill');
+  if(fill)fill.style.width=pct+'%';
+  document.getElementById('step-info').textContent=cur+'/'+total;
+}
+
+function setStatus(s){
+  var dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Building…';}
+  else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Done — '+(1<<V.n)+' codes ✓';}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0';txt.textContent='Ready';}
+}
+
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  V.si++;
+  updateProgress();
+  renderSeq(s);renderReflPanel(s);renderOrView(s);renderXorValidator(s);renderBothMethods(s);
+  if(s.type==='done')setStatus('done');else setStatus('run');
+  updCtrl();return V.si<V.steps.length;
+}
+
+function rewindTo(t){
+  V.si=0;
+  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  while(V.si<t&&V.si<V.steps.length)V.si++;
+  if(t>0){
+    var s=V.steps[t-1];
+    for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    document.getElementById('bt-note').textContent=s.note;
+    renderSeq(s);renderReflPanel(s);renderOrView(s);renderXorValidator(s);renderBothMethods(s);
+    setStatus(s.type==='done'?'done':'run');
+  } else {
+    renderSeq(null);
+    document.getElementById('refl-before').innerHTML='<span style="color:var(--ph);font-family:var(--mono);font-size:12px">—</span>';
+    document.getElementById('refl-after').innerHTML='';
+    document.getElementById('refl-bit-lbl').textContent='';
+    document.getElementById('or-view').textContent='—';
+    document.getElementById('xor-validator').textContent='—';
+    document.getElementById('both-refl').textContent='—';
+    document.getElementById('both-xor').textContent='—';
+    setStatus('ready');
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+  }
+  updateProgress();
+}
+
+function loadN(n){document.getElementById('n-inp').value=n;runViz();}
+function runViz(){
+  stopAuto();
+  var n=parseInt(document.getElementById('n-inp').value)||3;
+  n=Math.max(1,Math.min(n,5));
+  V.n=n;V.steps=buildSteps(n);V.si=0;V.built=true;
+  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  document.getElementById('bt-note').textContent='Use ← / → to step, or ▶ Auto-play.';
+  rewindTo(0);updCtrl();
+}
+function stepBy(d){stopAuto();if(!V.built)return;if(d>0){if(V.si<V.steps.length)applyStep();}else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}updCtrl();}
+function stopAuto(){if(V.timer){clearInterval(V.timer);V.timer=null;}isPlaying=false;var b=document.getElementById('btn-auto');if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}}
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}if(!V.built)return;
+  if(V.si>=V.steps.length){rewindTo(0);updCtrl();}
+  isPlaying=true;
+  var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('primary');
+  V.timer=setInterval(function(){var m=applyStep();updCtrl();if(!m)stopAuto();},SPDS[sl.value-1]);
+}
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updCtrl();}
+
+var ss=document.createElement('style');
+ss.textContent='@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadN(3);
+});
+</script>
+</body>
+</html>
