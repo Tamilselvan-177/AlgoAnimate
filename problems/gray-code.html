@@ -106,6 +106,8 @@ footer a{color:var(--accent);text-decoration:none}
 @keyframes chipSettle{0%{transform:scale(.94);box-shadow:0 0 0 rgba(124,106,247,0)}55%{transform:scale(1.16)}100%{transform:scale(1.12);box-shadow:0 0 14px rgba(124,106,247,.45)}}
 .bit-chip.added .bit-num{border-color:#4af7b0;background:rgba(74,247,176,.18);color:#4af7b0}
 .bit-chip.mirror .bit-num{border-color:#f5a623;background:rgba(245,166,35,.15);color:#f5a623}
+.bit-chip.prev .bit-num{border-color:#2dd4bf;background:rgba(45,212,191,.14);color:#2dd4bf;transform:scale(1.04);box-shadow:0 0 0 1px rgba(45,212,191,.35)}
+[data-theme="light"] .bit-chip.prev .bit-num{border-color:#0d9488;background:rgba(13,148,136,.12);color:#0d9488}
 [data-theme="light"] .bit-chip.current .bit-num{border-color:#5b48e8;background:rgba(91,72,232,.12);color:#5b48e8}
 [data-theme="light"] .bit-chip.added .bit-num{border-color:#1a9e5c;background:rgba(26,158,92,.1);color:#1a9e5c}
 [data-theme="light"] .bit-chip.mirror .bit-num{border-color:#c47d0a;background:rgba(196,125,10,.1);color:#c47d0a}
@@ -139,6 +141,7 @@ footer a{color:var(--accent);text-decoration:none}
 @keyframes arrowBounce{from{transform:translateY(0);opacity:.75}to{transform:translateY(4px);opacity:1}}
 
 @media (prefers-reduced-motion:reduce){
+  .bit-chip.prev .bit-num{transition-duration:.01ms!important}
   .bit-chip.current .bit-num{animation:none;transition-duration:.01ms!important}
   .refl-pill.doing-flip,.refl-pill.pop-in{animation-duration:.01ms!important;animation-iteration-count:1!important}
   .flip-arrow{animation:none}
@@ -169,6 +172,14 @@ footer a{color:var(--accent);text-decoration:none}
 .diff-bit{padding:3px 7px;border-radius:5px;font-weight:700}
 .diff-same{color:var(--text3)}
 .diff-changed{color:#f5a623;background:rgba(245,166,35,.2);border:1px solid rgba(245,166,35,.4)}
+.anim-tour{font-size:.78rem;color:var(--text2);line-height:1.55;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-lg);border-left:3px solid var(--accent);margin-bottom:.85rem}
+.anim-tour strong{color:var(--accent2)}
+.phase-pill{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;padding:3px 9px;border-radius:999px;font-weight:700;white-space:nowrap}
+.phase-build{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.phase-walk{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.step-detail-num{font-size:.77rem;color:var(--text2);font-weight:700;font-family:var(--mono)}
+.viz-grid{display:grid;grid-template-columns:1fr minmax(260px,290px);gap:12px;align-items:start}
+@media(max-width:900px){.viz-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -524,6 +535,7 @@ footer a{color:var(--accent);text-decoration:none}
 
 <!-- ANIMATION -->
 <div class="section" id="tab-animation">
+  <p class="anim-tour"><strong>How to read the steps:</strong> follow the <span style="color:#c792ea">purple</span> “new value” chip and the <span style="color:#2dd4bf">teal</span> “previous” chip → then the bit panel → XOR check. After the build finishes, the <strong>walkthrough</strong> steps move along the final Gray order (including wrap to 0).</p>
   <!-- Input row -->
   <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
     <div style="display:flex;flex-direction:column;gap:4px">
@@ -555,14 +567,17 @@ footer a{color:var(--accent);text-decoration:none}
     <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
     <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
       Speed <input type="range" id="speed-sl" min="1" max="5" value="2" style="width:75px;accent-color:var(--accent)">
-      <span id="speed-lbl">Normal</span>
+      <span id="speed-lbl">Slow</span>
       <span style="font-size:.68rem;margin-left:4px">
         <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
         <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
         <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
       </span>
     </div>
-    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+    <span id="step-info" style="display:inline-flex;align-items:center;gap:8px;min-width:148px;justify-content:flex-end;flex-wrap:wrap">
+      <span id="phase-pill" class="phase-pill phase-build">Build</span>
+      <span id="step-detail" class="step-detail-num">0/0</span>
+    </span>
   </div>
   <!-- progress bar -->
   <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
@@ -570,7 +585,7 @@ footer a{color:var(--accent);text-decoration:none}
   </div>
 
   <!-- MAIN LAYOUT -->
-  <div style="display:grid;grid-template-columns:1fr 290px;gap:12px">
+  <div class="viz-grid">
     <div style="display:flex;flex-direction:column;gap:10px">
 
       <!-- SEQUENCE DISPLAY -->
@@ -597,9 +612,10 @@ footer a{color:var(--accent);text-decoration:none}
         <div id="refl-after" style="display:flex;gap:5px;flex-wrap:wrap;min-height:34px;align-items:center"></div>
       </div>
 
-      <!-- BIT-LAYER: OR operation column highlight -->
+      <!-- BIT-LAYER / XOR compute (title updates per mode & step) -->
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
-        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Bit-layer — column-aligned OR</div>
+        <div id="or-panel-title" style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">Bit-layer — column-aligned OR</div>
+        <div style="font-size:.65rem;color:var(--text3);margin-bottom:8px;font-family:var(--mono)">Bit index <strong>0</strong> = LSB (rightmost column below).</div>
         <div id="or-view" style="line-height:2;color:var(--text2)">—</div>
       </div>
 
@@ -611,8 +627,8 @@ footer a{color:var(--accent);text-decoration:none}
         </div>
       </div>
 
-      <!-- BOTH METHODS SIDE BY SIDE -->
-      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+      <!-- BOTH METHODS SIDE BY SIDE (reflection mode only) -->
+      <div id="card-both-methods" style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Both methods — same value ✓</div>
         <div id="both-view" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:var(--mono);font-size:.8rem">
           <div style="background:var(--bg3);border-radius:var(--radius);padding:.5rem .8rem">
@@ -635,7 +651,7 @@ footer a{color:var(--accent);text-decoration:none}
 
     <!-- RIGHT -->
     <div style="display:flex;flex-direction:column;gap:10px">
-      <div class="code-hl">
+      <div id="wrap-refl-code" class="code-hl">
         <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
 <span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">grayCode</span>(n):</span>
 <span class="hl" id="cl1">  result = [<span class="nm">0</span>]</span>
@@ -645,12 +661,22 @@ footer a{color:var(--accent);text-decoration:none}
 <span class="hl" id="cl5">      result.append(x | <span class="nm">1</span>&lt;&lt;i)</span>
 <span class="hl" id="cl6">  <span class="kw">return</span> result</span></pre>
       </div>
+      <div id="wrap-xor-code" class="code-hl" style="display:none">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="xcl0"><span class="kw">def</span> <span class="fn">grayCode</span>(n):</span>
+<span class="hl" id="xcl1">  out = []</span>
+<span class="hl" id="xcl2">  <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span> &lt;&lt; n):</span>
+<span class="hl" id="xcl3">    g = i ^ (i &gt;&gt; <span class="nm">1</span>)</span>
+<span class="hl" id="xcl4">    out.append(g)</span>
+<span class="hl" id="xcl5">  <span class="kw">return</span> out</span></pre>
+      </div>
 
       <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
         <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Legend</div>
         <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;font-family:var(--mono)">
           <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(124,106,247,.25);border:2px solid #7c6af7;flex-shrink:0"></div><span style="color:var(--text2)">Being added now</span></div>
           <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(74,247,176,.18);border:2px solid #4af7b0;flex-shrink:0"></div><span style="color:var(--text2)">In sequence ✓</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(45,212,191,.14);border:2px solid #2dd4bf;flex-shrink:0"></div><span style="color:var(--text2)">Previous in list (neighbor)</span></div>
           <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(245,166,35,.15);border:2px solid #f5a623;flex-shrink:0"></div><span style="color:var(--text2)">Mirror source</span></div>
           <div style="display:flex;align-items:center;gap:8px"><div style="width:24px;height:18px;border-radius:5px;background:rgba(240,112,96,.15);border:2px solid var(--coral);flex-shrink:0"></div><span style="color:var(--text2)">Bit being OR'd</span></div>
         </div>
@@ -721,9 +747,48 @@ function setMode(m){
   V.mode=m;
   document.getElementById('mode-refl').className='cbtn'+(m==='reflection'?' primary':'');
   document.getElementById('mode-xor').className ='cbtn'+(m==='xor'?' primary':'');
+  document.getElementById('wrap-refl-code').style.display=m==='reflection'?'block':'none';
+  document.getElementById('wrap-xor-code').style.display=m==='xor'?'block':'none';
+  document.getElementById('refl-panel').style.display=m==='reflection'?'block':'none';
+  var both=document.getElementById('card-both-methods');
+  if(both)both.style.display=m==='reflection'?'block':'none';
+  if(V.built)runViz();
 }
 
-// ── STEP BUILDER ──────────────────────────────────
+function clearAllCodeLines(){
+  var i,e;
+  for(i=0;i<=6;i++){e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  for(i=0;i<=5;i++){e=document.getElementById('xcl'+i);if(e)e.classList.remove('active');}
+}
+
+function setActiveCodeLine(cl){
+  clearAllCodeLines();
+  if(cl<0)return;
+  if(V.mode==='reflection'){
+    var e=document.getElementById('cl'+cl);
+    if(e)e.classList.add('active');
+  }else{
+    var x=document.getElementById('xcl'+cl);
+    if(x)x.classList.add('active');
+  }
+}
+
+function appendTraverseSteps(steps,result,n,mode){
+  var clEnd=mode==='reflection'?6:5;
+  var L=result.length;
+  if(L<2)return;
+  for(var k=0;k<L;k++){
+    var a=result[k],b=result[(k+1)%L];
+    var xv=a^b,bi=changedBitIndex(xv);
+    var wrap=(k===L-1);
+    steps.push({type:'traverse',result:result.slice(),fromIdx:k,toIdx:(k+1)%L,fromVal:a,toVal:b,xorVal:xv,bitIdx:bi,round:bi,
+      mirrorSrc:-1,mirrorVal:a,newVal:b,prev:a,
+      cl:clEnd,
+      note:(wrap?'↻ Wrap ':'')+'Final order '+a+' → '+b+' &nbsp;('+toBin(a,n)+' ⊕ '+toBin(b,n)+' = '+toBin(xv,n)+') — 1 bit at index '+bi+' (LSB=0)'+(wrap?' — cycle closes':'')});
+  }
+}
+
+// ── STEP BUILDER (reflection) ─────────────────────
 function buildSteps(n){
   var steps=[],result=[0];
   steps.push({type:'init',result:[0],curIdx:-1,round:-1,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:1,
@@ -732,7 +797,7 @@ function buildSteps(n){
   for(var i=0;i<n;i++){
     var len=result.length;
     steps.push({type:'round_start',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:2,
-      note:'Round i='+i+' — mirror '+len+' item'+(len>1?'s':'')+', prepend bit '+(1<<i)+' (position '+i+')'});
+      note:'Round i='+i+' — mirror '+len+' item'+(len>1?'s':'')+', OR in bit '+i+' (1<<'+i+' = '+(1<<i)+').'});
     steps.push({type:'reverse',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:3,
       note:'reversed(result) = ['+result.slice().reverse().join(',')+'] — walk right-to-left'});
 
@@ -740,19 +805,41 @@ function buildSteps(n){
       var src=result[j], newVal=src|(1<<i), prev=result[result.length-1];
       result.push(newVal);
       var xorVal=prev^newVal, bitIdx=changedBitIndex(xorVal);
-      // XOR index from current step count (for "both methods" panel)
       var xorFormulaIdx=result.length-1;
       var xorFormulaVal=xorFormulaIdx^(xorFormulaIdx>>1);
       steps.push({type:'append',result:result.slice(),curIdx:result.length-1,round:i,
         mirrorSrc:j,mirrorVal:src,newVal:newVal,prev:prev,
         xorVal:xorVal,bitIdx:bitIdx,xorFormulaIdx:xorFormulaIdx,xorFormulaVal:xorFormulaVal,
-        cl:5,note:'result['+j+']='+src+' | (1<<'+i+')='+newVal+' → '+toBin(prev,n)+'⊕'+toBin(newVal,n)+'='+toBin(xorVal,n)+' — 1 bit ✓ (bit'+bitIdx+')'});
+        cl:5,note:'result['+j+']='+src+' | (1<<'+i+')='+newVal+' → '+toBin(prev,n)+'⊕'+toBin(newVal,n)+'='+toBin(xorVal,n)+' — 1 bit ✓ (index '+bitIdx+', LSB=0)'});
     }
     steps.push({type:'round_done',result:result.slice(),curIdx:-1,round:i,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:2,
       note:'Round '+i+' done — '+result.length+' codes built'});
   }
   steps.push({type:'done',result:result.slice(),curIdx:-1,round:-1,mirrorSrc:-1,mirrorVal:-1,newVal:-1,prev:-1,cl:6,
-    note:'✓ All '+(1<<n)+' Gray codes for n='+n+'. Every adjacent pair differs by exactly 1 bit.'});
+    note:'✓ Built all '+(1<<n)+' codes. Next: walk the final sequence in order (last → first is one bit too).'});
+  appendTraverseSteps(steps,result.slice(),n,'reflection');
+  return steps;
+}
+
+// ── STEP BUILDER (XOR formula) ─────────────────────
+function buildXorSteps(n){
+  var steps=[],result=[],total=1<<n;
+  steps.push({type:'xor_init',result:[],curIdx:-1,iVal:-1,cl:1,
+    note:'XOR method: for each index i from 0 .. 2ⁿ−1, Gray value g(i) = i ⊕ (i >> 1). Bit index 0 = LSB.'});
+  for(var i=0;i<total;i++){
+    var sh=i>>>1,g=i^sh;
+    var prev=i>0?((i-1)^((i-1)>>>1)):null;
+    result.push(g);
+    var xorVal=prev!==null?prev^g:0;
+    var bitIdx=prev!==null?changedBitIndex(xorVal):0;
+    steps.push({type:'xor_iter',result:result.slice(),curIdx:result.length-1,prevListIdx:i>0?result.length-2:-1,
+      iVal:i,shiftVal:sh,grayVal:g,prevGray:prev,mirrorSrc:-1,mirrorVal:0,newVal:g,prev:prev!==null?prev:g,
+      xorVal:xorVal,bitIdx:bitIdx,xorFormulaIdx:i,xorFormulaVal:g,round:bitIdx,cl:4,
+      note:'i='+i+': '+toBin(i,n)+' >> 1 = '+toBin(sh,n)+' → '+i+' ⊕ '+sh+' = '+g+' &nbsp;('+toBin(i,n)+'⊕'+toBin(sh,n)+'='+toBin(g,n)+')'});
+  }
+  steps.push({type:'xor_done',result:result.slice(),curIdx:-1,cl:5,
+    note:'✓ return out — same '+total+' codes as reflection. Next: walk adjacent pairs in that order.'});
+  appendTraverseSteps(steps,result.slice(),n,'xor');
   return steps;
 }
 
@@ -761,33 +848,54 @@ function renderSeq(step){
   var el=document.getElementById('seq-display');
   if(!step){el.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
   var n=V.n; el.innerHTML='';
+  if(step.type==='xor_init'&&(!step.result||step.result.length===0)){
+    el.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">out = [ ] &nbsp;— starting XOR build</span>';
+    return;
+  }
   step.result.forEach(function(val,idx){
     var chip=document.createElement('div');chip.className='bit-chip';
-    var isCur=(idx===step.curIdx), isMir=(idx===step.mirrorSrc&&step.type==='append');
+    var isCur,isMir,isPrev;
+    if(step.type==='traverse'){
+      isCur=(idx===step.toIdx);
+      isPrev=(idx===step.fromIdx);
+      isMir=false;
+    }else{
+      isCur=(idx===step.curIdx);
+      isMir=(idx===step.mirrorSrc&&step.type==='append');
+      isPrev=((step.type==='append'||step.type==='xor_iter')&&step.curIdx>0&&idx===step.curIdx-1);
+    }
     if(isCur) chip.classList.add('current');
+    else if(isPrev) chip.classList.add('prev');
     else if(isMir) chip.classList.add('mirror');
     else chip.classList.add('added');
 
-    // decimal
     var numDiv=document.createElement('div');numDiv.className='bit-num';
     numDiv.textContent=val;
-    // binary with changed bit highlighted
     var binDiv=document.createElement('div');binDiv.className='bit-bin';
     var bin=toBin(val,n);
-    if(isCur&&step.type==='append'){
+    var hlBit=(step.type==='append'&&isCur)||(step.type==='traverse'&&(isCur||isPrev))||(step.type==='xor_iter'&&isCur&&step.iVal>0);
+    if(hlBit&&step.bitIdx!==undefined){
       var html='';
       for(var b=0;b<bin.length;b++){
-        var bitPos=n-1-b; // MSB first display
+        var bitPos=n-1-b;
         if(bitPos===step.bitIdx) html+='<span style="color:#f5a623;font-weight:900">'+bin[b]+'</span>';
         else html+=bin[b];
       }
       binDiv.innerHTML=html;
-    } else {
+    }else if(step.type==='xor_iter'&&isCur){
+      var html2='';
+      for(var b2=0;b2<bin.length;b2++){
+        var bp=n-1-b2;
+        var diff=(step.iVal^step.shiftVal);
+        if(((diff>>bp)&1)) html2+='<span style="color:#f5a623;font-weight:900">'+bin[b2]+'</span>';
+        else html2+=bin[b2];
+      }
+      binDiv.innerHTML=html2;
+    }else{
       binDiv.textContent=bin;
     }
 
     chip.appendChild(numDiv);chip.appendChild(binDiv);
-    // tooltip
     chip.title=val+' = '+bin+' = 0b'+bin;
     el.appendChild(chip);
   });
@@ -801,7 +909,27 @@ function renderReflPanel(step){
   var arrowRow=document.getElementById('flip-arrow-row');
   before.innerHTML=''; after.innerHTML=''; lbl.textContent='';
   arrowRow.style.opacity='0';
-  if(!step||step.type==='init'||step.round<0){
+  if(V.mode==='xor'){before.innerHTML='<span style="color:var(--text3);font-family:var(--mono);font-size:12px">Reflection mirror view is only used in <strong>Reflection</strong> mode — switch above to see it.</span>';return;}
+  if(!step||step.type==='init'){
+    before.innerHTML='<span style="color:var(--ph);font-family:var(--mono);font-size:12px">—</span>';return;
+  }
+  if(step.type==='done'){
+    before.innerHTML='<span style="color:#4af7b0;font-family:var(--mono);font-size:12px">✓ Reflection build complete — Next: walk adjacent pairs in the final list (cycle includes wrap).</span>';
+    after.innerHTML='';
+    return;
+  }
+  if(step.type==='traverse'){
+    arrowRow.style.opacity='1';
+    lbl.textContent='final sequence';
+    before.innerHTML='<span style="font-size:.72rem;color:var(--text2);font-family:var(--sans);margin-right:8px">Adjacent in output order:</span>';
+    var p1=document.createElement('span');p1.className='refl-pill orig';p1.textContent=step.fromVal+' '+toBin(step.fromVal,V.n);
+    var arr=document.createElement('span');arr.style.cssText='margin:0 6px;color:var(--amber);font-weight:800';arr.textContent='→';
+    var p2=document.createElement('span');p2.className='refl-pill flip doing-flip';p2.textContent=step.toVal+' '+toBin(step.toVal,V.n);
+    before.appendChild(p1);before.appendChild(arr);before.appendChild(p2);
+    after.innerHTML='<span style="font-size:.7rem;color:var(--text3);font-family:var(--mono)">One bit flips (index '+step.bitIdx+', LSB=0) — Gray property.</span>';
+    return;
+  }
+  if(step.round===undefined||step.round<0){
     before.innerHTML='<span style="color:var(--ph);font-family:var(--mono);font-size:12px">—</span>';return;
   }
   var n=V.n, round=step.round;
@@ -839,13 +967,16 @@ function renderReflPanel(step){
   });
 }
 
-// ── RENDER: COLUMN-ALIGNED OR ────────────────────────
+function setOrPanelTitle(t){
+  var h=document.getElementById('or-panel-title');
+  if(h)h.textContent=t;
+}
+
+// ── RENDER: COLUMN-ALIGNED OR / XOR compute / traverse ─
 function renderOrView(step){
   var el=document.getElementById('or-view');
-  if(!step||step.type!=='append'){el.textContent='—';return;}
-  var n=V.n,src=step.mirrorVal,bit=1<<step.round,res=step.newVal;
-  var srcBin=toBin(src,n),bitBin=toBin(bit,n),resBin=toBin(res,n);
-  el.innerHTML='';
+  if(!step){el.textContent='—';setOrPanelTitle('—');return;}
+  var n=V.n;
   function makeRow(lbl,binStr,lblColor,getFn){
     var row=document.createElement('div');
     row.style.cssText='display:flex;align-items:center;gap:0;margin:1px 0';
@@ -860,6 +991,62 @@ function renderOrView(step){
     }
     return row;
   }
+  if(step.type==='xor_init'){setOrPanelTitle('XOR formula — setup');el.textContent='—';return;}
+  if(step.type==='xor_done'||step.type==='done'){setOrPanelTitle('—');el.textContent='—';return;}
+  if(step.type==='xor_iter'){
+    setOrPanelTitle('XOR — i ⊕ (i >> 1)  (columns: bit index, LSB=0 right)');
+    var iB=toBin(step.iVal,n),sB=toBin(step.shiftVal,n),gB=toBin(step.grayVal,n);
+    el.innerHTML='';
+    el.appendChild(makeRow('i',iB,'var(--text3)',function(c,bp){
+      return c==='0'?'zero':'plain';
+    }));
+    el.appendChild(makeRow('>>',sB,'var(--text3)',function(c,bp){
+      return c==='0'?'zero':'plain';
+    }));
+    var sep0=document.createElement('div');
+    sep0.style.cssText='height:1px;background:var(--border2);margin:2px 0 2px 36px;width:'+(n*22)+'px';
+    el.appendChild(sep0);
+    el.appendChild(makeRow('⊕',gB,'var(--green)',function(c,bp){
+      var diff=step.iVal^step.shiftVal;
+      if(((diff>>bp)&1))return 'result-col';
+      return c==='0'?'zero':'plain';
+    }));
+    var ann=document.createElement('div');
+    ann.style.cssText='font-family:var(--mono);font-size:.7rem;color:var(--amber);margin-top:5px;padding-left:36px';
+    ann.innerHTML='g = <strong>'+step.iVal+'</strong> ⊕ <strong>'+step.shiftVal+'</strong> = <strong>'+step.grayVal+'</strong>';
+    el.appendChild(ann);
+    return;
+  }
+  if(step.type==='traverse'){
+    setOrPanelTitle('Adjacent pair — one column differs (LSB = index 0)');
+    var a=step.fromVal,b=step.toVal,bi=step.bitIdx;
+    var aB=toBin(a,n),bB=toBin(b,n);
+    el.innerHTML='';
+    el.appendChild(makeRow('a',aB,'var(--text3)',function(c,bp){
+      if(bp===bi)return 'highlight-col';
+      return c==='0'?'zero':'plain';
+    }));
+    el.appendChild(makeRow('b',bB,'var(--text3)',function(c,bp){
+      if(bp===bi)return 'highlight-col';
+      return c==='0'?'zero':'plain';
+    }));
+    var ann2=document.createElement('div');
+    ann2.style.cssText='font-family:var(--mono);font-size:.7rem;color:var(--amber);margin-top:5px;padding-left:36px';
+    ann2.innerHTML='Changed bit index <strong>'+bi+'</strong> (from LSB)';
+    el.appendChild(ann2);
+    return;
+  }
+  if(step.type!=='append'){
+    if(V.mode==='reflection'&&(step.type==='round_start'||step.type==='reverse'||step.type==='round_done'))
+      {setOrPanelTitle('Bit-layer — (next append shows OR)');el.textContent='—';return;}
+    setOrPanelTitle('Bit-layer — column-aligned OR');
+    el.textContent='—';
+    return;
+  }
+  setOrPanelTitle('Bit-layer — OR with mask (bit index = LSB 0 on the right)');
+  var src=step.mirrorVal,bit=1<<step.round,res=step.newVal;
+  var srcBin=toBin(src,n),bitBin=toBin(bit,n),resBin=toBin(res,n);
+  el.innerHTML='';
   el.appendChild(makeRow('src',srcBin,'var(--text3)',function(c,bp){
     if(bp===step.round)return 'highlight-col';
     return c==='0'?'zero':'plain';
@@ -874,21 +1061,28 @@ function renderOrView(step){
     if(bp===step.round)return 'result-col';
     return c==='0'?'zero':'plain';
   }));
-  var ann=document.createElement('div');
-  ann.style.cssText='font-family:var(--mono);font-size:.7rem;color:var(--amber);margin-top:5px;padding-left:36px';
-  ann.innerHTML='↑ only bit <strong>'+step.round+'</strong> flipped &nbsp;(added +'+bit+')';
-  el.appendChild(ann);
+  var ann3=document.createElement('div');
+  ann3.style.cssText='font-family:var(--mono);font-size:.7rem;color:var(--amber);margin-top:5px;padding-left:36px';
+  ann3.innerHTML='↑ OR sets bit <strong>'+step.round+'</strong> only (LSB = index 0) &nbsp;· mask +'+(1<<step.round);
+  el.appendChild(ann3);
 }
 
 // ── RENDER: STRONG XOR VALIDATOR with verdict ─────────
 function renderXorValidator(step){
   var el=document.getElementById('xor-validator');
-  if(!step||step.type!=='append'){
+  if(!step||(step.type!=='append'&&step.type!=='xor_iter'&&step.type!=='traverse')){
     el.innerHTML='<span style="font-family:var(--mono);font-size:.8rem;color:var(--ph)">—</span>';return;
   }
   var n=V.n;
-  var prevBin=toBin(step.prev,n),curBin=toBin(step.newVal,n),xorBin=toBin(step.xorVal,n);
-  var bits=popcount(step.xorVal),valid=(bits===1);
+  if(step.type==='xor_iter'&&step.iVal===0){
+    el.innerHTML='<div class="xor-verdict verdict-valid" style="margin:0">First code: <strong>g(0) = 0</strong> — no previous value yet.</div>';
+    return;
+  }
+  var prevV=step.type==='traverse'?step.fromVal:step.prev;
+  var curV=step.type==='traverse'?step.toVal:step.newVal;
+  var xv=step.xorVal;
+  var prevBin=toBin(prevV,n),curBin=toBin(curV,n),xorBin=toBin(xv,n);
+  var bits=popcount(xv),valid=(bits===1);
   el.innerHTML='';
   function makeXorRow(labelTxt,binStr,lblColor,getBit){
     var row=document.createElement('div');row.className='xor-row';
@@ -903,18 +1097,16 @@ function renderXorValidator(step){
   }
   el.appendChild(makeXorRow('prev',prevBin,'var(--text2)',function(b,c){return xorBin[b]==='1'?'changed':'same';}));
   el.appendChild(makeXorRow('curr',curBin,'var(--text2)',function(b,c){return xorBin[b]==='1'?'changed':'same';}));
-  // separator line
   var sepRow=document.createElement('div');sepRow.className='xor-row';
   var sepLbl=document.createElement('span');sepLbl.className='xor-label';sepLbl.style.color='var(--amber)';sepLbl.textContent='⊕';
   var sepLine=document.createElement('span');sepLine.style.cssText='display:inline-block;height:1px;background:var(--border2);width:'+(n*20)+'px;margin:1px 0';
   sepRow.appendChild(sepLbl);sepRow.appendChild(sepLine);el.appendChild(sepRow);
   el.appendChild(makeXorRow('xor',xorBin,'var(--amber)',function(b,c){return c==='1'?'result-one':'same';}));
-  // VERDICT BOX
   var verdict=document.createElement('div');
   verdict.className='xor-verdict '+(valid?'verdict-valid':'verdict-invalid');
   verdict.innerHTML=valid
-    ?'✓ &nbsp;<strong>1 bit changed</strong> — bit index <strong>'+step.bitIdx+'</strong> &nbsp;→ valid Gray step'
-    :'✗ &nbsp;<strong>'+bits+' bits changed</strong> — Gray invariant violated!';
+    ?'✓ &nbsp;<strong>1 bit changed</strong> — index <strong>'+step.bitIdx+'</strong> from LSB (0 = rightmost) &nbsp;→ valid'
+    :'✗ &nbsp;<strong>'+bits+' bits changed</strong> — invariant violated!';
   el.appendChild(verdict);
 }
 
@@ -922,7 +1114,7 @@ function renderXorValidator(step){
 function renderBothMethods(step){
   var reflEl=document.getElementById('both-refl');
   var xorEl=document.getElementById('both-xor');
-  if(!step||step.type!=='append'){reflEl.textContent='—';xorEl.textContent='—';return;}
+  if(V.mode!=='reflection'||!step||step.type!=='append'){reflEl.textContent='—';xorEl.textContent='—';return;}
   var n=V.n;
   var match=(step.newVal===step.xorFormulaVal);
   var matchStyle='font-weight:700;color:'+(match?'#4af7b0':'#f76a8a');
@@ -934,18 +1126,45 @@ function renderBothMethods(step){
 }
 
 // ── PROGRESS BAR ─────────────────────────────────────
+function findWalkStartIndex(){
+  var i,t=V.steps.length;
+  for(i=0;i<t;i++)if(V.steps[i].type==='traverse')return i;
+  return t;
+}
+
 function updateProgress(){
   var total=V.steps.length, cur=V.si;
   var pct=total?Math.round(cur/total*100):0;
   var fill=document.getElementById('prog-fill');
   if(fill)fill.style.width=pct+'%';
-  document.getElementById('step-info').textContent=cur+'/'+total;
+  var pill=document.getElementById('phase-pill');
+  var detail=document.getElementById('step-detail');
+  if(!pill||!detail)return;
+  if(!total){pill.textContent='Build';pill.className='phase-pill phase-build';detail.textContent='0/0';return;}
+  var ws=findWalkStartIndex();
+  if(ws>=total){
+    pill.textContent='Build';
+    pill.className='phase-pill phase-build';
+    detail.textContent=cur+'/'+total;
+    return;
+  }
+  var buildN=ws,walkN=total-ws;
+  if(cur<ws){
+    pill.textContent='Build';
+    pill.className='phase-pill phase-build';
+    detail.textContent=cur+'/'+buildN;
+  }else{
+    pill.textContent='Walk';
+    pill.className='phase-pill phase-walk';
+    detail.textContent=(cur-ws)+'/'+walkN;
+  }
 }
 
 function setStatus(s){
   var dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
   if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Building…';}
-  else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Done — '+(1<<V.n)+' codes ✓';}
+  else if(s==='walk'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#f5a623;animation:pulse 1.2s infinite;flex-shrink:0';txt.textContent='Walking cycle…';}
+  else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Built — '+(1<<V.n)+' codes ✓';}
   else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0';txt.textContent='Ready';}
 }
 
@@ -960,32 +1179,38 @@ function updCtrl(){
 function applyStep(){
   if(V.si>=V.steps.length)return false;
   var s=V.steps[V.si];
-  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  setActiveCodeLine(s.cl);
   document.getElementById('bt-note').textContent=s.note;
   V.si++;
   updateProgress();
   renderSeq(s);renderReflPanel(s);renderOrView(s);renderXorValidator(s);renderBothMethods(s);
-  if(s.type==='done')setStatus('done');else setStatus('run');
+  if(s.type==='traverse')setStatus('walk');
+  else if(s.type==='done'||s.type==='xor_done')setStatus('done');
+  else setStatus('run');
   updCtrl();return V.si<V.steps.length;
 }
 
 function rewindTo(t){
   V.si=0;
-  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  clearAllCodeLines();
   while(V.si<t&&V.si<V.steps.length)V.si++;
   if(t>0){
     var s=V.steps[t-1];
-    for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    setActiveCodeLine(s.cl);
     document.getElementById('bt-note').textContent=s.note;
     renderSeq(s);renderReflPanel(s);renderOrView(s);renderXorValidator(s);renderBothMethods(s);
-    setStatus(s.type==='done'?'done':'run');
+    if(s.type==='traverse')setStatus('walk');
+    else if(s.type==='done'||s.type==='xor_done')setStatus('done');
+    else setStatus('run');
   } else {
     renderSeq(null);
     document.getElementById('refl-before').innerHTML='<span style="color:var(--ph);font-family:var(--mono);font-size:12px">—</span>';
     document.getElementById('refl-after').innerHTML='';
     document.getElementById('refl-bit-lbl').textContent='';
+    document.getElementById('flip-arrow-row').style.opacity='0';
     document.getElementById('or-view').textContent='—';
-    document.getElementById('xor-validator').textContent='—';
+    setOrPanelTitle('Bit-layer — column-aligned OR');
+    document.getElementById('xor-validator').innerHTML='<span style="font-family:var(--mono);font-size:.8rem;color:var(--ph)">—</span>';
     document.getElementById('both-refl').textContent='—';
     document.getElementById('both-xor').textContent='—';
     setStatus('ready');
@@ -999,8 +1224,10 @@ function runViz(){
   stopAuto();
   var n=parseInt(document.getElementById('n-inp').value)||3;
   n=Math.max(1,Math.min(n,5));
-  V.n=n;V.steps=buildSteps(n);V.si=0;V.built=true;
-  for(var i=0;i<=6;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  V.n=n;
+  V.steps=V.mode==='reflection'?buildSteps(n):buildXorSteps(n);
+  V.si=0;V.built=true;
+  clearAllCodeLines();
   document.getElementById('bt-note').textContent='Use ← / → to step, or ▶ Auto-play.';
   rewindTo(0);updCtrl();
 }
