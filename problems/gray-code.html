@@ -91,9 +91,10 @@ footer a{color:var(--accent);text-decoration:none}
 /* bit chip strip */
 .bit-strip{display:flex;gap:6px;flex-wrap:wrap;align-items:center;min-height:38px}
 .bit-chip{display:flex;flex-direction:column;align-items:center;gap:3px;font-family:var(--mono);flex-shrink:0;cursor:default}
-.bit-num{font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;border:2px solid var(--border2);background:var(--bg3);color:var(--text2);min-width:38px;text-align:center;transition:all .25s}
-.bit-bin{font-size:9px;color:var(--text3);letter-spacing:.08em;transition:all .25s}
-.bit-chip.current .bit-num{border-color:#7c6af7;background:rgba(124,106,247,.25);color:#c792ea;transform:scale(1.12);box-shadow:0 0 12px rgba(124,106,247,.5)}
+.bit-num{font-size:13px;font-weight:700;padding:6px 10px;border-radius:8px;border:2px solid var(--border2);background:var(--bg3);color:var(--text2);min-width:38px;text-align:center;transition:border-color .4s ease,background .4s ease,color .4s ease,transform .45s cubic-bezier(.34,1.2,.64,1),box-shadow .4s ease;will-change:transform}
+.bit-bin{font-size:9px;color:var(--text3);letter-spacing:.08em;transition:color .35s ease,opacity .35s ease}
+.bit-chip.current .bit-num{border-color:#7c6af7;background:rgba(124,106,247,.25);color:#c792ea;transform:scale(1.12);box-shadow:0 0 14px rgba(124,106,247,.45);animation:chipSettle .5s cubic-bezier(.34,1.25,.64,1) forwards}
+@keyframes chipSettle{0%{transform:scale(.94);box-shadow:0 0 0 rgba(124,106,247,0)}55%{transform:scale(1.16)}100%{transform:scale(1.12);box-shadow:0 0 14px rgba(124,106,247,.45)}}
 .bit-chip.added .bit-num{border-color:#4af7b0;background:rgba(74,247,176,.18);color:#4af7b0}
 .bit-chip.mirror .bit-num{border-color:#f5a623;background:rgba(245,166,35,.15);color:#f5a623}
 [data-theme="light"] .bit-chip.current .bit-num{border-color:#5b48e8;background:rgba(91,72,232,.12);color:#5b48e8}
@@ -104,35 +105,44 @@ footer a{color:var(--accent);text-decoration:none}
 .refl-pill{
   padding:4px 10px;border-radius:8px;font-family:var(--mono);font-size:12px;font-weight:700;
   display:inline-flex;align-items:center;gap:5px;
-  transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .25s, background .25s, border-color .25s;
-  transform-origin:center;
+  transition:transform .5s cubic-bezier(.34,1.4,.64,1), opacity .35s ease, background .35s ease, border-color .35s ease;
+  transform-origin:center center;
+  backface-visibility:hidden;
 }
 .refl-pill.orig{border:1.5px solid #7c6af7;background:rgba(124,106,247,.15);color:#a090ff}
 .refl-pill.flip{
   border:1.5px solid #f5a623;background:rgba(245,166,35,.18);color:#f5a623;
   /* CSS flip animation triggered by class */
 }
-.refl-pill.doing-flip{animation:pillFlip .4s cubic-bezier(.34,1.2,.64,1) forwards}
+.refl-pill.doing-flip{animation:pillFlip .75s cubic-bezier(.45,.03,.32,.98) forwards}
 @keyframes pillFlip{
-  0%  {transform:scaleX(1)  translateY(0);}
-  40% {transform:scaleX(-1) translateY(-4px);}
-  70% {transform:scaleX(1)  translateY(-2px);}
-  100%{transform:scaleX(1)  translateY(0);}
+  0%   {transform:scaleX(1) scaleY(1) translateY(0);filter:brightness(1);}
+  22%  {transform:scaleX(.2) scaleY(1.06) translateY(-2px);filter:brightness(1.08);}
+  48%  {transform:scaleX(-1) scaleY(1.06) translateY(-5px);filter:brightness(1.12);}
+  72%  {transform:scaleX(.25) scaleY(1.04) translateY(-2px);filter:brightness(1.05);}
+  100% {transform:scaleX(1) scaleY(1) translateY(0);filter:brightness(1);}
 }
-.refl-pill.pop-in{animation:popIn .3s cubic-bezier(.34,1.56,.64,1) forwards}
-@keyframes popIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+.refl-pill.pop-in{animation:popIn .48s cubic-bezier(.34,1.45,.64,1) forwards}
+@keyframes popIn{from{transform:scale(.65);opacity:0}to{transform:scale(1);opacity:1}}
 
 /* flip arrow */
-.flip-arrow{font-size:1.1rem;color:var(--amber);animation:arrowBounce .6s ease infinite alternate}
-@keyframes arrowBounce{from{transform:translateY(0)}to{transform:translateY(3px)}}
+.flip-arrow{font-size:1.1rem;color:var(--amber);animation:arrowBounce .95s ease-in-out infinite alternate}
+@keyframes arrowBounce{from{transform:translateY(0);opacity:.75}to{transform:translateY(4px);opacity:1}}
+
+@media (prefers-reduced-motion:reduce){
+  .bit-chip.current .bit-num{animation:none;transition-duration:.01ms!important}
+  .refl-pill.doing-flip,.refl-pill.pop-in{animation-duration:.01ms!important;animation-iteration-count:1!important}
+  .flip-arrow{animation:none}
+  .xor-bit.changed{animation:none}
+}
 
 /* ── XOR VALIDATOR ── */
 .xor-row{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:.84rem;line-height:2.1}
 .xor-label{width:38px;font-size:.68rem;color:var(--text3);flex-shrink:0;letter-spacing:.04em;text-transform:uppercase}
 .xor-bit{width:20px;text-align:center;font-weight:700;border-radius:4px;padding:1px 0;transition:all .2s}
 .xor-bit.same{color:var(--text3)}
-.xor-bit.changed{color:#f5a623;background:rgba(245,166,35,.25);border:1px solid rgba(245,166,35,.5);animation:bitPulse .4s ease}
-@keyframes bitPulse{0%{transform:scale(1)}50%{transform:scale(1.35)}100%{transform:scale(1)}}
+.xor-bit.changed{color:#f5a623;background:rgba(245,166,35,.25);border:1px solid rgba(245,166,35,.5);animation:bitPulse .55s cubic-bezier(.34,1.2,.64,1)}
+@keyframes bitPulse{0%{transform:scale(1)}45%{transform:scale(1.28)}100%{transform:scale(1)}}
 .xor-bit.result-one{color:#4af7b0;background:rgba(74,247,176,.2);border:1px solid rgba(74,247,176,.4)}
 .xor-verdict{display:flex;align-items:center;gap:8px;margin-top:6px;padding:7px 12px;border-radius:10px;font-family:var(--mono);font-size:.82rem;font-weight:700}
 .verdict-valid{background:rgba(74,247,176,.12);border:1.5px solid rgba(74,247,176,.4);color:#4af7b0}
@@ -535,7 +545,7 @@ footer a{color:var(--accent);text-decoration:none}
     <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
     <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
     <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
-      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="2" style="width:75px;accent-color:var(--accent)">
       <span id="speed-lbl">Normal</span>
       <span style="font-size:.68rem;margin-left:4px">
         <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
@@ -547,7 +557,7 @@ footer a{color:var(--accent);text-decoration:none}
   </div>
   <!-- progress bar -->
   <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
-    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .45s cubic-bezier(.25,.8,.25,1);width:0%"></div>
   </div>
 
   <!-- MAIN LAYOUT -->
@@ -675,9 +685,11 @@ function switchTab(n,btn){document.querySelectorAll('.section').forEach(function
 function showSol(i,btn){['sv0','sv1','sv2'].forEach(function(id,j){document.getElementById(id).style.display=j===i?'block':'none';});document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
 function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
 
-var SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+/* ms between auto-play steps — higher = slower (tuned ~1.6× slower than before) */
+var SPDS=[1600,1100,650,380,180],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
 var sl=document.getElementById('speed-sl');
-sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+function syncSpeedLabel(){document.getElementById('speed-lbl').textContent=SPNAMES[(parseInt(sl.value,10)||2)-1];}
+sl.addEventListener('input',syncSpeedLabel);
 document.addEventListener('keydown',function(e){
   if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
   if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
@@ -1001,6 +1013,7 @@ document.head.appendChild(ss);
 window.addEventListener('load',function(){
   if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
     document.documentElement.setAttribute('data-theme','light');
+  syncSpeedLabel();
   loadN(3);
 });
 </script>
