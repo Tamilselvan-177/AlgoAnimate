@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-37R33STE8M');
+</script>
+<title>42. Trapping Rain Water — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--blue:#38bdf8;--blue-bg:rgba(56,189,248,.12);--blue-border:rgba(56,189,248,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--blue:#0284c7;--blue-bg:rgba(2,132,199,.1);--blue-border:rgba(2,132,199,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-hard{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+/* elevation viz */
+.bar-wrap{display:inline-flex;align-items:flex-end;gap:3px;padding:8px}
+.bar-col{display:flex;flex-direction:column;align-items:center;gap:2px}
+.bar-seg{width:32px;height:18px;border-radius:3px;transition:background .25s,box-shadow .25s}
+.bar-idx{font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:4px}
+.bar-val{font-family:var(--mono);font-size:9px;color:var(--text3);margin-bottom:2px}
+/* pointer pills */
+.ptr-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.ptr-pill{padding:4px 12px;border-radius:20px;font-family:var(--mono);font-size:12px;font-weight:700;border:2px solid;transition:all .2s}
+.ptr-l{background:rgba(124,106,247,.2);border-color:#7c6af7;color:#c792ea}
+.ptr-r{background:rgba(240,112,96,.18);border-color:#f07060;color:#f07060}
+.ptr-active{transform:scale(1.08);box-shadow:0 0 10px rgba(124,106,247,.4)}
+/* answer badge */
+.ans-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 18px;border-radius:20px;font-family:var(--mono);font-size:14px;font-weight:700;transition:all .3s}
+.ans-badge.water{background:rgba(56,189,248,.15);border:2px solid rgba(56,189,248,.4);color:#38bdf8}
+/* tree box */
+.tree-box{background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);overflow:hidden;position:relative;display:flex;flex-direction:column}
+.tree-hdr{font-size:.6rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;padding:.5rem 1rem .3rem;flex-shrink:0}
+.tree-leg{display:flex;gap:10px;padding:0 1rem .4rem;font-size:10px;font-family:var(--mono);flex-wrap:wrap;flex-shrink:0}
+/* trapping viz */
+.viz-main-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:720px){.viz-main-grid{grid-template-columns:1fr}}
+.trap-figure{margin:.5rem 0 1rem;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1rem 1rem .75rem}
+.trap-figure svg{max-width:100%;height:auto;display:block;margin:0 auto}
+.trap-figure .trap-grad-top{stop-color:var(--blue)}
+.trap-figure .trap-grad-bot{stop-color:var(--blue)}
+.trap-figure figcaption{font-size:.82rem;color:var(--text2);line-height:1.7;margin-top:.85rem;padding-top:.75rem;border-top:1px solid var(--border)}
+.trap-figure .cap-strong{color:var(--text);font-weight:500}
+.bar-cell{transition:background .22s ease,box-shadow .22s ease,opacity .22s ease}
+.side-hint{font-family:var(--mono);font-size:11px;color:var(--text2);padding:6px 10px;background:var(--bg3);border-radius:8px;border:1px solid var(--border2);min-height:32px;line-height:1.5}
+.side-hint.side-L{border-left:3px solid var(--accent2)}
+.side-hint.side-R{border-left:3px solid var(--coral)}
+.side-hint.side-done{border-left:3px solid var(--green);color:var(--green)}
+.water-total-wrap{display:flex;flex-direction:column;gap:2px}
+.water-answer-sub{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--green)}
+.ex-link{font-size:.78rem;margin-top:.5rem}
+.ex-link a{color:var(--accent);text-decoration:none}
+.ex-link a:hover{text-decoration:underline}
+.explain-pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem}
+@media(max-width:720px){.explain-pair-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-hard">LC #42 · Hard</span>
+    <span class="badge b-topic">Two Pointers</span>
+    <span class="badge b-topic">Dynamic Programming</span>
+    <span class="badge b-topic">Stack</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=two-pointers">Two Pointers</a><span>/</span>
+  <span style="color:var(--text2)">Trapping Rain Water</span>
+</div>
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #12</div>
+      <div class="lc-number">LeetCode 42</div>
+      <h1>Trapping Rain Water</h1>
+      <p class="hero-sub">Treat each value as a vertical wall; rain fills the gaps between them. Each column has width <strong style="color:var(--text)">1</strong>. Return the <strong style="color:var(--text)">total</strong> units of water trapped. At index <strong style="color:var(--text)">i</strong>, depth is <code>max(0, min(maxLeft, maxRight) − height[i])</code> — the surface height is <code>min(maxLeft, maxRight)</code>, minus the bar.</p>
+    </div>
+    <div class="time-est">&#9201; <span>~15 min</span></div>
+  </div>
+</div>
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">Given <strong>n</strong> non-negative integers representing an elevation map where the width of each bar is <strong>1</strong>, return the <strong>total</strong> amount of water the map can hold after raining. Think of the array as a row of walls; water sits in valleys between taller neighbors.<br><br>
+      At index <code>i</code>, water is bounded by the <strong>tallest bar strictly to the left</strong> and the <strong>tallest bar strictly to the right</strong>. Units above the bar at <code>i</code> equal <code>min(maxLeft, maxRight) − height[i]</code>, or <strong>0</strong> if that value is negative. The first and last positions never trap water; with <code>n &lt; 3</code> the answer is always <code>0</code>.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1</div>
+        <div class="ex-io"><strong>height</strong> = [0,1,0,2,1,0,1,3,2,1,2,1]</div>
+        <div class="ex-io"><strong>Output</strong>: <span style="color:var(--blue)">6</span></div>
+      </div>
+      <div class="ex-block" style="border-left-color:var(--accent)">
+        <div class="ex-label">Example 2</div>
+        <div class="ex-io"><strong>height</strong> = [4,2,0,3,2,5]</div>
+        <div class="ex-io"><strong>Output</strong>: <span style="color:var(--blue)">9</span></div>
+        <div class="ex-link"><a href="#trap-cross-section" onclick="event.preventDefault();var tabs=document.querySelectorAll('.tab');switchTab('explanation',tabs[2]);setTimeout(function(){var el=document.getElementById('trap-cross-section');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},60);return false;">Explanation → Step 3</a> has a cross-section diagram and full two-pointer trace for this array.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>n == height.length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ n ≤ 2 × 10<sup>4</sup></span></div>
+        <div class="cr"><div class="cr-dot"></div><span>0 ≤ height[i] ≤ 10<sup>5</sup></span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Complexity (Two-Pointer)</div>
+        <div style="color:var(--accent2)">Time: O(n)</div>
+        <div style="color:var(--accent2)">Space: O(1)</div>
+      </div>
+      <div style="margin-top:.8rem;background:var(--blue-bg);border:1px solid var(--blue-border);border-radius:var(--radius);padding:.9rem 1rem;font-size:.79rem;font-family:var(--mono);color:var(--text2)">
+        <span style="color:var(--blue)">Key insight:</span> whichever side has the shorter max wall, that side is the bottleneck — process it and advance inward.
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Two Pointers O(1) space</div>
+    <div class="vtab" onclick="showSol(1,this)">DP prefix arrays</div>
+    <div class="vtab" onclick="showSol(2,this)">Monotonic Stack</div>
+  </div>
+
+  <!-- Two pointer -->
+  <div class="vsec on" id="sv0">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Two Pointers — O(n) time, O(1) space</span><div class="cx-row"><span class="cx cx-t">O(n)</span><span class="cx cx-s">O(1)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="copy-btn" onclick="cpSol('s0',event)">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">trap</span>(height):
+    l, r = <span class="nm">0</span>, len(height) - <span class="nm">1</span>
+    max_l = max_r = water = <span class="nm">0</span>
+    <span class="kw">while</span> l < r:
+        <span class="kw">if</span> height[l] <= height[r]:
+            <span class="kw">if</span> height[l] >= max_l:
+                max_l = height[l]        <span class="cm"># new left wall</span>
+            <span class="kw">else</span>:
+                water += max_l - height[l]  <span class="cm"># trapped!</span>
+            l += <span class="nm">1</span>
+        <span class="kw">else</span>:
+            <span class="kw">if</span> height[r] >= max_r:
+                max_r = height[r]        <span class="cm"># new right wall</span>
+            <span class="kw">else</span>:
+                water += max_r - height[r]  <span class="cm"># trapped!</span>
+            r -= <span class="nm">1</span>
+    <span class="kw">return</span> water</pre></div>
+  </div>
+
+  <!-- DP -->
+  <div class="vsec" id="sv1">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">DP prefix arrays — intuitive</span><div class="cx-row"><span class="cx cx-t">O(n)</span><span class="cx cx-s">O(n)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="copy-btn" onclick="cpSol('s1',event)">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">trap</span>(height):
+    n = len(height)
+    <span class="kw">if</span> n == <span class="nm">0</span>: <span class="kw">return</span> <span class="nm">0</span>
+    max_l = [<span class="nm">0</span>] * n           <span class="cm"># max height to the left of i</span>
+    max_r = [<span class="nm">0</span>] * n           <span class="cm"># max height to the right of i</span>
+    max_l[<span class="nm">0</span>] = height[<span class="nm">0</span>]
+    <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, n):
+        max_l[i] = max(max_l[i-<span class="nm">1</span>], height[i])
+    max_r[n-<span class="nm">1</span>] = height[n-<span class="nm">1</span>]
+    <span class="kw">for</span> i <span class="kw">in</span> range(n-<span class="nm">2</span>, -<span class="nm">1</span>, -<span class="nm">1</span>):
+        max_r[i] = max(max_r[i+<span class="nm">1</span>], height[i])
+    water = <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        water += max(min(max_l[i], max_r[i]) - height[i], <span class="nm">0</span>)
+    <span class="kw">return</span> water</pre></div>
+  </div>
+
+  <!-- Stack -->
+  <div class="vsec" id="sv2">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Monotonic Stack — horizontal layers</span><div class="cx-row"><span class="cx cx-t">O(n)</span><span class="cx cx-s">O(n)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button type="button" class="copy-btn" onclick="cpSol('s2',event)">Copy</button></div>
+    <div class="code-block"><pre id="s2"><span class="kw">def</span> <span class="fn">trap</span>(height):
+    stack, water = [], <span class="nm">0</span>
+    <span class="kw">for</span> r <span class="kw">in</span> range(len(height)):
+        <span class="kw">while</span> stack <span class="kw">and</span> height[r] > height[stack[-<span class="nm">1</span>]]:
+            bot = stack.pop()           <span class="cm"># the "valley" bottom</span>
+            <span class="kw">if not</span> stack: <span class="kw">break</span>
+            l = stack[-<span class="nm">1</span>]
+            h = min(height[l], height[r]) - height[bot]
+            w = r - l - <span class="nm">1</span>
+            water += h * w              <span class="cm"># horizontal slab</span>
+        stack.append(r)
+    <span class="kw">return</span> water</pre></div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — The water formula</h3>
+    <div class="prose">At each index <code>i</code>, imagine a horizontal water surface: it cannot rise above the <strong>shorter</strong> of the highest wall on the left and the highest wall on the right. The surface height is <code>min(maxLeft[i], maxRight[i])</code>; subtract <code>height[i]</code> to get how many units sit <em>above</em> that bar (use <code>max(0, …)</code> on peaks).<br><br>
+    <code style="color:var(--accent2)">water[i] = max(0, min(maxLeft[i], maxRight[i]) − height[i])</code><br><br>
+    This is the foundation of all three approaches. They differ only in how they compute <code>maxLeft</code> and <code>maxRight</code>. In the <strong>DP</strong> solution those are full prefix/suffix arrays. In the <strong>two-pointer</strong> code, <code>max_l</code> and <code>max_r</code> are <strong>running</strong> maxima seen so far from each end — not the same symbols as <code>maxLeft[i]</code>, but they carry exactly the information needed when you process from the shorter side.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Why two pointers work</h3>
+    <div class="prose" style="margin-bottom:.75rem">Invariant: indices strictly <strong>outside</strong> <code>[l, r]</code> are finished; all water there is already accounted for. At each step we compare <code>height[l]</code> and <code>height[r]</code>. The <strong>shorter</strong> side is safe to resolve: the opposite side still has a wall at least that tall, so the true bottleneck for that column is known. We never move both pointers at once.</div>
+    <div class="explain-pair-grid">
+      <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">If height[l] ≤ height[r]</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2);line-height:1.7">The right wall is <em>at least</em> as tall as the left. So maxLeft is the bottleneck. We know exactly how much water is at <code>l</code>. Advance <code>l</code> inward.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">If height[r] &lt; height[l]</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2);line-height:1.7">The left wall is taller. maxRight is the bottleneck. We know exactly how much water is at <code>r</code>. Advance <code>r</code> inward.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3 id="trap-cross-section">Step 3 — Full trace: height = [4,2,0,3,2,5]</h3>
+    <figure class="trap-figure" aria-labelledby="trap-svg-title">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 210" role="img" aria-labelledby="trap-svg-title trap-svg-desc" width="400" height="210">
+        <title id="trap-svg-title">Trapped rain water for height [4,2,0,3,2,5]</title>
+        <desc id="trap-svg-desc">Cross-section: six bars with heights 4,2,0,3,2,5 and cyan water filling valleys; total trapped water is 9 units.</desc>
+        <defs>
+          <linearGradient id="trap-water-grad" x1="0" y1="0" x2="0" y2="1">
+            <stop class="trap-grad-top" offset="0%" stop-opacity="0.88"/>
+            <stop class="trap-grad-bot" offset="100%" stop-opacity="0.42"/>
+          </linearGradient>
+        </defs>
+        <line x1="12" y1="178" x2="388" y2="178" stroke="var(--border2)" stroke-width="1.5"/>
+        <text x="200" y="204" text-anchor="middle" fill="var(--text3)" font-family="JetBrains Mono,monospace" font-size="11">index</text>
+        <!-- bars + water: heights 4,2,0,3,2,5 ; water 0,2,4,1,2,0 ; unit=18px, base y=178, col=56 -->
+        <g font-family="JetBrains Mono,monospace" font-size="10" fill="var(--text3)">
+          <text x="40" y="198" text-anchor="middle">0</text>
+          <text x="96" y="198" text-anchor="middle">1</text>
+          <text x="152" y="198" text-anchor="middle">2</text>
+          <text x="208" y="198" text-anchor="middle">3</text>
+          <text x="264" y="198" text-anchor="middle">4</text>
+          <text x="320" y="198" text-anchor="middle">5</text>
+        </g>
+        <g stroke="var(--border2)" stroke-width="1">
+          <rect x="22" y="106" width="36" height="72" fill="var(--bg4)" rx="2"/>
+          <rect x="78" y="142" width="36" height="36" fill="var(--bg4)" rx="2"/>
+          <rect x="190" y="124" width="36" height="54" fill="var(--bg4)" rx="2"/>
+          <rect x="246" y="142" width="36" height="36" fill="var(--bg4)" rx="2"/>
+          <rect x="302" y="88" width="36" height="90" fill="var(--bg4)" rx="2"/>
+        </g>
+        <g class="trap-water-layer">
+          <rect x="78" y="106" width="36" height="36" fill="url(#trap-water-grad)" rx="2"/>
+          <rect x="134" y="106" width="36" height="72" fill="url(#trap-water-grad)" rx="2"/>
+          <rect x="190" y="106" width="36" height="18" fill="url(#trap-water-grad)" rx="2"/>
+          <rect x="246" y="106" width="36" height="36" fill="url(#trap-water-grad)" rx="2"/>
+        </g>
+        <path d="M 152 118 L 168 102 L 184 118" fill="none" stroke="var(--amber)" stroke-width="1.2"/>
+        <text x="188" y="98" fill="var(--amber)" font-family="Syne,sans-serif" font-size="11" font-weight="700">deepest pocket</text>
+        <text x="200" y="22" text-anchor="middle" fill="var(--blue)" font-family="JetBrains Mono,monospace" font-size="13" font-weight="700">Total trapped = 9</text>
+      </svg>
+      <figcaption><span class="cap-strong">How to read this:</span> Stone blocks show <code>height[i]</code>; cyan shows water stacked on each column. At index <code>2</code> (height <code>0</code>), the surface is limited by <code>min(4, 5) = 4</code>, so <strong>4</strong> units collect—the lowest point in the basin. Summing every column: <code>0 + 2 + 4 + 1 + 2 + 0 = 9</code>.</figcaption>
+    </figure>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.79rem;margin-top:.5rem">
+        <thead>
+          <tr style="background:var(--bg3)">
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Step</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--accent2);border-bottom:1px solid var(--border)">l</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--coral);border-bottom:1px solid var(--border)">r</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--text2);border-bottom:1px solid var(--border)">max_l</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--text2);border-bottom:1px solid var(--border)">max_r</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--blue);border-bottom:1px solid var(--border)">water</th>
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:7px 10px;color:var(--text3)">init</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">0</td><td style="padding:7px 10px;color:var(--text2)">start</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">1</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">0</td><td style="padding:7px 10px;color:var(--text2)">h[0]=4 ≤ h[5]=5 → update max_l=4, l++</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--text3)">2</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">1</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">2</td><td style="padding:7px 10px;color:var(--text2)">h[1]=2 &lt; max_l=4 → water+=2, l++</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">3</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">2</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">6</td><td style="padding:7px 10px;color:var(--text2)">h[2]=0 &lt; max_l=4 → water+=4, l++</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--text3)">4</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">3</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">7</td><td style="padding:7px 10px;color:var(--text2)">h[3]=3 &lt; max_l=4 → water+=1, l++</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">5</td><td style="padding:7px 10px;text-align:center;color:var(--accent2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--coral)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">4</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">9</td><td style="padding:7px 10px;color:var(--text2)">h[4]=2 &lt; max_l=4 → water+=2, l++</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--text3)">6</td><td style="padding:7px 10px;text-align:center;color:var(--text3)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text3)">5</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">—</td><td style="padding:7px 10px;text-align:center;color:var(--text2)">—</td><td style="padding:7px 10px;text-align:center;color:var(--blue)">9</td><td style="padding:7px 10px;color:var(--green)">l ≥ r → done ✓</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose" style="margin-top:1rem;font-size:.84rem">In the table, <strong>step 3</strong> (row with <code>water = 6</code>) is where the algorithm adds <strong>4</strong> units at index <code>2</code>—that is the tall cyan column in the diagram. Earlier steps filled index <code>1</code> (<code>+2</code>) using left wall <code>max_l = 4</code> while the right end still shows <code>height[5]=5</code>, so the shorter-side rule guarantees the water level is correct.</p>
+    <div style="margin-top:1rem;padding:.85rem 1rem;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent2);font-size:.8rem;color:var(--text2);line-height:1.7;font-family:var(--mono)">
+      <span style="color:var(--accent2);font-weight:700">Other solutions:</span> <strong>DP</strong> precomputes <code>maxLeft[i]</code> and <code>maxRight[i]</code> then sums the same formula. The <strong>monotonic stack</strong> adds water in horizontal slabs between indices—same total, different order of aggregation. Pick the story that clicks for you.
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 4 — Common mistakes</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Wrong pointer movement</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Moving both pointers or always advancing <code>l</code> breaks the invariant. Only advance the side with the shorter max wall.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Negative water</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">On a peak, <code>min(max_l,max_r) − h[i]</code> can be negative. Always clamp: <code>max(0, ...)</code> or the two-pointer approach never adds negatives.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Off-by-one in stack</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Width = <code>r - l - 1</code>, not <code>r - l</code>. The two walls themselves don't hold water.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">✗ Single-element edge</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">An array of length 0 or 1 holds no water. The loop condition <code>l &lt; r</code> handles this automatically.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Pattern:</strong> The two-pointer trick works because we always know the minimum of one side — whichever max is smaller. This "I can commit to this side" reasoning appears in container problems (LC 11) and many greedy height problems.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Height array (comma-sep)</span>
+      <input class="grid-inp" id="arr-inp" type="text" value="4,2,0,3,2,5,9,4,3,5" style="width:280px" title="height[] — l starts at 0, r at n−1; step with Next to see both move">
+    </div>
+    <button class="run-btn" onclick="runViz()">&#9654; Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadP('4,2,0,3,2,5,9,4,3,5')" title="4,2,0,3,2,5,9,4,3,5">10-bar demo → 12</button>
+    <button class="sbtn" onclick="loadP('0,1,0,2,1,0,1,3,2,1,2,1')">Ex1 → 6</button>
+    <button class="sbtn" onclick="loadP('4,2,0,3,2,5')">Ex2 → 9</button>
+    <button class="sbtn" onclick="loadP('3,0,2,0,4')">3,0,2,0,4 → 7</button>
+    <button class="sbtn" onclick="loadP('1,0,1')">1,0,1 → 1</button>
+    <button class="sbtn" onclick="loadP('5,4,3,2,1')">Decreasing → 0</button>
+  </div>
+
+  <!-- controls -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button type="button" class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button type="button" class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button type="button" class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button type="button" class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <label style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;user-select:none;margin-left:4px">
+      <input type="checkbox" id="chk-compact" onchange="runViz()"> Compact steps
+    </label>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+
+  <!-- main layout -->
+  <div class="viz-main-grid">
+    <!-- left: bar chart + status -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <!-- bar viz -->
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.2rem;overflow-x:auto;min-height:200px;display:flex;align-items:flex-end;justify-content:center">
+        <div id="bar-viz" style="display:flex;flex-direction:column;align-items:center;gap:8px;width:100%">
+          <span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>
+        </div>
+      </div>
+
+      <!-- legend -->
+      <div style="display:flex;gap:12px;flex-wrap:wrap;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)">
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#7c6af7;display:inline-block"></span>Left ptr</span>
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#f07060;display:inline-block"></span>Right ptr</span>
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(56,189,248,.6);display:inline-block"></span>Water</span>
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#4af7b0;display:inline-block"></span>Done</span>
+      </div>
+
+      <div id="side-hint" class="side-hint" aria-live="polite">Load an array to see which side the algorithm processes.</div>
+
+      <!-- pointer state -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Pointer state</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-family:var(--mono);font-size:12px">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="color:var(--text3);font-size:10px">LEFT</span>
+            <span id="ptr-l-val" style="color:var(--accent2);font-weight:700">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="color:var(--text3);font-size:10px">RIGHT</span>
+            <span id="ptr-r-val" style="color:var(--coral);font-weight:700">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="color:var(--text3);font-size:10px">MAX_L</span>
+            <span id="max-l-val" style="color:var(--text2);font-weight:700">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <span style="color:var(--text3);font-size:10px">MAX_R</span>
+            <span id="max-r-val" style="color:var(--text2);font-weight:700">—</span>
+          </div>
+        </div>
+        <div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border)">
+          <span style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Total water</span>
+          <div class="water-total-wrap">
+            <div id="water-total" style="font-family:var(--mono);font-size:22px;font-weight:800;color:var(--blue);margin-top:3px">—</div>
+            <div id="water-answer-line" class="water-answer-sub" style="display:none"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- status note -->
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:36px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+
+    <!-- right: code highlight -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="code-hl">
+        <div style="font-size:.6rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:.6rem 1rem .2rem">Two-pointer trace</div>
+        <pre style="padding:.7rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">trap</span>(height):</span>
+<span class="hl" id="cl1">  l, r = <span class="nm">0</span>, len(height)-<span class="nm">1</span></span>
+<span class="hl" id="cl2">  max_l = max_r = water = <span class="nm">0</span></span>
+<span class="hl" id="cl3">  <span class="kw">while</span> l < r:</span>
+<span class="hl" id="cl4">    <span class="kw">if</span> height[l] <= height[r]:  <span class="cm"># left side</span></span>
+<span class="hl" id="cl5">      <span class="kw">if</span> height[l] >= max_l: max_l = height[l]</span>
+<span class="hl" id="cl6">      <span class="kw">else</span>: water += max_l - height[l]</span>
+<span class="hl" id="cl7">      l += <span class="nm">1</span></span>
+<span class="hl" id="cl8">    <span class="kw">else</span>:                       <span class="cm"># right side</span></span>
+<span class="hl" id="cl9">      <span class="kw">if</span> height[r] >= max_r: max_r = height[r]</span>
+<span class="hl" id="cl10">      <span class="kw">else</span>: water += max_r - height[r]</span>
+<span class="hl" id="cl11">      r -= <span class="nm">1</span></span>
+<span class="hl" id="cl12">  <span class="kw">return</span> water</span></pre>
+      </div>
+
+      <!-- per-step water at current index -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Water collected this step</div>
+        <div id="step-water" style="font-family:var(--mono);font-size:13px;color:var(--text2)">—</div>
+      </div>
+
+      <!-- water per index array -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Water per index</div>
+        <div id="water-arr" style="font-family:var(--mono);font-size:12px;color:var(--text2);display:flex;gap:6px;flex-wrap:wrap">—</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="container-with-most-water.html">
+      <div class="rel-top"><span class="rel-num">LC #11 · Medium</span><span class="badge b-topic">Two Pointers</span></div>
+      <div class="rel-title">Container with Most Water</div>
+      <div class="rel-desc">Same two-pointer pinch — move the shorter wall inward to maximise area.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="largest-rectangle-histogram.html">
+      <div class="rel-top"><span class="rel-num">LC #84 · Hard</span><span class="badge b-topic">Stack</span></div>
+      <div class="rel-title">Largest Rectangle in Histogram</div>
+      <div class="rel-desc">Monotonic stack on a histogram — the vertical counterpart to rain water.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="product-except-self.html">
+      <div class="rel-top"><span class="rel-num">LC #238 · Medium</span><span class="badge b-topic">Prefix Arrays</span></div>
+      <div class="rel-title">Product of Array Except Self</div>
+      <div class="rel-desc">Same prefix/suffix sweep technique used in the DP solution.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #42 Trapping Rain Water</p></footer>
+
+<script>
+// ── theme / tabs ──────────────────────────────────────────────────────
+function toggleTheme(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');
+}
+function showSol(i,btn){
+  ['sv0','sv1','sv2'].forEach(function(id,j){
+    var el=document.getElementById(id);if(el)el.style.display=j===i?'block':'none';
+  });
+  document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+function cpSol(id,ev){
+  navigator.clipboard.writeText(document.getElementById(id).innerText);
+  var btn=ev && ev.target ? ev.target : null;
+  if(btn){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy';},1500);}
+}
+
+function trapTotal(h){
+  if(!h||!h.length)return 0;
+  var l=0,r=h.length-1,ml=0,mr=0,w=0;
+  while(l<r){
+    if(h[l]<=h[r]){
+      if(h[l]>=ml)ml=h[l];
+      else w+=ml-h[l];
+      l++;
+    } else {
+      if(h[r]>=mr)mr=h[r];
+      else w+=mr-h[r];
+      r--;
+    }
+  }
+  return w;
+}
+
+function mergeCompactSteps(steps){
+  var out=[steps[0]];
+  for(var i=1;i<steps.length-1;i++){
+    var cur=steps[i],next=steps[i+1];
+    if(next&&(next.cl===7||next.cl===11)){
+      out.push({
+        l:next.l,r:next.r,max_l:next.max_l,max_r:next.max_r,water:next.water,
+        waterAt:next.waterAt.slice(),active:cur.active,cl:next.cl,
+        note:cur.note+' · '+next.note,added:cur.added,done:false,side:cur.side
+      });
+      i++;
+    }else out.push(cur);
+  }
+  out.push(steps[steps.length-1]);
+  return out;
+}
+
+function updateSideHint(s){
+  var el=document.getElementById('side-hint');
+  if(!el)return;
+  el.className='side-hint';
+  if(!s){el.textContent='Load an array to see which side the algorithm processes.';return;}
+  if(s.done){
+    el.classList.add('side-done');
+    el.textContent='Complete — total matches the two-pointer result for this input.';
+    return;
+  }
+  if(s.side==='L'){
+    el.classList.add('side-L');
+    el.textContent='Processing left: h[l] ≤ h[r], so the right wall is at least as tall. Water at l is capped by max_l.';
+  }else if(s.side==='R'){
+    el.classList.add('side-R');
+    el.textContent='Processing right: h[r] < h[l], so the left wall is taller. Water at r is capped by max_r.';
+  }else{
+    el.textContent='Initialised l, r and running maxima — first comparison happens in the loop.';
+  }
+}
+
+function setWaterAnswerLine(s){
+  var wal=document.getElementById('water-answer-line');
+  if(!wal)return;
+  if(s&&s.done){
+    var ans=trapTotal(V.height);
+    wal.style.display='block';
+    wal.textContent='Answer: '+ans+(ans===s.water?' ✓':'');
+  }else{
+    wal.style.display='none';
+    wal.textContent='';
+  }
+}
+
+// ── step builder ─────────────────────────────────────────────────────
+function buildStepsRaw(height){
+  var n=height.length,steps=[];
+  var waterAt=new Array(n).fill(0);
+
+  steps.push({l:0,r:n-1,max_l:0,max_r:0,water:0,waterAt:waterAt.slice(),
+    active:-1,cl:1,note:'Initialise l=0, r='+(n-1)+', max_l=0, max_r=0, water=0',added:0,side:null});
+
+  var l=0,r=n-1,max_l=0,max_r=0,water=0;
+
+  while(l<r){
+    var added=0,cl;
+    if(height[l]<=height[r]){
+      cl=4;
+      if(height[l]>=max_l){
+        max_l=height[l];cl=5;
+        steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl,
+          note:'height['+l+']='+height[l]+' ≥ max_l → update max_l='+max_l,added:0,side:'L'});
+      } else {
+        added=max_l-height[l];water+=added;waterAt[l]+=added;cl=6;
+        steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl,
+          note:'height['+l+']='+height[l]+' < max_l='+max_l+' → +'+added+' water (total='+water+')',added,side:'L'});
+      }
+      l++;
+      steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl:7,
+        note:'l++ → l='+l,added:0,side:'L'});
+    } else {
+      cl=8;
+      if(height[r]>=max_r){
+        max_r=height[r];cl=9;
+        steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl,
+          note:'height['+r+']='+height[r]+' ≥ max_r → update max_r='+max_r,added:0,side:'R'});
+      } else {
+        added=max_r-height[r];water+=added;waterAt[r]+=added;cl=10;
+        steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl,
+          note:'height['+r+']='+height[r]+' < max_r='+max_r+' → +'+added+' water (total='+water+')',added,side:'R'});
+      }
+      r--;
+      steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl:11,
+        note:'r-- → r='+r,added:0,side:'R'});
+    }
+  }
+  steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:-1,cl:12,
+    note:'✓ Done! Total water trapped = '+water,added:0,done:true,side:null});
+  return steps;
+}
+
+function buildSteps(height){
+  var raw=buildStepsRaw(height);
+  var compact=document.getElementById('chk-compact')&&document.getElementById('chk-compact').checked;
+  return compact?mergeCompactSteps(raw):raw;
+}
+
+// ── bar renderer ──────────────────────────────────────────────────────
+function renderBars(height,step){
+  var viz=document.getElementById('bar-viz');
+  if(!height||!height.length){
+    viz.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';
+    return;
+  }
+  var maxH=Math.max.apply(null,height)||1;
+  var ROWS=8; // visual rows
+  var s=step||{l:-1,r:-2,active:-1,waterAt:new Array(height.length).fill(0)};
+  var watArr=s.waterAt||new Array(height.length).fill(0);
+
+  // Build grid: for each column, draw bar segments bottom-up
+  var html='<div style="display:flex;align-items:flex-end;gap:3px;padding:4px 0">';
+  height.forEach(function(h,i){
+    var totalH=h+(watArr[i]||0); // visual height of column including water
+    var isL=(i===s.l);
+    var isR=(i===s.r);
+    var isActive=(i===s.active);
+    var isDone=s.done;
+
+    html+='<div style="display:flex;flex-direction:column;align-items:center;gap:0">';
+    // pointer indicator above
+    var ptrStr='';
+    if(isL&&isR){ptrStr='<div style="font-family:var(--mono);font-size:9px;color:#a594f9;margin-bottom:2px">l=r</div>';}
+    else if(isL){ptrStr='<div style="font-family:var(--mono);font-size:9px;color:#7c6af7;margin-bottom:2px">l</div>';}
+    else if(isR){ptrStr='<div style="font-family:var(--mono);font-size:9px;color:#f07060;margin-bottom:2px">r</div>';}
+    else{ptrStr='<div style="margin-bottom:2px;height:14px"></div>';}
+    html+=ptrStr;
+
+    // segments from top down: water then stone
+    var maxRows=20;
+    var pxPerRow=Math.max(12,Math.min(22,Math.floor(180/maxH)));
+    var stoneRows=h;
+    var waterRows=watArr[i]||0;
+    var totalRows=stoneRows+waterRows;
+
+    // water rows (on top of stone)
+    for(var w=waterRows-1;w>=0;w--){
+      var wColor='rgba(56,189,248,0.65)';
+      if(isDone)wColor='rgba(74,247,176,0.5)';
+      html+='<div class="bar-cell" style="width:32px;height:'+pxPerRow+'px;background:'+wColor+';border-radius:2px;margin-bottom:2px"></div>';
+    }
+    // stone rows
+    for(var st=stoneRows-1;st>=0;st--){
+      var sColor;
+      if(isDone){sColor='rgba(61,214,140,.4)';}
+      else if(isActive){sColor=isL?'rgba(124,106,247,.85)':'rgba(240,112,96,.85)';}
+      else if(i<s.l||i>s.r){sColor='rgba(58,58,90,.4)';}
+      else{sColor='rgba(68,68,110,.8)';}
+      html+='<div class="bar-cell" style="width:32px;height:'+pxPerRow+'px;background:'+sColor+';border-radius:2px;margin-bottom:2px"></div>';
+    }
+
+    // index & value
+    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3);margin-top:3px">'+i+'</div>';
+    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+h+'</div>';
+    html+='</div>';
+  });
+  html+='</div>';
+  viz.innerHTML=html;
+}
+
+function renderWaterArr(waterAt,height,active){
+  var el=document.getElementById('water-arr');
+  if(!waterAt){el.innerHTML='—';return;}
+  el.innerHTML='';
+  waterAt.forEach(function(w,i){
+    var span=document.createElement('span');
+    span.style.cssText='padding:2px 7px;border-radius:6px;border:1px solid var(--border2);font-size:11px;transition:all .2s;';
+    span.textContent='['+i+']='+w;
+    if(i===active){span.style.background='rgba(124,106,247,.25)';span.style.color='var(--accent2)';}
+    else if(w>0){span.style.color='var(--blue)';}
+    el.appendChild(span);
+  });
+}
+
+// ── viz state ─────────────────────────────────────────────────────────
+var V={height:[],steps:[],si:0,built:false,timer:null};
+var isPlaying=false;
+
+function parseArr(s){
+  var parts=s.split(',').map(function(x){return parseInt(x.trim(),10);});
+  if(parts.some(isNaN)||!parts.length)return null;
+  if(parts.some(function(x){return x<0;}))return null;
+  return parts;
+}
+
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=12;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent=(V.si+1)+'/'+V.steps.length;
+  document.getElementById('ptr-l-val').textContent='l='+s.l+' (h='+V.height[s.l]+')';
+  document.getElementById('ptr-r-val').textContent='r='+s.r+' (h='+(V.height[s.r]!==undefined?V.height[s.r]:'?')+')';
+  document.getElementById('max-l-val').textContent=s.max_l;
+  document.getElementById('max-r-val').textContent=s.max_r;
+  document.getElementById('water-total').textContent=s.water;
+  document.getElementById('step-water').textContent=s.added>0?'+ '+s.added+' at index '+s.active:'no water this step';
+  updateSideHint(s);
+  setWaterAnswerLine(s);
+  renderBars(V.height,s);
+  renderWaterArr(s.waterAt,V.height,s.active);
+  V.si++;updCtrl();return V.si<V.steps.length;
+}
+
+function rewindTo(t){
+  V.si=0;
+  for(var i=0;i<=12;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  if(t>0){
+    V.si=t;
+    var s=V.steps[t-1];
+    document.getElementById('bt-note').textContent=s.note;
+    document.getElementById('step-info').textContent=t+'/'+V.steps.length;
+    document.getElementById('ptr-l-val').textContent='l='+s.l+' (h='+V.height[s.l]+')';
+    document.getElementById('ptr-r-val').textContent='r='+s.r+' (h='+(V.height[s.r]!==undefined?V.height[s.r]:'?')+')';
+    document.getElementById('max-l-val').textContent=s.max_l;
+    document.getElementById('max-r-val').textContent=s.max_r;
+    document.getElementById('water-total').textContent=s.water;
+    document.getElementById('step-water').textContent=s.added>0?'+ '+s.added+' at index '+s.active:'no water this step';
+    updateSideHint(s);
+    setWaterAnswerLine(s);
+    for(var i=0;i<=12;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    renderBars(V.height,s);
+    renderWaterArr(s.waterAt,V.height,s.active);
+  } else {
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+    document.getElementById('step-info').textContent='';
+    document.getElementById('ptr-l-val').textContent='—';
+    document.getElementById('ptr-r-val').textContent='—';
+    document.getElementById('max-l-val').textContent='—';
+    document.getElementById('max-r-val').textContent='—';
+    document.getElementById('water-total').textContent='—';
+    document.getElementById('step-water').textContent='—';
+    document.getElementById('water-arr').innerHTML='—';
+    updateSideHint(null);
+    setWaterAnswerLine(null);
+    renderBars(V.height,null);
+  }
+  updCtrl();
+}
+
+function loadP(s){document.getElementById('arr-inp').value=s;runViz();}
+function runViz(){
+  stopAuto();
+  var arr=parseArr(document.getElementById('arr-inp').value);
+  if(!arr){document.getElementById('bt-note').textContent='Invalid input — use comma-separated integers ≥ 0.';return;}
+  V.height=arr;
+  V.steps=buildSteps(arr);
+  V.si=0;V.built=true;
+  rewindTo(0);
+  document.getElementById('bt-note').textContent='l=0 and r=n−1 to start — press Next (→) to move pointers and fill water.';
+  updCtrl();
+}
+
+function stepBy(d){
+  stopAuto();
+  if(!V.built)return;
+  if(d>0){if(V.si<V.steps.length)applyStep();}
+  else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}
+  updCtrl();
+}
+
+function stopAuto(){
+  if(V.timer){clearInterval(V.timer);V.timer=null;}
+  isPlaying=false;
+  var b=document.getElementById('btn-auto');
+  if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}
+}
+
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}
+  if(!V.built)return;
+  if(V.si>=V.steps.length)rewindTo(0);
+  isPlaying=true;
+  var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('primary');
+  var sl=document.getElementById('speed-sl');
+  var SPDS=[900,550,280,140,60];
+  V.timer=setInterval(function(){
+    var more=applyStep();updCtrl();if(!more)stopAuto();
+  },SPDS[sl.value-1]);
+}
+
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updCtrl();}
+
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+var sl=document.getElementById('speed-sl');
+var SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+if(sl)sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadP('4,2,0,3,2,5,9,4,3,5');
+});
+</script>
+</body>
+</html>
