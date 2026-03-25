@@ -135,6 +135,12 @@ footer a{color:var(--accent);text-decoration:none}
 .trap-figure figcaption{font-size:.82rem;color:var(--text2);line-height:1.7;margin-top:.85rem;padding-top:.75rem;border-top:1px solid var(--border)}
 .trap-figure .cap-strong{color:var(--text);font-weight:500}
 .bar-cell{transition:background .22s ease,box-shadow .22s ease,opacity .22s ease}
+.bar-viz-wrap{display:flex;flex-direction:column;align-items:center;width:100%}
+.bar-max-row{display:flex;gap:3px;padding:6px 0 2px;justify-content:center;align-items:flex-start;border-top:1px solid var(--cvb);margin-top:4px}
+.bar-max-cell{width:32px;min-width:32px;min-height:30px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:1px;font-family:var(--mono);font-size:7.5px;line-height:1.2;text-align:center}
+.bar-max-cell .mx-l{color:var(--accent2);font-weight:700}
+.bar-max-cell .mx-r{color:var(--coral);font-weight:700}
+.bar-max-cell .mx-v{font-size:8px;color:var(--text2);font-weight:600}
 .side-hint{font-family:var(--mono);font-size:11px;color:var(--text2);padding:6px 10px;background:var(--bg3);border-radius:8px;border:1px solid var(--border2);min-height:32px;line-height:1.5}
 .side-hint.side-L{border-left:3px solid var(--accent2)}
 .side-hint.side-R{border-left:3px solid var(--coral)}
@@ -477,6 +483,8 @@ footer a{color:var(--accent);text-decoration:none}
         <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#f07060;display:inline-block"></span>Right ptr</span>
         <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:rgba(56,189,248,.6);display:inline-block"></span>Water</span>
         <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:#4af7b0;display:inline-block"></span>Done</span>
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px" title="Shown under the bar that last raised the left wall, not under pointer l"><span style="width:10px;height:10px;border-radius:2px;background:var(--accent2);opacity:.75;display:inline-block"></span>max_l @ wall</span>
+        <span style="font-family:var(--mono);font-size:11px;display:flex;align-items:center;gap:5px" title="Shown under the bar that last raised the right wall, not under pointer r"><span style="width:10px;height:10px;border-radius:2px;background:var(--coral);opacity:.75;display:inline-block"></span>max_r @ wall</span>
       </div>
 
       <div id="side-hint" class="side-hint" aria-live="polite">Load an array to see which side the algorithm processes.</div>
@@ -626,7 +634,8 @@ function mergeCompactSteps(steps){
       out.push({
         l:next.l,r:next.r,max_l:next.max_l,max_r:next.max_r,water:next.water,
         waterAt:next.waterAt.slice(),active:cur.active,cl:next.cl,
-        note:cur.note+' · '+next.note,added:cur.added,done:false,side:cur.side
+        note:cur.note+' · '+next.note,added:cur.added,done:false,side:cur.side,
+        wall_l:next.wall_l,wall_r:next.wall_r
       });
       i++;
     }else out.push(cur);
@@ -675,44 +684,45 @@ function buildStepsRaw(height){
   var waterAt=new Array(n).fill(0);
 
   steps.push({l:0,r:n-1,max_l:0,max_r:0,water:0,waterAt:waterAt.slice(),
-    active:-1,cl:1,note:'Initialise l=0, r='+(n-1)+', max_l=0, max_r=0, water=0',added:0,side:null});
+    active:-1,cl:1,note:'Initialise l=0, r='+(n-1)+', max_l=0, max_r=0, water=0',added:0,side:null,wall_l:-1,wall_r:-1});
 
   var l=0,r=n-1,max_l=0,max_r=0,water=0;
+  var wall_l=-1,wall_r=-1;
 
   while(l<r){
     var added=0,cl;
     if(height[l]<=height[r]){
       cl=4;
       if(height[l]>=max_l){
-        max_l=height[l];cl=5;
+        max_l=height[l];wall_l=l;cl=5;
         steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl,
-          note:'height['+l+']='+height[l]+' ≥ max_l → update max_l='+max_l,added:0,side:'L'});
+          note:'height['+l+']='+height[l]+' ≥ max_l → update max_l='+max_l+' (wall bar @ '+wall_l+')',added:0,side:'L',wall_l:wall_l,wall_r:wall_r});
       } else {
         added=max_l-height[l];water+=added;waterAt[l]+=added;cl=6;
         steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl,
-          note:'height['+l+']='+height[l]+' < max_l='+max_l+' → +'+added+' water (total='+water+')',added,side:'L'});
+          note:'height['+l+']='+height[l]+' < max_l='+max_l+' → +'+added+' water (uses wall @ '+wall_l+')',added,side:'L',wall_l:wall_l,wall_r:wall_r});
       }
       l++;
       steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:l,cl:7,
-        note:'l++ → l='+l,added:0,side:'L'});
+        note:'l++ → l='+l,added:0,side:'L',wall_l:wall_l,wall_r:wall_r});
     } else {
       cl=8;
       if(height[r]>=max_r){
-        max_r=height[r];cl=9;
+        max_r=height[r];wall_r=r;cl=9;
         steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl,
-          note:'height['+r+']='+height[r]+' ≥ max_r → update max_r='+max_r,added:0,side:'R'});
+          note:'height['+r+']='+height[r]+' ≥ max_r → update max_r='+max_r+' (wall bar @ '+wall_r+')',added:0,side:'R',wall_l:wall_l,wall_r:wall_r});
       } else {
         added=max_r-height[r];water+=added;waterAt[r]+=added;cl=10;
         steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl,
-          note:'height['+r+']='+height[r]+' < max_r='+max_r+' → +'+added+' water (total='+water+')',added,side:'R'});
+          note:'height['+r+']='+height[r]+' < max_r='+max_r+' → +'+added+' water (uses wall @ '+wall_r+')',added,side:'R',wall_l:wall_l,wall_r:wall_r});
       }
       r--;
       steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:r,cl:11,
-        note:'r-- → r='+r,added:0,side:'R'});
+        note:'r-- → r='+r,added:0,side:'R',wall_l:wall_l,wall_r:wall_r});
     }
   }
   steps.push({l,r,max_l,max_r,water,waterAt:waterAt.slice(),active:-1,cl:12,
-    note:'✓ Done! Total water trapped = '+water,added:0,done:true,side:null});
+    note:'✓ Done! Total water trapped = '+water,added:0,done:true,side:null,wall_l:wall_l,wall_r:wall_r});
   return steps;
 }
 
@@ -733,9 +743,10 @@ function renderBars(height,step){
   var ROWS=8; // visual rows
   var s=step||{l:-1,r:-2,active:-1,waterAt:new Array(height.length).fill(0)};
   var watArr=s.waterAt||new Array(height.length).fill(0);
+  var showMax=step!==null&&step!==undefined&&typeof s.max_l==='number'&&typeof s.max_r==='number';
 
-  // Build grid: for each column, draw bar segments bottom-up
-  var html='<div style="display:flex;align-items:flex-end;gap:3px;padding:4px 0">';
+  var html='<div class="bar-viz-wrap">';
+  html+='<div style="display:flex;align-items:flex-end;gap:3px;padding:4px 0">';
   height.forEach(function(h,i){
     var totalH=h+(watArr[i]||0); // visual height of column including water
     var isL=(i===s.l);
@@ -780,6 +791,29 @@ function renderBars(height,step){
     html+='<div style="font-family:var(--mono);font-size:9px;color:var(--text3)">'+h+'</div>';
     html+='</div>';
   });
+  html+='</div>';
+
+  if(showMax){
+    var wl=typeof s.wall_l==='number'?s.wall_l:-1;
+    var wr=typeof s.wall_r==='number'?s.wall_r:-1;
+    html+='<div class="bar-max-row" aria-label="Wall bars for running maxima">';
+    height.forEach(function(unused,i){
+      var showWl=wl>=0&&i===wl;
+      var showWr=wr>=0&&i===wr;
+      html+='<div class="bar-max-cell">';
+      if(showWl&&showWr){
+        html+='<span class="mx-l">max_l</span><span class="mx-v">'+s.max_l+'</span><span class="mx-r">max_r</span><span class="mx-v">'+s.max_r+'</span>';
+      }else if(showWl){
+        html+='<span class="mx-l">max_l</span><span class="mx-v">'+s.max_l+'</span>';
+      }else if(showWr){
+        html+='<span class="mx-r">max_r</span><span class="mx-v">'+s.max_r+'</span>';
+      }
+      html+='</div>';
+    });
+    html+='</div>';
+    html+='<div style="font-family:var(--mono);font-size:9px;color:var(--ph);margin-top:2px;max-width:560px;text-align:center;line-height:1.45"><strong style="color:var(--text2)">Why labels don’t sit under l / r:</strong> <span style="color:var(--accent2)">max_l</span> is the height of the best <em>left wall so far</em>—we show it under the <strong>bar index</strong> that last raised it (<code>wall_l</code>). Same for <span style="color:var(--coral)">max_r</span> at <code>wall_r</code>. Pointers <code>l</code> and <code>r</code> move every step; the wall markers only jump when a taller bar is found on that side.</div>';
+  }
+
   html+='</div>';
   viz.innerHTML=html;
 }
