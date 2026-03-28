@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-37R33STE8M');
+</script>
+<title>74. Search a 2D Matrix — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.12);--teal-border:rgba(45,212,191,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,.1);--teal-border:rgba(13,148,136,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.jbtn{padding:5px 12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--amber);cursor:pointer;transition:all .2s}
+.jbtn:hover{background:var(--amber);color:#1a0a00}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ── MATRIX GRID ── */
+.mat-wrap{display:inline-flex;flex-direction:column;gap:4px}
+.mat-row{display:flex;gap:4px}
+.mat-cell{width:50px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-family:var(--mono);font-size:14px;font-weight:700;border:2px solid transparent;transition:all .22s;position:relative;user-select:none}
+.mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+.mc-elim{background:var(--bg3);border-color:var(--border2);color:var(--text3);opacity:.4}
+.mc-probe{background:rgba(124,106,247,.25);border-color:#7c6af7;color:#c792ea;transform:scale(1.1);box-shadow:0 0 12px rgba(124,106,247,.5)}
+.mc-lo{background:rgba(61,214,140,.12);border-color:#3dd68c;color:var(--green)}
+.mc-hi{background:rgba(240,112,96,.12);border-color:#f07060;color:var(--coral)}
+.mc-found{background:rgba(74,247,176,.22);border-color:#4af7b0;color:#4af7b0;transform:scale(1.12);box-shadow:0 0 16px rgba(74,247,176,.5)}
+.mc-miss{background:rgba(247,106,138,.12);border-color:#f76a8a;color:#f76a8a}
+[data-theme="light"] .mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+[data-theme="light"] .mc-probe{background:rgba(91,72,232,.14);border-color:#5b48e8;color:#5b48e8}
+[data-theme="light"] .mc-lo{background:rgba(26,158,92,.1);border-color:#1a9e5c;color:#1a9e5c}
+[data-theme="light"] .mc-hi{background:rgba(208,64,48,.1);border-color:#d04030;color:#d04030}
+[data-theme="light"] .mc-found{background:rgba(13,148,136,.15);border-color:#0d9488;color:#0d9488}
+[data-theme="light"] .mc-miss{background:rgba(208,64,48,.1);border-color:#d04030;color:#d04030}
+
+/* number line */
+.numline{display:flex;gap:3px;flex-wrap:wrap;align-items:center;min-height:38px}
+.nl-cell{width:46px;height:38px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-family:var(--mono);font-size:13px;font-weight:700;border:2px solid var(--border2);background:var(--bg3);color:var(--text2);transition:all .2s;position:relative}
+.nl-cell.lo{border-color:#3dd68c;background:rgba(61,214,140,.12);color:var(--green)}
+.nl-cell.hi{border-color:#f07060;background:rgba(240,112,96,.12);color:var(--coral)}
+.nl-cell.mid{border-color:#7c6af7;background:rgba(124,106,247,.2);color:#c792ea;transform:scale(1.1);box-shadow:0 0 10px rgba(124,106,247,.4)}
+.nl-cell.elim{opacity:.3}
+.nl-cell.found-cell{border-color:#4af7b0;background:rgba(74,247,176,.18);color:#4af7b0;transform:scale(1.1)}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">LC #74 · Medium</span>
+    <span class="badge b-topic">Binary Search</span>
+    <span class="badge b-topic">Array</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=binary-search">Binary Search</a><span>/</span>
+  <span style="color:var(--text2)">Search a 2D Matrix</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #13</div>
+      <div class="lc-number">LeetCode 74</div>
+      <h1>Search a 2D Matrix</h1>
+      <p class="hero-sub">Each row is sorted, and each row's first element is greater than the last of the previous row. That means the whole matrix is one <strong style="color:var(--text)">sorted flat array in disguise</strong> — binary search it directly in O(log m·n).</p>
+    </div>
+    <div class="time-est">⏱ <span>~8 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">Given an <strong>m × n</strong> integer matrix with two properties:<br><br>
+      <ul>
+        <li>Each row is sorted in non-decreasing order</li>
+        <li>The first integer of each row is greater than the last integer of the previous row</li>
+      </ul><br>
+      Given an integer <code>target</code>, return <strong>true</strong> if target is in the matrix, <strong>false</strong> otherwise. Must run in <strong>O(log(m·n))</strong>.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1</div>
+        <div class="ex-io"><strong>matrix</strong> = [[1,3,5,7],[10,11,16,20],[23,30,34,60]]</div>
+        <div class="ex-io"><strong>target</strong> = 3 → <span style="color:var(--green)">true</span></div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2</div>
+        <div class="ex-io"><strong>target</strong> = 13 → <span style="color:var(--coral)">false</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>m == matrix.length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>n == matrix[i].length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ m, n ≤ 100</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>−10⁴ ≤ matrix[i][j], target ≤ 10⁴</span></div>
+        <div class="cr"><div class="cr-dot"></div><span><strong>Must be O(log(m·n))</strong></span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Key insight</div>
+        <div style="color:var(--text2)">The matrix is a sorted 1D array folded into 2D. Index <code>k</code> maps to <code>row=k÷n, col=k%n</code>. One binary search covers everything.</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Flat binary search</div>
+    <div class="vtab" onclick="showSol(1,this)">Two-pass (row then col)</div>
+  </div>
+
+  <div class="vsec on" id="sv0">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Treat as flat sorted array — one binary search</span><div class="cx-row"><span class="cx cx-t">O(log m·n)</span><span class="cx cx-s">O(1)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="fn">searchMatrix</span>(matrix: List[List[int]], target: int) -> bool:
+    <span class="kw">if not</span> matrix <span class="kw">or not</span> matrix[<span class="nm">0</span>]: <span class="kw">return False</span>  <span class="cm"># edge case</span>
+    m, n = len(matrix), len(matrix[<span class="nm">0</span>])
+    lo, hi = <span class="nm">0</span>, m * n - <span class="nm">1</span>
+
+    <span class="kw">while</span> lo <= hi:
+        mid = lo + (hi - lo) // <span class="nm">2</span>  <span class="cm"># overflow-safe</span>
+        val = matrix[mid // n][mid % n]
+
+        <span class="kw">if</span>   val == target: <span class="kw">return True</span>
+        <span class="kw">elif</span> val  < target: lo = mid + <span class="nm">1</span>
+        <span class="kw">else</span>:               hi = mid - <span class="nm">1</span>
+
+    <span class="kw">return False</span></pre></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.8rem">
+      <div style="background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Index mapping</div>
+        flat index <span style="color:var(--accent2)">k</span> → row = <span style="color:var(--accent2)">k // n</span>,  col = <span style="color:var(--accent2)">k % n</span><br>
+        <span style="color:var(--text3);font-size:.72rem">k=5, n=4 → row=1, col=1 ✓</span>
+      </div>
+      <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Why overflow-safe?</div>
+        <span style="color:var(--text2)">Python ints don't overflow, but <code>lo+(hi-lo)//2</code> is the correct habit for Java/C++ where <code>(lo+hi)//2</code> can overflow 32-bit int.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="vsec" id="sv1">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Two-pass: binary search row, then column</span><div class="cx-row"><span class="cx cx-t">O(log m + log n)</span><span class="cx cx-s">O(1)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="fn">searchMatrix</span>(matrix: List[List[int]], target: int) -> bool:
+    <span class="kw">if not</span> matrix <span class="kw">or not</span> matrix[<span class="nm">0</span>]: <span class="kw">return False</span>
+    m, n = len(matrix), len(matrix[<span class="nm">0</span>])
+
+    <span class="cm"># Step 1: find the row target could be in</span>
+    top, bot = <span class="nm">0</span>, m - <span class="nm">1</span>
+    <span class="kw">while</span> top <= bot:
+        row = top + (bot - top) // <span class="nm">2</span>
+        <span class="kw">if</span>   matrix[row][-<span class="nm">1</span>] < target: top = row + <span class="nm">1</span>
+        <span class="kw">elif</span> matrix[row][<span class="nm">0</span>]  > target: bot = row - <span class="nm">1</span>
+        <span class="kw">else</span>: <span class="kw">break</span>
+    <span class="kw">else</span>: <span class="kw">return False</span>   <span class="cm"># no valid row found</span>
+
+    <span class="cm"># Step 2: binary search within that row</span>
+    lo, hi = <span class="nm">0</span>, n - <span class="nm">1</span>
+    <span class="kw">while</span> lo <= hi:
+        mid = lo + (hi - lo) // <span class="nm">2</span>
+        <span class="kw">if</span>   matrix[row][mid] == target: <span class="kw">return True</span>
+        <span class="kw">elif</span> matrix[row][mid]  < target: lo = mid + <span class="nm">1</span>
+        <span class="kw">else</span>:                            hi = mid - <span class="nm">1</span>
+    <span class="kw">return False</span></pre></div>
+    <div style="margin-top:.8rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      O(log m + log n) = O(log m·n) — same asymptotic complexity as flat approach, two calls instead of one.
+    </div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — The key observation: it's a 1D array</h3>
+    <div class="prose" style="margin-bottom:.8rem">Because each row is sorted AND each row starts after the previous ends, the entire matrix is equivalent to one sorted array of length m·n — just folded into rows.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Matrix (3×4)</div>
+        <div>[ 1, 3, 5, 7]</div>
+        <div>[10,11,16,20]</div>
+        <div>[23,30,34,60]</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Flat view (length 12)</div>
+        <div style="color:var(--accent2)">[1,3,5,7,10,11,16,20,23,30,34,60]</div>
+        <div style="color:var(--text3);font-size:.72rem">k=0..11 &nbsp; fully sorted ✓</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Index mapping: flat ↔ 2D</h3>
+    <div class="prose" style="margin-bottom:.8rem">Given flat index <code>k</code> in an m×n matrix:</div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.84rem;line-height:2.2">
+      <div><span style="color:var(--amber)">row</span> = k <span style="color:var(--accent2)">//</span> n &nbsp;&nbsp;<span style="color:var(--text3)"># integer division</span></div>
+      <div><span style="color:var(--amber)">col</span> = k <span style="color:var(--accent2)">%</span>  n &nbsp;&nbsp;<span style="color:var(--text3)"># remainder</span></div>
+      <div style="margin-top:4px;color:var(--text3);font-size:.75rem">k=5, n=4 → row=1, col=1 → matrix[1][1]=11 ✓</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Standard binary search on flat indices</h3>
+    <div class="prose" style="margin-bottom:.8rem">lo=0, hi=m·n−1. At each step compute mid, map to 2D, compare with target.</div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2.1">
+      val = matrix[mid // n][mid % n]<br>
+      <span style="color:var(--green)">val == target</span> → return <span style="color:var(--green)">True</span><br>
+      <span style="color:var(--coral)">val  &lt; target</span> → lo = mid + 1 &nbsp;<span style="color:var(--text3)">(search right)</span><br>
+      <span style="color:var(--coral)">val  &gt; target</span> → hi = mid − 1 &nbsp;<span style="color:var(--text3)">(search left)</span>
+    </div>
+    <div style="margin-top:.8rem;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius);padding:.8rem 1rem;font-family:var(--mono);font-size:.79rem">
+      <div style="color:var(--accent2);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:5px">Why O(log m·n) = O(log m + log n)</div>
+      <div style="color:var(--text2)">log(m·n) = log m + log n &nbsp;— logarithm product rule. A 100×100 matrix needs at most log₂(10000) ≈ <strong style="color:var(--accent2)">14</strong> comparisons, not 10000.</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Full trace: target = 3</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto">
+      <div><span style="color:var(--text3)">Matrix 3×4, flat length=12, target=3</span></div>
+      <div><span style="color:var(--accent2)">lo=0, hi=11</span> → mid=5 → matrix[1][1]=<span style="color:var(--amber)">11</span> &gt; 3 → hi=4</div>
+      <div><span style="color:var(--accent2)">lo=0, hi=4</span>  → mid=2 → matrix[0][2]=<span style="color:var(--amber)">5</span> &gt; 3 → hi=1</div>
+      <div><span style="color:var(--accent2)">lo=0, hi=1</span>  → mid=0 → matrix[0][0]=<span style="color:var(--amber)">1</span> &lt; 3 → lo=1</div>
+      <div><span style="color:var(--accent2)">lo=1, hi=1</span>  → mid=1 → matrix[0][1]=<span style="color:var(--green)">3</span> == 3 → <strong style="color:var(--green)">return True ✓</strong></div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">4 comparisons for 12 elements — O(log 12) ≈ 4 ✓</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 — Common mistakes</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Empty matrix crash</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7"><code>matrix[0]</code> raises IndexError if <code>matrix=[]</code> or <code>matrix=[[]]</code>. Always guard: <code>if not matrix or not matrix[0]: return False</code></div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Wrong index formula</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7"><code>mid // m</code> instead of <code>mid // n</code> — divide by number of <em>columns</em> (n), not rows (m). Confusing m and n is the #1 bug here.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Using this for LC 240</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">LC 240 rows are sorted but rows don't chain — the flat binary search doesn't apply. Use staircase search from top-right corner instead.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Overflow-unsafe mid (C++/Java)</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">In languages with 32-bit int, <code>(lo+hi)//2</code> overflows when both exceed 2³¹. Always write <code>lo + (hi-lo)//2</code>.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>The flat-array insight:</strong> Whenever a 2D structure has total ordering (each row/col chains into the next), treat it as 1D. The O(log m·n) = O(log m + log n) — same as two separate binary searches, but in one pass.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <!-- inputs -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Matrix rows (use | to separate)</span>
+      <input class="grid-inp" id="mat-inp" type="text" value="1,3,5,7|10,11,16,20|23,30,34,60" style="width:320px">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Target</span>
+      <input class="grid-inp" id="tgt-inp" type="number" value="3" style="width:80px">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadEx('1,3,5,7|10,11,16,20|23,30,34,60',3)">target=3 ✓</button>
+    <button class="sbtn" onclick="loadEx('1,3,5,7|10,11,16,20|23,30,34,60',13)">target=13 ✗</button>
+    <button class="sbtn" onclick="loadEx('1,3,5,7|10,11,16,20|23,30,34,60',60)">target=60 ✓</button>
+    <button class="sbtn" onclick="loadEx('1,3,5,7|10,11,16,20|23,30,34,60',1)">target=1 ✓</button>
+    <button class="sbtn" onclick="loadEx('1,2,3,4,5|6,7,8,9,10|11,12,13,14,15',7)">5×3 target=7 ✓</button>
+  </div>
+
+  <!-- CONTROL BAR -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+  <!-- progress -->
+  <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div style="display:grid;grid-template-columns:1fr 300px;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- MATRIX DISPLAY -->
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.4rem;display:flex;flex-direction:column;align-items:center;gap:14px">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;align-self:flex-start">Matrix — 2D view</div>
+        <div id="mat-viz"><span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span></div>
+        <!-- flat number line -->
+        <div style="width:100%">
+          <div style="font-size:.6rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Flat view — binary search window</div>
+          <div id="flat-viz" class="numline"></div>
+        </div>
+      </div>
+
+      <!-- SEARCH STATE -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.8rem 1rem;text-align:center">
+          <div style="font-size:.6rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:4px">lo</div>
+          <div id="lo-val" style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--green)">—</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.8rem 1rem;text-align:center">
+          <div style="font-size:.6rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:4px">mid → val</div>
+          <div id="mid-val" style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:#7c6af7">—</div>
+        </div>
+        <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.8rem 1rem;text-align:center">
+          <div style="font-size:.6rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:4px">hi</div>
+          <div id="hi-val" style="font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--coral)">—</div>
+        </div>
+      </div>
+
+      <!-- INDEX MAPPING -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Index mapping</div>
+        <div id="idx-map" style="font-family:var(--mono);font-size:.82rem;color:var(--text2);min-height:22px">—</div>
+      </div>
+
+      <!-- STATUS -->
+      <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+        <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0"></div>
+        <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">searchMatrix</span>(matrix, target):</span>
+<span class="hl" id="cl1">  m,n=len(matrix),len(matrix[0])</span>
+<span class="hl" id="cl2">  lo,hi = 0, m*n-1</span>
+<span class="hl" id="cl3">  <span class="kw">while</span> lo &lt;= hi:</span>
+<span class="hl" id="cl4">    mid = (lo+hi)//2</span>
+<span class="hl" id="cl5">    val = matrix[mid//n][mid%n]</span>
+<span class="hl" id="cl6">    <span class="kw">if</span> val==target: <span class="kw">return True</span></span>
+<span class="hl" id="cl7">    <span class="kw">elif</span> val&lt;target: lo=mid+1</span>
+<span class="hl" id="cl8">    <span class="kw">else</span>: hi=mid-1</span>
+<span class="hl" id="cl9">  <span class="kw">return False</span></span></pre>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:6px;font-size:11px;font-family:var(--mono)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(124,106,247,.25);border:2px solid #7c6af7;flex-shrink:0"></div><span style="color:var(--text2)">mid (current probe)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(61,214,140,.12);border:2px solid #3dd68c;flex-shrink:0"></div><span style="color:var(--text2)">lo boundary</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(240,112,96,.12);border:2px solid #f07060;flex-shrink:0"></div><span style="color:var(--text2)">hi boundary</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(74,247,176,.22);border:2px solid #4af7b0;flex-shrink:0"></div><span style="color:var(--text2)">found ✓</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:var(--bg3);border:1px solid var(--border2);opacity:.4;flex-shrink:0"></div><span style="color:var(--text2)">eliminated</span></div>
+        </div>
+      </div>
+
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:40px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="binary-search.html">
+      <div class="rel-top"><span class="rel-num">LC #704 · Easy</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">Binary Search</div>
+      <div class="rel-desc">The core template — lo/hi/mid on a 1D sorted array. This problem is just that, with a 2D index mapping.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="#">
+      <div class="rel-top"><span class="rel-num">LC #240 · Medium</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">Search a 2D Matrix II</div>
+      <div class="rel-desc">Rows and columns are sorted but rows don't chain — requires staircase search from top-right corner.</div>
+      <span class="rel-arrow" style="color:var(--text3)">Coming soon →</span>
+    </a>
+    <a class="rel-card" href="food-stamps.html">
+      <div class="rel-top"><span class="rel-num">LC #278 · Easy</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">First Bad Version</div>
+      <div class="rel-desc">Binary search on a predicate — same lo/hi/mid template, searching for a boundary instead of a value.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #74 Search a 2D Matrix</p></footer>
+
+<script>
+function toggleTheme(){var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');}
+function switchTab(n,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1'].forEach(function(id,j){document.getElementById(id).style.display=j===i?'block':'none';});document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
+
+var SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+var sl=document.getElementById('speed-sl');
+sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+var V={matrix:[],target:0,n:0,steps:[],si:0,timer:null,built:false};
+var isPlaying=false;
+
+// ── STEP BUILDER ────────────────────────────────────
+function buildSteps(matrix,target){
+  var steps=[],m=matrix.length,n=matrix[0].length,total=m*n;
+  var lo=0,hi=total-1;
+
+  steps.push({type:'init',lo:0,hi:total-1,mid:-1,val:-1,row:-1,col:-1,cl:2,
+    note:'lo=0, hi='+(total-1)+' — treat '+m+'×'+n+' matrix as flat array of length '+total});
+
+  while(lo<=hi){
+    var mid=lo+Math.floor((hi-lo)/2);
+    var row=Math.floor(mid/n),col=mid%n,val=matrix[row][col];
+    steps.push({type:'probe',lo:lo,hi:hi,mid:mid,val:val,row:row,col:col,cl:4,
+      note:'mid='+mid+' → matrix['+row+']['+col+']='+val+'  (target='+target+')'});
+    steps.push({type:'compare',lo:lo,hi:hi,mid:mid,val:val,row:row,col:col,cl:5,
+      note:'matrix['+row+']['+col+']='+val+' vs target='+target});
+    if(val===target){
+      steps.push({type:'found',lo:lo,hi:hi,mid:mid,val:val,row:row,col:col,cl:6,
+        note:'✓ '+val+' == '+target+' → return True! Found at ['+row+']['+col+'] (flat index '+mid+')'});
+      return steps;
+    } else if(val<target){
+      steps.push({type:'move_lo',lo:mid+1,hi:hi,mid:mid,val:val,row:row,col:col,cl:7,
+        note:val+' < '+target+' → search right half: lo = '+(mid+1)});
+      lo=mid+1;
+    } else {
+      steps.push({type:'move_hi',lo:lo,hi:mid-1,mid:mid,val:val,row:row,col:col,cl:8,
+        note:val+' > '+target+' → search left half: hi = '+(mid-1)});
+      hi=mid-1;
+    }
+  }
+  steps.push({type:'not_found',lo:lo,hi:hi,mid:-1,val:-1,row:-1,col:-1,cl:9,
+    note:'✗ lo > hi — search space exhausted, '+target+' not in matrix → return False'});
+  return steps;
+}
+
+// ── RENDER: MATRIX ───────────────────────────────────
+function renderMatrix(step){
+  var el=document.getElementById('mat-viz');
+  if(!V.matrix.length){el.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
+  var m=V.matrix.length,n=V.matrix[0].length;
+  var wrap=document.createElement('div');wrap.className='mat-wrap';
+  for(var r=0;r<m;r++){
+    var rowDiv=document.createElement('div');rowDiv.className='mat-row';
+    for(var c=0;c<n;c++){
+      var cell=document.createElement('div');
+      var k=r*n+c;
+      var cls='mc-idle';
+      if(step){
+        var lo=step.lo,hi=step.hi;
+        if(step.type==='found'&&r===step.row&&c===step.col) cls='mc-found';
+        else if(step.type==='not_found') cls='mc-miss';
+        else if(r===step.row&&c===step.col) cls='mc-probe';
+        else if(k<lo||k>hi) cls='mc-elim';
+        else if(k===lo) cls='mc-lo';
+        else if(k===hi) cls='mc-hi';
+      }
+      cell.className='mat-cell '+cls;
+      cell.textContent=V.matrix[r][c];
+      cell.title='['+r+']['+c+'] = flat '+k;
+      rowDiv.appendChild(cell);
+    }
+    wrap.appendChild(rowDiv);
+  }
+  el.innerHTML='';el.appendChild(wrap);
+}
+
+// ── RENDER: FLAT NUMBER LINE ─────────────────────────
+function renderFlat(step){
+  var el=document.getElementById('flat-viz');
+  if(!V.matrix.length){el.innerHTML='';return;}
+  var m=V.matrix.length,n=V.matrix[0].length,total=m*n;
+  el.innerHTML='';
+  for(var k=0;k<total;k++){
+    var r=Math.floor(k/n),c=k%n,val=V.matrix[r][c];
+    var cell=document.createElement('div');
+    cell.className='nl-cell';
+    var lo=step?step.lo:0,hi=step?step.hi:total-1;
+    if(step){
+      if(step.type==='found'&&k===step.mid) cell.classList.add('found-cell');
+      else if(k===step.mid) cell.classList.add('mid');
+      else if(k<lo||k>hi) cell.classList.add('elim');
+      else if(k===lo) cell.classList.add('lo');
+      else if(k===hi) cell.classList.add('hi');
+    }
+    cell.textContent=val;
+    cell.title='k='+k+' → ['+r+']['+c+']';
+    el.appendChild(cell);
+  }
+}
+
+function renderState(step){
+  if(!step){
+    document.getElementById('lo-val').textContent='—';
+    document.getElementById('mid-val').textContent='—';
+    document.getElementById('hi-val').textContent='—';
+    document.getElementById('idx-map').textContent='—';
+    return;
+  }
+  document.getElementById('lo-val').textContent=step.lo;
+  document.getElementById('hi-val').textContent=step.hi>=0?step.hi:'—';
+  if(step.mid>=0){
+    document.getElementById('mid-val').textContent='k='+step.mid+' → '+step.val;
+    var n=V.n;
+    document.getElementById('idx-map').innerHTML=
+      'k=<strong style="color:var(--accent2)">'+step.mid+'</strong>'
+      +' → row=<strong style="color:var(--amber)">'+step.mid+'</strong>÷'+n+'=<strong style="color:var(--amber)">'+step.row+'</strong>'
+      +', col=<strong style="color:var(--amber)">'+step.mid+'</strong>%'+n+'=<strong style="color:var(--amber)">'+step.col+'</strong>'
+      +' → matrix['+step.row+']['+step.col+']=<strong style="color:#7c6af7">'+step.val+'</strong>';
+  } else {
+    document.getElementById('mid-val').textContent='—';
+    document.getElementById('idx-map').textContent='—';
+  }
+}
+
+function setStatus(s,found){
+  var dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Searching…';}
+  else if(s==='found'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Found ✓';}
+  else if(s==='notfound'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#f76a8a;flex-shrink:0';txt.textContent='Not found ✗';}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0';txt.textContent='Ready';}
+}
+
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function updateProgress(){
+  var total=V.steps.length,cur=V.si;
+  var pct=total?Math.round(cur/total*100):0;
+  var fill=document.getElementById('prog-fill');
+  if(fill)fill.style.width=pct+'%';
+  document.getElementById('step-info').textContent=cur+'/'+total;
+}
+
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=9;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  V.si++;
+  updateProgress();
+  renderMatrix(s);renderFlat(s);renderState(s);
+  if(s.type==='found')setStatus('found');
+  else if(s.type==='not_found')setStatus('notfound');
+  else setStatus('run');
+  updCtrl();return V.si<V.steps.length;
+}
+
+function rewindTo(t){
+  V.si=0;
+  for(var i=0;i<=9;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  while(V.si<t&&V.si<V.steps.length)V.si++;
+  if(t>0){
+    var s=V.steps[t-1];
+    for(var i=0;i<=9;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    document.getElementById('bt-note').textContent=s.note;
+    renderMatrix(s);renderFlat(s);renderState(s);
+    setStatus(s.type==='found'?'found':s.type==='not_found'?'notfound':'run');
+  } else {
+    renderMatrix(null);renderFlat(null);renderState(null);
+    setStatus('ready');
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+  }
+  updateProgress();
+}
+
+function parseMatrix(str){
+  if(!str||!str.trim())return null;
+  var rows=str.trim().split('|').map(function(r){
+    return r.split(',').map(function(x){return parseInt(x.trim());});
+  });
+  if(!rows.length||!rows[0].length)return null;
+  if(rows.some(function(r){return r.some(isNaN);}))return null;
+  var n=rows[0].length;
+  if(rows.some(function(r){return r.length!==n;}))return null;
+  return rows;
+}
+
+function validateMatrix(matrix){
+  // Check rows are sorted
+  for(var r=0;r<matrix.length;r++){
+    for(var c=1;c<matrix[0].length;c++){
+      if(matrix[r][c]<matrix[r][c-1])return 'Row '+r+' is not sorted: '+matrix[r][c-1]+' > '+matrix[r][c];
+    }
+  }
+  // Check inter-row ordering
+  for(var r=1;r<matrix.length;r++){
+    var prevLast=matrix[r-1][matrix[0].length-1];
+    var currFirst=matrix[r][0];
+    if(currFirst<=prevLast)return 'Row '+r+' first ('+currFirst+') must be > row '+(r-1)+' last ('+prevLast+')';
+  }
+  return null; // valid
+}
+
+function loadEx(matStr,tgt){document.getElementById('mat-inp').value=matStr;document.getElementById('tgt-inp').value=tgt;runViz();}
+function runViz(){
+  stopAuto();
+  var matStr=document.getElementById('mat-inp').value;
+  var target=parseInt(document.getElementById('tgt-inp').value);
+  var note=document.getElementById('bt-note');
+
+  // Empty check
+  if(!matStr||!matStr.trim()){note.textContent='⚠ Enter a matrix.';return;}
+
+  var matrix=parseMatrix(matStr);
+  if(!matrix||!matrix.length||!matrix[0].length){
+    note.innerHTML='⚠ Invalid input — use <code>|</code> to separate rows, commas for values. E.g. <code>1,3,5|7,9,11</code>';return;
+  }
+  if(isNaN(target)){note.textContent='⚠ Enter a valid target number.';return;}
+
+  // Constraint validation with friendly feedback
+  var m=matrix.length,n=matrix[0].length;
+  if(m<1||n<1){note.textContent='⚠ Matrix must have at least 1 row and 1 column.';return;}
+  if(m>100||n>100){note.textContent='⚠ m, n must be ≤ 100 (constraint).';return;}
+  var violation=validateMatrix(matrix);
+  if(violation){
+    note.innerHTML='⚠ Matrix violates constraint: <strong>'+violation+'</strong>. The flat binary search requires a fully chained sorted matrix.';return;
+  }
+
+  V.matrix=matrix;V.target=target;V.n=n;
+  V.steps=buildSteps(matrix,target);V.si=0;V.built=true;
+  for(var i=0;i<=9;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  note.textContent='Use ← / → to step, or ▶ Auto-play.';
+  rewindTo(0);updCtrl();
+}
+function stepBy(d){stopAuto();if(!V.built)return;if(d>0){if(V.si<V.steps.length)applyStep();}else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}updCtrl();}
+function stopAuto(){if(V.timer){clearInterval(V.timer);V.timer=null;}isPlaying=false;var b=document.getElementById('btn-auto');if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}}
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}if(!V.built)return;
+  if(V.si>=V.steps.length){rewindTo(0);updCtrl();}
+  isPlaying=true;
+  var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('primary');
+  V.timer=setInterval(function(){var m=applyStep();updCtrl();if(!m)stopAuto();},SPDS[sl.value-1]);
+}
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updCtrl();}
+
+var ss=document.createElement('style');
+ss.textContent='@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadEx('1,3,5,7|10,11,16,20|23,30,34,60',3);
+});
+</script>
+</body>
+</html>
