@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>48. Rotate Image — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.12);--teal-border:rgba(45,212,191,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,.1);--teal-border:rgba(13,148,136,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:620px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+
+/* ── MATRIX GRID ── */
+.mat-wrap{display:inline-flex;flex-direction:column;gap:4px}
+.mat-row{display:flex;gap:4px}
+.mat-cell{
+  width:52px;height:48px;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;font-family:var(--mono);font-size:14px;font-weight:700;
+  border:2px solid transparent;
+  transition:background .25s,border-color .25s,color .25s,transform .25s,box-shadow .25s;
+  user-select:none;position:relative;
+}
+.mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+.mc-active{background:rgba(124,106,247,.28);border-color:#7c6af7;color:#c792ea;transform:scale(1.1);box-shadow:0 0 12px rgba(124,106,247,.5)}
+.mc-swap{background:rgba(245,166,35,.22);border-color:#f5a623;color:#f5a623;transform:scale(1.08);box-shadow:0 0 10px rgba(245,166,35,.4)}
+.mc-done{background:rgba(61,214,140,.15);border-color:#3dd68c;color:#3dd68c}
+.mc-pivot{background:rgba(45,212,191,.15);border-color:#2dd4bf;color:var(--teal)}
+[data-theme="light"] .mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+[data-theme="light"] .mc-active{background:rgba(91,72,232,.14);border-color:#5b48e8;color:#5b48e8}
+[data-theme="light"] .mc-swap{background:rgba(196,125,10,.12);border-color:#c47d0a;color:#c47d0a}
+[data-theme="light"] .mc-done{background:rgba(26,158,92,.1);border-color:#1a9e5c;color:#1a9e5c}
+[data-theme="light"] .mc-pivot{background:rgba(13,148,136,.1);border-color:#0d9488;color:#0d9488}
+
+/* swap arrow */
+.swap-arrow{font-size:.75rem;color:var(--amber);font-weight:700;font-family:var(--mono);padding:2px 6px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">LC #48 · Medium</span>
+    <span class="badge b-topic">Array</span>
+    <span class="badge b-topic">Math</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+</div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=array">Array</a><span>/</span>
+  <span style="color:var(--text2)">Rotate Image</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Problem #14</div>
+      <div class="lc-number">LeetCode 48</div>
+      <h1>Rotate Image</h1>
+      <p class="hero-sub">Rotate an n×n matrix 90° clockwise <strong style="color:var(--text)">in-place</strong>. The trick: two steps, no extra memory — <strong style="color:var(--text)">transpose</strong> (flip across the diagonal), then <strong style="color:var(--text)">reverse each row</strong>.</p>
+    </div>
+    <div class="time-est">⏱ <span>~10 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">Given an <strong>n × n</strong> 2D matrix representing an image, rotate it by <strong>90 degrees clockwise in-place</strong>.<br><br>
+      You must modify the input matrix directly — <strong>do NOT allocate another 2D matrix</strong>.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — n = 3</div>
+        <div class="ex-io"><strong>Input: </strong>[[1,2,3],[4,5,6],[7,8,9]]</div>
+        <div class="ex-io"><strong>Output:</strong> [[7,4,1],[8,5,2],[9,6,3]]</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2 — n = 4</div>
+        <div class="ex-io"><strong>Input: </strong>[[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]</div>
+        <div class="ex-io"><strong>Output:</strong> [[15,13,2,5],[14,3,4,1],[12,6,8,9],[16,7,10,11]]</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>n == matrix.length == matrix[i].length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ n ≤ 20</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>−1000 ≤ matrix[i][j] ≤ 1000</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>Must be in-place — O(1) extra space</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Key insight</div>
+        <div style="color:var(--text2)">90° clockwise = <strong style="color:var(--text)">transpose</strong> + <strong style="color:var(--text)">reverse rows</strong>. Two O(n²) passes, zero extra memory.</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Transpose + Reverse</div>
+    <div class="vtab" onclick="showSol(1,this)">4-way cycle</div>
+  </div>
+
+  <div class="vsec on" id="sv0">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">Transpose then reverse each row</span><div class="cx-row"><span class="cx cx-t">O(n²)</span><span class="cx cx-s">O(1)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="fn">rotate</span>(matrix: List[List[int]]) -> <span class="kw">None</span>:
+    n = len(matrix)
+
+    <span class="cm"># Step 1: Transpose — swap matrix[i][j] with matrix[j][i]</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(n):
+        <span class="kw">for</span> j <span class="kw">in</span> range(i + <span class="nm">1</span>, n):
+            matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+
+    <span class="cm"># Step 2: Reverse each row</span>
+    <span class="kw">for</span> row <span class="kw">in</span> matrix:
+        row.reverse()</pre></div>
+    <div style="margin-top:.8rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Why this works</div>
+      90° CW: <code>result[j][n-1-i] = matrix[i][j]</code><br>
+      Transpose: <code>matrix[i][j] ↔ matrix[j][i]</code> → gives <code>matrix[j][i]</code><br>
+      Reverse row: <code>matrix[j][i]</code> → <code>matrix[j][n-1-i]</code> ✓
+    </div>
+  </div>
+
+  <div class="vsec" id="sv1">
+    <div class="sol-header"><span style="font-size:.95rem;font-weight:700">4-way cycle — rotate 4 cells at a time</span><div class="cx-row"><span class="cx cx-t">O(n²)</span><span class="cx cx-s">O(1)</span></div></div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="fn">rotate</span>(matrix: List[List[int]]) -> <span class="kw">None</span>:
+    n = len(matrix)
+    <span class="kw">for</span> i <span class="kw">in</span> range(n // <span class="nm">2</span>):
+        <span class="kw">for</span> j <span class="kw">in</span> range(i, n - <span class="nm">1</span> - i):
+            <span class="cm"># save top</span>
+            tmp = matrix[i][j]
+            <span class="cm"># left → top</span>
+            matrix[i][j]         = matrix[n-<span class="nm">1</span>-j][i]
+            <span class="cm"># bottom → left</span>
+            matrix[n-<span class="nm">1</span>-j][i]     = matrix[n-<span class="nm">1</span>-i][n-<span class="nm">1</span>-j]
+            <span class="cm"># right → bottom</span>
+            matrix[n-<span class="nm">1</span>-i][n-<span class="nm">1</span>-j] = matrix[j][n-<span class="nm">1</span>-i]
+            <span class="cm"># top (saved) → right</span>
+            matrix[j][n-<span class="nm">1</span>-i]     = tmp</pre></div>
+    <div style="margin-top:.8rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+      Only iterates the top-left quarter. Each step rotates 4 corresponding cells. Slightly more complex but elegant.
+    </div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — Where does each cell go after 90° CW?</h3>
+    <div class="prose" style="margin-bottom:.8rem">For an n×n matrix, after rotating 90° clockwise, the element at <code>[i][j]</code> moves to <code>[j][n−1−i]</code>. Verify: corner <code>[0][0]</code> → <code>[0][n−1]</code> (top-left → top-right ✓).</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Before (n=3)</div>
+        <div>[<span style="color:var(--accent2)">1</span>,2,3] <span style="color:var(--text3)">← top row</span></div>
+        <div>[4,<span style="color:var(--amber)">5</span>,6]</div>
+        <div>[7,8,<span style="color:var(--green)">9</span>] <span style="color:var(--text3)">← bottom row</span></div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">After 90° CW</div>
+        <div>[7,4,<span style="color:var(--accent2)">1</span>] <span style="color:var(--text3)">← was left col</span></div>
+        <div>[8,<span style="color:var(--amber)">5</span>,2]</div>
+        <div>[<span style="color:var(--green)">9</span>,6,3] <span style="color:var(--text3)">← was right col</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Transpose: flip across the main diagonal</h3>
+    <div class="prose" style="margin-bottom:.8rem">Transpose swaps <code>matrix[i][j]</code> with <code>matrix[j][i]</code> for all <code>j &gt; i</code> (upper triangle only, to avoid swapping back).</div>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;font-family:var(--mono);font-size:.82rem;line-height:2">
+        <div style="color:var(--text3);font-size:.62rem;text-transform:uppercase;margin-bottom:4px">Original</div>
+        <div>[1, 2, 3]</div><div>[4, 5, 6]</div><div>[7, 8, 9]</div>
+      </div>
+      <div style="text-align:center;font-size:1.2rem;color:var(--accent)">→</div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;font-family:var(--mono);font-size:.82rem;line-height:2">
+        <div style="color:var(--text3);font-size:.62rem;text-transform:uppercase;margin-bottom:4px">Transposed</div>
+        <div>[1, <span style="color:var(--amber)">4</span>, <span style="color:var(--amber)">7</span>]</div>
+        <div>[<span style="color:var(--amber)">2</span>, 5, <span style="color:var(--amber)">8</span>]</div>
+        <div>[<span style="color:var(--amber)">3</span>, <span style="color:var(--amber)">6</span>, 9]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Reverse each row</h3>
+    <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;font-family:var(--mono);font-size:.82rem;line-height:2">
+        <div style="color:var(--text3);font-size:.62rem;text-transform:uppercase;margin-bottom:4px">Transposed</div>
+        <div>[1, 4, 7]</div><div>[2, 5, 8]</div><div>[3, 6, 9]</div>
+      </div>
+      <div style="text-align:center;font-size:1.2rem;color:var(--accent)">→</div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.9rem;font-family:var(--mono);font-size:.82rem;line-height:2">
+        <div style="color:var(--text3);font-size:.62rem;text-transform:uppercase;margin-bottom:4px">Reversed rows = 90° CW</div>
+        <div>[<span style="color:var(--green)">7, 4, 1</span>]</div>
+        <div>[<span style="color:var(--green)">8, 5, 2</span>]</div>
+        <div>[<span style="color:var(--green)">9, 6, 3</span>]</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Full trace: Example 1 (n = 3)</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.2rem;font-family:var(--mono);font-size:.79rem;line-height:2.1;overflow-x:auto">
+      <div><span style="color:var(--text3)">Start: [[1,2,3],[4,5,6],[7,8,9]]</span></div>
+      <div><span style="color:var(--accent2)">Transpose swaps:</span></div>
+      <div style="padding-left:1.2rem">[0][1]↔[1][0]: 2↔4 → [[1,<span style="color:var(--amber)">4</span>,3],[<span style="color:var(--amber)">2</span>,5,6],[7,8,9]]</div>
+      <div style="padding-left:1.2rem">[0][2]↔[2][0]: 3↔7 → [[1,4,<span style="color:var(--amber)">7</span>],[2,5,6],[<span style="color:var(--amber)">3</span>,8,9]]</div>
+      <div style="padding-left:1.2rem">[1][2]↔[2][1]: 6↔8 → [[1,4,7],[2,5,<span style="color:var(--amber)">8</span>],[3,<span style="color:var(--amber)">6</span>,9]]</div>
+      <div><span style="color:var(--accent2)">After transpose:</span> [[1,4,7],[2,5,8],[3,6,9]]</div>
+      <div><span style="color:var(--accent2)">Reverse rows:</span></div>
+      <div style="padding-left:1.2rem">Row 0: [1,4,7] → [7,4,1]</div>
+      <div style="padding-left:1.2rem">Row 1: [2,5,8] → [8,5,2]</div>
+      <div style="padding-left:1.2rem">Row 2: [3,6,9] → [9,6,3]</div>
+      <div style="margin-top:8px;padding:6px 10px;background:var(--green-bg);border:1px solid var(--green-border);border-radius:8px;color:var(--green)">Result: [[7,4,1],[8,5,2],[9,6,3]] ✓</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 5 — Common mistakes</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Transposing full square</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Starting <code>j</code> at 0 instead of <code>i+1</code> swaps each pair twice — undoing all changes. Always use upper triangle only.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Wrong direction</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">90° counter-clockwise = transpose then reverse <em>columns</em> (or reverse rows first, then transpose). Don't mix them up.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Allocating new matrix</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Creating <code>result = [[0]*n for _ in range(n)]</code> violates the in-place constraint. The interviewer will catch it.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Not squinting at 1×1</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">n=1: transpose does nothing, reverse does nothing → correct (single cell doesn't move). Always verify edge cases mentally.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>The pattern:</strong> 90° CW = transpose + reverse rows. 90° CCW = transpose + reverse columns (or reverse rows first, then transpose). 180° = reverse the whole matrix. All are O(n²) time, O(1) space.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Matrix rows (use | separator)</span>
+      <input class="grid-inp" id="mat-inp" type="text" value="1,2,3|4,5,6|7,8,9" style="width:260px">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadEx('1,2,3|4,5,6|7,8,9')">3×3 example</button>
+    <button class="sbtn" onclick="loadEx('5,1,9,11|2,4,8,10|13,3,6,7|15,14,12,16')">4×4 example</button>
+    <button class="sbtn" onclick="loadEx('1,2|3,4')">2×2</button>
+    <button class="sbtn" onclick="loadEx('42')">1×1</button>
+  </div>
+
+  <!-- CONTROL BAR -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+  <!-- progress -->
+  <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+  </div>
+
+  <!-- MAIN LAYOUT -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px">
+    <!-- BEFORE -->
+    <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.4rem;display:flex;flex-direction:column;align-items:center;gap:10px">
+      <div style="font-size:.62rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;letter-spacing:.05em;align-self:flex-start">Current state</div>
+      <div id="mat-viz"><span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span></div>
+    </div>
+    <!-- PHASE + CODE -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <!-- phase indicator -->
+      <div style="display:flex;gap:6px">
+        <div id="phase-t" style="flex:1;padding:8px 12px;border-radius:var(--radius);border:2px solid var(--border2);font-family:var(--mono);font-size:.77rem;text-align:center;color:var(--text3);background:var(--bg3);transition:all .2s">① Transpose</div>
+        <div id="phase-r" style="flex:1;padding:8px 12px;border-radius:var(--radius);border:2px solid var(--border2);font-family:var(--mono);font-size:.77rem;text-align:center;color:var(--text3);background:var(--bg3);transition:all .2s">② Reverse rows</div>
+      </div>
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">rotate</span>(matrix):</span>
+<span class="hl" id="cl1">  n = len(matrix)</span>
+<span class="hl" id="cl2">  <span class="cm"># Step 1: Transpose</span></span>
+<span class="hl" id="cl3">  <span class="kw">for</span> i <span class="kw">in</span> range(n):</span>
+<span class="hl" id="cl4">    <span class="kw">for</span> j <span class="kw">in</span> range(i+1,n):</span>
+<span class="hl" id="cl5">      matrix[i][j],matrix[j][i]=matrix[j][i],matrix[i][j]</span>
+<span class="hl" id="cl6">  <span class="cm"># Step 2: Reverse rows</span></span>
+<span class="hl" id="cl7">  <span class="kw">for</span> row <span class="kw">in</span> matrix:</span>
+<span class="hl" id="cl8">    row.reverse()</span></pre>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-family:var(--mono)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(124,106,247,.28);border:2px solid #7c6af7;flex-shrink:0"></div><span style="color:var(--text2)">Being swapped</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(245,166,35,.22);border:2px solid #f5a623;flex-shrink:0"></div><span style="color:var(--text2)">Swap partner</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(61,214,140,.15);border:2px solid #3dd68c;flex-shrink:0"></div><span style="color:var(--text2)">Done ✓</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:18px;border-radius:5px;background:rgba(45,212,191,.15);border:2px solid #2dd4bf;flex-shrink:0"></div><span style="color:var(--text2)">Diagonal (unchanged)</span></div>
+        </div>
+      </div>
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:40px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+  </div>
+
+  <!-- SWAP DETAIL ROW -->
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1.1rem">
+    <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px">Current operation</div>
+    <div id="op-view" style="font-family:var(--mono);font-size:.82rem;color:var(--text2);min-height:22px">—</div>
+  </div>
+
+  <!-- STATUS -->
+  <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;margin-top:10px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0"></div>
+    <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready</span>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="search-2d-matrix.html">
+      <div class="rel-top"><span class="rel-num">LC #74 · Medium</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">Search a 2D Matrix</div>
+      <div class="rel-desc">2D matrix treated as 1D. Flat binary search — complementary matrix manipulation problem.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="#">
+      <div class="rel-top"><span class="rel-num">LC #54 · Medium</span><span class="badge b-topic">Array</span></div>
+      <div class="rel-title">Spiral Matrix</div>
+      <div class="rel-desc">Traverse a matrix in spiral order — same layer-by-layer thinking as the 4-way cycle rotation.</div>
+      <span class="rel-arrow" style="color:var(--text3)">Coming soon →</span>
+    </a>
+    <a class="rel-card" href="#">
+      <div class="rel-top"><span class="rel-num">LC #73 · Medium</span><span class="badge b-topic">Array</span></div>
+      <div class="rel-title">Set Matrix Zeroes</div>
+      <div class="rel-desc">In-place matrix modification with O(1) space — same space constraint as this problem.</div>
+      <span class="rel-arrow" style="color:var(--text3)">Coming soon →</span>
+    </a>
+  </div>
+</div>
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #48 Rotate Image</p></footer>
+
+<script>
+function toggleTheme(){var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');}
+function switchTab(n,btn){document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1'].forEach(function(id,j){document.getElementById(id).style.display=j===i?'block':'none';});document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function cp(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
+
+var SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+var sl=document.getElementById('speed-sl');
+sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+var V={matrix:[],n:0,steps:[],si:0,timer:null,built:false};
+var isPlaying=false;
+
+// deep clone 2D array
+function clone(m){return m.map(function(r){return r.slice();});}
+
+// ── STEP BUILDER ─────────────────────────────────────
+// step: {type, matrix(snapshot), r1,c1,r2,c2, phase, cl, note}
+// types: 'init','transpose_swap','transpose_diag','reverse_swap','done'
+function buildSteps(orig){
+  var steps=[];
+  var mat=clone(orig);
+  var n=mat.length;
+
+  steps.push({type:'init',mat:clone(mat),r1:-1,c1:-1,r2:-1,c2:-1,phase:'',cl:1,
+    note:'Start: '+n+'×'+n+' matrix. Step 1 = Transpose (swap across diagonal).'});
+
+  // PHASE 1: Transpose
+  for(var i=0;i<n;i++){
+    for(var j=i+1;j<n;j++){
+      // before swap — show what's about to swap
+      steps.push({type:'transpose_pick',mat:clone(mat),r1:i,c1:j,r2:j,c2:i,phase:'T',cl:5,
+        note:'Transpose: swap ['+i+']['+j+']='+mat[i][j]+' ↔ ['+j+']['+i+']='+mat[j][i]});
+      // do swap
+      var tmp=mat[i][j];mat[i][j]=mat[j][i];mat[j][i]=tmp;
+      steps.push({type:'transpose_done',mat:clone(mat),r1:i,c1:j,r2:j,c2:i,phase:'T',cl:5,
+        note:'Swapped! ['+i+']['+j+']='+mat[i][j]+' ↔ ['+j+']['+i+']='+mat[j][i]});
+    }
+  }
+
+  steps.push({type:'phase_break',mat:clone(mat),r1:-1,c1:-1,r2:-1,c2:-1,phase:'R',cl:6,
+    note:'Transpose complete → [['+mat.map(function(r){return r.join(',');}).join('],[')+']]'
+      +'. Now Step 2: reverse each row.'});
+
+  // PHASE 2: Reverse rows
+  for(var r=0;r<n;r++){
+    var lo=0,hi=n-1;
+    while(lo<hi){
+      steps.push({type:'reverse_pick',mat:clone(mat),r1:r,c1:lo,r2:r,c2:hi,phase:'R',cl:8,
+        note:'Row '+r+': swap col '+lo+' ('+mat[r][lo]+') ↔ col '+hi+' ('+mat[r][hi]+')'});
+      var tmp2=mat[r][lo];mat[r][lo]=mat[r][hi];mat[r][hi]=tmp2;
+      steps.push({type:'reverse_done',mat:clone(mat),r1:r,c1:lo,r2:r,c2:hi,phase:'R',cl:8,
+        note:'Swapped! row '+r+' now: ['+mat[r].join(',')+']'});
+      lo++;hi--;
+    }
+  }
+
+  steps.push({type:'done',mat:clone(mat),r1:-1,c1:-1,r2:-1,c2:-1,phase:'done',cl:-1,
+    note:'✓ Done! Matrix rotated 90° clockwise: [['+mat.map(function(r){return r.join(',');}).join('],[')+']]'});
+  return steps;
+}
+
+// ── RENDER MATRIX ─────────────────────────────────────
+function renderMatrix(step){
+  var el=document.getElementById('mat-viz');
+  if(!V.matrix.length){el.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
+  var mat=step?step.mat:V.matrix;
+  var n=V.n;
+  var wrap=document.createElement('div');wrap.className='mat-wrap';
+  for(var r=0;r<n;r++){
+    var rowDiv=document.createElement('div');rowDiv.className='mat-row';
+    for(var c=0;c<n;c++){
+      var cell=document.createElement('div');
+      var cls='mc-idle';
+      if(step){
+        var isDone=(step.type==='done');
+        var isPhaseBreak=(step.type==='phase_break');
+        var diag=(r===c);
+        if(isDone) cls='mc-done';
+        else if(isPhaseBreak&&diag) cls='mc-pivot';
+        else if(isPhaseBreak) cls='mc-done'; // transpose all done
+        else if((r===step.r1&&c===step.c1)) cls='mc-active';
+        else if((r===step.r2&&c===step.c2)) cls='mc-swap';
+        else if(diag&&step.phase==='T') cls='mc-pivot';
+        else if(step.type==='done') cls='mc-done';
+        // mark cells already processed in transpose
+        else if(step.phase==='T'){
+          // cells above diagonal that have been processed: row < step.r1, or (row==step.r1 && col between i+1 and j-1)
+          // just keep idle for simplicity — active/swap are enough signal
+        }
+      }
+      cell.className='mat-cell '+cls;
+      cell.textContent=mat[r][c];
+      rowDiv.appendChild(cell);
+    }
+    wrap.appendChild(rowDiv);
+  }
+  el.innerHTML='';el.appendChild(wrap);
+}
+
+function renderPhase(step){
+  var t=document.getElementById('phase-t');
+  var rv=document.getElementById('phase-r');
+  var phase=step?step.phase:'';
+  t.style.borderColor=phase==='T'?'#7c6af7':phase==='done'?'#3dd68c':'var(--border2)';
+  t.style.color=phase==='T'?'#c792ea':phase==='R'||phase==='done'?'#3dd68c':'var(--text3)';
+  t.style.background=phase==='T'?'rgba(124,106,247,.18)':phase==='R'||phase==='done'?'rgba(61,214,140,.08)':'var(--bg3)';
+  rv.style.borderColor=phase==='R'?'#7c6af7':phase==='done'?'#3dd68c':'var(--border2)';
+  rv.style.color=phase==='R'?'#c792ea':phase==='done'?'#3dd68c':'var(--text3)';
+  rv.style.background=phase==='R'?'rgba(124,106,247,.18)':phase==='done'?'rgba(61,214,140,.08)':'var(--bg3)';
+}
+
+function renderOp(step){
+  var el=document.getElementById('op-view');
+  if(!step||step.r1<0){el.textContent='—';return;}
+  var mat=step.mat,n=V.n;
+  var v1=mat[step.r1][step.c1],v2=mat[step.r2][step.c2];
+  var isT=(step.phase==='T');
+  el.innerHTML=
+    '[<span style="color:var(--accent2)">'+step.r1+']['+step.c1+'</span>]'
+    +'=<strong style="color:var(--accent2)">'+v1+'</strong>'
+    +' <span class="swap-arrow">↔</span> '
+    +'[<span style="color:var(--amber)">'+step.r2+']['+step.c2+'</span>]'
+    +'=<strong style="color:var(--amber)">'+v2+'</strong>'
+    +(isT?' <span style="color:var(--text3);font-size:.72rem">(transpose)</span>':'<span style="color:var(--text3);font-size:.72rem"> (row reverse)</span>');
+}
+
+function setStatus(s){
+  var dot=document.getElementById('st-dot'),txt=document.getElementById('st-txt');
+  if(s==='run'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#7c6af7;animation:pulse 1s infinite;flex-shrink:0';txt.textContent='Rotating…';}
+  else if(s==='done'){dot.style.cssText='width:8px;height:8px;border-radius:50%;background:#4af7b0;flex-shrink:0';txt.textContent='Rotation complete ✓';}
+  else{dot.style.cssText='width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0';txt.textContent='Ready';}
+}
+
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function updateProgress(){
+  var total=V.steps.length,cur=V.si,pct=total?Math.round(cur/total*100):0;
+  var fill=document.getElementById('prog-fill');
+  if(fill)fill.style.width=pct+'%';
+  document.getElementById('step-info').textContent=cur+'/'+total;
+}
+
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  V.si++;updateProgress();
+  renderMatrix(s);renderPhase(s);renderOp(s);
+  setStatus(s.type==='done'?'done':'run');
+  updCtrl();return V.si<V.steps.length;
+}
+
+function rewindTo(t){
+  V.si=0;
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  while(V.si<t&&V.si<V.steps.length)V.si++;
+  if(t>0){
+    var s=V.steps[t-1];
+    for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    document.getElementById('bt-note').textContent=s.note;
+    renderMatrix(s);renderPhase(s);renderOp(s);
+    setStatus(s.type==='done'?'done':'run');
+  } else {
+    renderMatrix(null);renderPhase(null);renderOp(null);
+    setStatus('ready');
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+  }
+  updateProgress();
+}
+
+function parseMatrix(str){
+  if(!str||!str.trim())return null;
+  var rows=str.trim().split('|').map(function(r){
+    return r.split(',').map(function(x){return parseInt(x.trim());});
+  });
+  if(!rows.length)return null;
+  var n=rows[0].length;
+  if(rows.length!==n)return'not-square';
+  if(rows.some(function(r){return r.length!==n||r.some(isNaN);}))return null;
+  return rows;
+}
+
+function loadEx(s){document.getElementById('mat-inp').value=s;runViz();}
+function runViz(){
+  stopAuto();
+  var note=document.getElementById('bt-note');
+  var res=parseMatrix(document.getElementById('mat-inp').value);
+  if(res==='not-square'){note.textContent='⚠ Matrix must be n×n (square). Rows and columns count must match.';return;}
+  if(!res){note.textContent='⚠ Invalid input — use | to separate rows, commas for values.';return;}
+  var n=res.length;
+  if(n<1||n>20){note.textContent='⚠ n must be between 1 and 20 (constraint).';return;}
+  V.matrix=res;V.n=n;
+  V.steps=buildSteps(res);V.si=0;V.built=true;
+  for(var i=0;i<=8;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  note.textContent='Use ← / → to step, or ▶ Auto-play.';
+  rewindTo(0);updCtrl();
+}
+function stepBy(d){stopAuto();if(!V.built)return;if(d>0){if(V.si<V.steps.length)applyStep();}else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}updCtrl();}
+function stopAuto(){if(V.timer){clearInterval(V.timer);V.timer=null;}isPlaying=false;var b=document.getElementById('btn-auto');if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}}
+function autoPlay(){
+  if(isPlaying){stopAuto();return;}if(!V.built)return;
+  if(V.si>=V.steps.length){rewindTo(0);updCtrl();}
+  isPlaying=true;
+  var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('primary');
+  V.timer=setInterval(function(){var m=applyStep();updCtrl();if(!m)stopAuto();},SPDS[sl.value-1]);
+}
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);updCtrl();}
+
+var ss=document.createElement('style');
+ss.textContent='@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(124,106,247,.5)}50%{box-shadow:0 0 0 5px rgba(124,106,247,0)}}';
+document.head.appendChild(ss);
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadEx('1,2,3|4,5,6|7,8,9');
+});
+</script>
+</body>
+</html>
