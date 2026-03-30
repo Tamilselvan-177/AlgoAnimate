@@ -572,7 +572,7 @@ function renderMat(mat,step){
       var cls='mat-cell ';
       if(isDone){cls+=isBest?'mc-done':'mc-idle';}
       else if(isActive){
-        if(s.phase==='enter') cls+=v===1?'mc-one':'mc-zero';
+        if(s.phase==='enter') cls+='mc-idle';
         else if(s.phase==='cell'){
           if(j===s.col) cls+='mc-scan';
           else if(typeof s.col==='number'&&j<s.col) cls+=v===1?'mc-one':'mc-zero';
