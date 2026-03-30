@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-37R33STE8M');
+</script>
+<title>2643. Row With Maximum Ones — AlgoAnimate</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+/* ── tokens ── */
+:root{
+  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
+  --border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
+  --accent:#7c6af7;--accent2:#a594f9;
+  --green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-bd:rgba(61,214,140,.35);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-bd:rgba(245,166,35,.35);
+  --coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-bd:rgba(240,112,96,.35);
+  --pur-bg:rgba(124,106,247,.12);--pur-bd:rgba(124,106,247,.35);
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+  --r:10px;--rl:16px;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e
+}
+[data-theme="light"]{
+  --bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;
+  --border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);
+  --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+  --accent:#5b48e8;--accent2:#7c6af7;
+  --green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-bd:rgba(26,158,92,.4);
+  --amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-bd:rgba(196,125,10,.4);
+  --coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-bd:rgba(208,64,48,.4);
+  --pur-bg:rgba(91,72,232,.08);--pur-bd:rgba(91,72,232,.35);
+  --cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+
+/* ── nav ── */
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none}.nav-back:hover{color:var(--accent)}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-easy{background:var(--green-bg);color:var(--green);border:1px solid var(--green-bd)}
+.b-topic{background:var(--pur-bg);color:var(--accent2);border:1px solid var(--pur-bd)}
+.tog{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.tog::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .tog::after{transform:translateX(16px)}
+
+/* ── hero ── */
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.lc-num{font-size:.82rem;font-family:var(--mono);color:var(--accent);font-weight:700;margin-bottom:.4rem}
+.hero h1{font-size:clamp(1.6rem,3.5vw,2.5rem);font-weight:800;letter-spacing:-.03em;line-height:1.2;margin-bottom:.6rem}
+.hero-sub{font-size:.9rem;color:var(--text2);max-width:580px;line-height:1.75}
+.time-chip{display:flex;align-items:center;gap:6px;padding:5px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-chip span{color:var(--amber)}
+
+/* ── tabs ── */
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:1.5rem}
+.tab{padding:.65rem 1.1rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:1.5rem 2rem}
+.sec{display:none}.sec.active{display:block}
+
+/* ── cards ── */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1.4rem;margin-bottom:1rem}
+.card-title{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.9rem}
+.two-col{display:grid;grid-template-columns:1.2fr 1fr;gap:1.2rem;margin-bottom:1.2rem}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}}
+.prose{font-size:.87rem;color:var(--text2);line-height:1.85}
+.prose strong{color:var(--text)}
+.ex-block{background:var(--bg3);border-radius:var(--r);padding:.9rem 1.1rem;margin-top:.7rem;font-family:var(--mono);font-size:.79rem;border-left:3px solid var(--border2)}
+.ex-lbl{font-size:.66rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px}
+.ex-io{color:var(--text2);margin-bottom:2px}
+
+/* ── solution ── */
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.vtab{padding:4px 12px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.73rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.sol-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:8px}
+.cx{padding:3px 11px;border-radius:20px;font-size:.72rem;font-family:var(--mono)}
+.cx-t{background:var(--pur-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--rl);overflow:hidden}
+.code-block pre{padding:1.2rem;overflow-x:auto;font-family:var(--mono);font-size:.79rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:5px 12px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+
+/* ── buttons ── */
+.cbtn{padding:6px 13px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);font-family:var(--mono);font-size:.76rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.pri{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.pri:hover{background:var(--accent2)}
+.sbtn{padding:4px 10px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.71rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.run-btn{padding:8px 18px;background:var(--accent);border:none;border-radius:var(--r);font-family:var(--mono);font-size:.79rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2)}
+.inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--r);padding:6px 10px;font-family:var(--mono);font-size:.79rem;color:var(--text);outline:none;transition:border-color .2s}
+.inp:focus{border-color:var(--accent)}
+
+/* ── code highlighter ── */
+.code-hl{background:var(--bg3);border-radius:var(--rl);border:1px solid var(--border);overflow:hidden}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s;font-family:var(--mono);font-size:11px;line-height:2.1}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}.hl .nm{color:#f78c6c}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+
+/* ── grid cell ── */
+.mat-grid{display:inline-flex;flex-direction:column;gap:4px}
+.mat-row{display:flex;gap:4px;align-items:center}
+.mat-cell{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border-radius:7px;font-family:var(--mono);font-size:14px;font-weight:700;border:2px solid transparent;transition:all .18s}
+.mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+.mc-scan{background:rgba(245,166,35,.28);border-color:var(--amber);color:var(--amber);transform:scale(1.12);box-shadow:0 0 14px rgba(245,166,35,.45);z-index:2;animation:mcPulse .85s ease-in-out infinite}
+@keyframes mcPulse{0%,100%{filter:brightness(1)}50%{filter:brightness(1.12)}}
+@media(prefers-reduced-motion:reduce){
+  .mc-scan{animation:none}
+}
+.mc-one{background:rgba(61,214,140,.18);border-color:var(--green);color:var(--green)}
+.mc-zero{background:var(--bg3);border-color:var(--border2);color:var(--text3)}
+.mc-best{background:rgba(124,106,247,.25);border-color:var(--accent);color:var(--accent2);box-shadow:0 0 12px rgba(124,106,247,.35)}
+.mc-done{background:rgba(61,214,140,.22);border-color:var(--green);color:var(--green);box-shadow:0 0 10px rgba(61,214,140,.3)}
+.row-label{font-family:var(--mono);font-size:10px;color:var(--text3);width:22px;text-align:right;flex-shrink:0}
+.row-count{font-family:var(--mono);font-size:11px;font-weight:700;margin-left:6px;min-width:40px}
+
+/* ── tip ── */
+.tip{background:var(--pur-bg);border:1px solid var(--pur-bd);border-radius:var(--rl);padding:1.1rem 1.4rem;font-size:.84rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+
+/* ── related ── */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin-top:.8rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:1rem 1.2rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-num{font-size:.69rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.88rem;font-weight:700;color:var(--text);margin:.3rem 0}
+.rel-desc{font-size:.77rem;color:var(--text2);line-height:1.5}
+.rel-arrow{color:var(--accent);font-size:.82rem;margin-top:.4rem;display:block}
+
+footer{border-top:1px solid var(--border);padding:1.8rem;text-align:center;font-size:.77rem;font-family:var(--mono);color:var(--text3);margin-top:3rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="logo">Algo<span>Animate</span></a>
+  <div style="display:flex;gap:6px;flex-wrap:wrap">
+    <span class="badge b-easy">LC #2643 · Easy</span>
+    <span class="badge b-topic">Array</span>
+    <span class="badge b-topic">Matrix</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="tog" onclick="toggleTheme()"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<!-- breadcrumb -->
+<div style="max-width:1100px;margin:0 auto;padding:.7rem 2rem 0;display:flex;gap:6px;font-family:var(--mono);font-size:.71rem;color:var(--text3)">
+  <a href="../index.html" style="color:var(--text3);text-decoration:none">Home</a><span>/</span>
+  <a href="../index.html?filter=matrix" style="color:var(--text3);text-decoration:none">Matrix</a><span>/</span>
+  <span style="color:var(--text2)">Row With Maximum Ones</span>
+</div>
+
+<div class="hero">
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap">
+    <div>
+      <div class="lc-num">LeetCode 2643</div>
+      <h1>Row With Maximum Ones</h1>
+      <p class="hero-sub">Scan each row of a binary matrix, count its <strong style="color:var(--text)">ones</strong>, and track which row has the most. Ties go to the <strong style="color:var(--text)">smaller row index</strong>.</p>
+    </div>
+    <div class="time-chip">&#9201; <span>~5 min</span></div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- ── PROBLEM ───────────────────────────────── -->
+<div class="sec active" id="tab-problem">
+  <div class="two-col">
+    <div class="card">
+      <div class="card-title">Problem Statement</div>
+      <div class="prose">Given an <strong>m × n</strong> binary matrix <code>mat</code>, find the row with the <strong>maximum count of ones</strong>.<br><br>
+      If multiple rows tie, pick the one with the <strong>smallest index</strong>. Return <code>[rowIndex, count]</code>.</div>
+      <div class="ex-block">
+        <div class="ex-lbl">Example 1</div>
+        <div class="ex-io"><strong>mat</strong> = [[0,1],[1,0]]</div>
+        <div class="ex-io"><strong>Output</strong>: <span style="color:var(--green)">[0,1]</span> — tie → smallest index wins</div>
+      </div>
+      <div class="ex-block" style="border-left-color:var(--accent)">
+        <div class="ex-lbl">Example 2</div>
+        <div class="ex-io"><strong>mat</strong> = [[0,0,0],[0,1,1]]</div>
+        <div class="ex-io"><strong>Output</strong>: <span style="color:var(--green)">[1,2]</span></div>
+      </div>
+      <div class="ex-block" style="border-left-color:var(--amber)">
+        <div class="ex-lbl">Example 3</div>
+        <div class="ex-io"><strong>mat</strong> = [[0,0],[1,1],[0,0]]</div>
+        <div class="ex-io"><strong>Output</strong>: <span style="color:var(--green)">[1,2]</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Constraints</div>
+      <div style="display:flex;flex-direction:column;gap:6px;font-family:var(--mono);font-size:.79rem;color:var(--text2)">
+        <div style="display:flex;gap:8px"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px"></span>1 ≤ m, n ≤ 100</div>
+        <div style="display:flex;gap:8px"><span style="width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px"></span>mat[i][j] is 0 or 1</div>
+      </div>
+      <div style="margin-top:1rem;background:var(--bg3);border-radius:var(--r);padding:.85rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.64rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(m·n)</div>
+        <div style="color:var(--accent2)">Space: O(1)</div>
+      </div>
+      <div style="margin-top:.8rem;background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--r);padding:.85rem 1rem;font-size:.79rem;font-family:var(--mono);color:var(--text2)">
+        <span style="color:var(--green)">Key:</span> one pass — count row, update best only if strictly greater.
+      </div>
+    </div>
+  </div>
+  <button class="cbtn pri" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- ── SOLUTION ───────────────────────────────── -->
+<div class="sec" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">sum() one-liner</div>
+    <div class="vtab" onclick="showSol(1,this)">Explicit loop</div>
+  </div>
+
+  <div class="vsec on" id="sv0">
+    <div class="sol-hdr">
+      <span style="font-size:.93rem;font-weight:700">Pythonic one-liner</span>
+      <div style="display:flex;gap:6px"><span class="cx cx-t">O(m·n)</span><span class="cx cx-s">O(1)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button class="copy-btn" onclick="cpSol('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">rowAndMaximumOnes</span>(mat):
+    best_idx, best_cnt = <span class="nm">0</span>, <span class="nm">0</span>
+    <span class="kw">for</span> i, row <span class="kw">in</span> enumerate(mat):
+        cnt = sum(row)                    <span class="cm"># count ones in row</span>
+        <span class="kw">if</span> cnt > best_cnt:             <span class="cm"># strictly greater → update</span>
+            best_idx, best_cnt = i, cnt
+    <span class="kw">return</span> [best_idx, best_cnt]</pre></div>
+  </div>
+
+  <div class="vsec" id="sv1">
+    <div class="sol-hdr">
+      <span style="font-size:.93rem;font-weight:700">Explicit inner loop</span>
+      <div style="display:flex;gap:6px"><span class="cx cx-t">O(m·n)</span><span class="cx cx-s">O(1)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:6px"><button class="copy-btn" onclick="cpSol('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">def</span> <span class="fn">rowAndMaximumOnes</span>(mat):
+    best_idx, best_cnt = <span class="nm">0</span>, <span class="nm">0</span>
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(mat)):
+        cnt = <span class="nm">0</span>
+        <span class="kw">for</span> v <span class="kw">in</span> mat[i]:
+            cnt += v                      <span class="cm"># accumulate</span>
+        <span class="kw">if</span> cnt > best_cnt:             <span class="cm"># strictly greater only</span>
+            best_idx, best_cnt = i, cnt
+    <span class="kw">return</span> [best_idx, best_cnt]</pre></div>
+  </div>
+</div>
+
+<!-- ── EXPLANATION ────────────────────────────── -->
+<div class="sec" id="tab-explanation">
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <div class="card-title">Step 1 — Count ones per row</div>
+    <div class="prose">Since values are only 0 or 1, summing a row gives its <strong>count of ones</strong> directly. No need for any conditional inside the inner loop.</div>
+    <div style="margin-top:.8rem;background:var(--bg3);border-radius:var(--r);padding:.85rem 1rem;font-family:var(--mono);font-size:.82rem;color:var(--text2)">
+      cnt = sum([0, 1, 1, 0]) &nbsp;→&nbsp; <span style="color:var(--green)">2</span>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <div class="card-title">Step 2 — Strictly-greater update (tie rule)</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.3rem">
+      <div style="background:var(--green-bg);border:1px solid var(--green-bd);border-radius:var(--rl);padding:.85rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✓ Correct — strictly &gt;</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.7"><code>if cnt &gt; best_cnt:</code><br>Ties are ignored → first occurrence (smallest index) wins automatically.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:var(--rl);padding:.85rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✗ Wrong — &gt;=</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.7"><code>if cnt &gt;= best_cnt:</code><br>This would overwrite with a later row on a tie, returning the <em>last</em> max row, not the first.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <div class="card-title">Step 3 — Full trace: mat = [[0,0,0],[0,1,1],[1,1,0]]</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.79rem;margin-top:.4rem">
+        <thead>
+          <tr style="background:var(--bg3)">
+            <th style="padding:7px 10px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Row i</th>
+            <th style="padding:7px 10px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Values</th>
+            <th style="padding:7px 10px;text-align:center;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">cnt</th>
+            <th style="padding:7px 10px;text-align:center;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">best_cnt</th>
+            <th style="padding:7px 10px;text-align:center;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">best_idx</th>
+            <th style="padding:7px 10px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:6px 10px;color:var(--text3)">init</td><td style="padding:6px 10px;color:var(--text2)">—</td><td style="padding:6px 10px;text-align:center">—</td><td style="padding:6px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:6px 10px;text-align:center;color:var(--accent2)">0</td><td style="padding:6px 10px;color:var(--text2)">—</td></tr>
+          <tr style="background:rgba(124,106,247,.04)"><td style="padding:6px 10px;color:var(--accent2)">0</td><td style="padding:6px 10px;color:var(--text2)">[0,0,0]</td><td style="padding:6px 10px;text-align:center;color:var(--amber)">0</td><td style="padding:6px 10px;text-align:center;color:var(--text2)">0</td><td style="padding:6px 10px;text-align:center;color:var(--accent2)">0</td><td style="padding:6px 10px;color:var(--text3)">0 &gt; 0? No — skip</td></tr>
+          <tr><td style="padding:6px 10px;color:var(--accent2)">1</td><td style="padding:6px 10px;color:var(--text2)">[0,1,1]</td><td style="padding:6px 10px;text-align:center;color:var(--green)">2</td><td style="padding:6px 10px;text-align:center;color:var(--green)">2</td><td style="padding:6px 10px;text-align:center;color:var(--accent2)">1</td><td style="padding:6px 10px;color:var(--green)">2 &gt; 0 ✓ — update</td></tr>
+          <tr style="background:rgba(124,106,247,.04)"><td style="padding:6px 10px;color:var(--accent2)">2</td><td style="padding:6px 10px;color:var(--text2)">[1,1,0]</td><td style="padding:6px 10px;text-align:center;color:var(--amber)">2</td><td style="padding:6px 10px;text-align:center;color:var(--green)">2</td><td style="padding:6px 10px;text-align:center;color:var(--accent2)">1</td><td style="padding:6px 10px;color:var(--text3)">2 &gt; 2? No — keep i=1</td></tr>
+          <tr style="background:var(--green-bg)"><td style="padding:6px 10px;color:var(--green)">done</td><td colspan="4" style="padding:6px 10px;color:var(--green)">return [1, 2]</td><td></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <div class="card-title">Step 4 — Common mistakes</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.3rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:var(--rl);padding:.9rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✗ Using &gt;= instead of &gt;</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Returns the last tied row, not the first. Always use strict greater-than.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:var(--rl);padding:.9rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✗ Initialising best_idx = -1</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">If no row ever beats 0 (all-zero matrix), you'd return -1. Start at idx=0, cnt=0.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:var(--rl);padding:.9rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✗ Returning max count globally</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">You need both the index AND the count — track them together, not separately.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-bd);border-radius:var(--rl);padding:.9rem">
+        <div style="font-size:.67rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px">✗ Sorting rows</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.7">Sorting loses row indices and is O(mn log m) — unnecessary. A single linear pass suffices.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Pattern:</strong> "running max with index" — the same template appears in <em>Best Time to Buy Stock</em>, <em>Max Subarray</em>, and dozens of scan problems. Track (best_val, best_idx), update only on strict improvement.
+  </div>
+</div>
+
+<!-- ── ANIMATION ──────────────────────────────── -->
+<div class="sec" id="tab-animation">
+
+  <!-- inputs -->
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.7rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.67rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Matrix rows (| separated, 0s and 1s)</span>
+      <input class="inp" id="mat-inp" value="0,0,0|0,1,1|1,1,0" style="width:280px">
+    </div>
+    <button class="run-btn" onclick="runViz()">&#9654; Load</button>
+  </div>
+
+  <!-- presets -->
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadP('0,1|1,0')">Ex1 → [0,1]</button>
+    <button class="sbtn" onclick="loadP('0,0,0|0,1,1')">Ex2 → [1,2]</button>
+    <button class="sbtn" onclick="loadP('0,0|1,1|0,0')">Ex3 → [1,2]</button>
+    <button class="sbtn" onclick="loadP('0,0,0|0,1,1|1,1,0')">3 rows</button>
+    <button class="sbtn" onclick="loadP('1,1,1|1,1,0|0,0,0')">Top wins</button>
+    <button class="sbtn" onclick="loadP('0,0,0|0,0,0|0,0,0')">All zeros</button>
+  </div>
+
+  <!-- controls bar -->
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:9px 13px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn pri" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.74rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:70px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:55px;text-align:right"></span>
+  </div>
+
+  <!-- main 2-col layout -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+    <!-- LEFT: matrix + state -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+
+      <!-- matrix viz -->
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--rl);padding:1.3rem;overflow-x:auto;min-height:160px;display:flex;align-items:center;justify-content:center">
+        <div id="mat-viz">
+          <span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>
+        </div>
+      </div>
+
+      <!-- legend -->
+      <div style="display:flex;gap:10px;flex-wrap:wrap;padding:7px 11px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--r)">
+        <span style="font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:var(--amber);display:inline-block;box-shadow:0 0 6px rgba(245,166,35,.5)"></span>Processing (sum)</span>
+        <span style="font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:var(--green);display:inline-block"></span>One</span>
+        <span style="font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:var(--accent);display:inline-block"></span>Best row</span>
+        <span style="font-family:var(--mono);font-size:10px;display:flex;align-items:center;gap:4px"><span style="width:9px;height:9px;border-radius:2px;background:var(--green);opacity:.5;display:inline-block"></span>Done</span>
+      </div>
+
+      <!-- tracker panel -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:.9rem 1.1rem">
+        <div style="font-size:.61rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:9px">Tracker</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;font-family:var(--mono);font-size:12px">
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="color:var(--text3);font-size:10px">CURRENT ROW</span>
+            <span id="tr-row" style="color:var(--amber);font-weight:700">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="color:var(--text3);font-size:10px">ROW COUNT</span>
+            <span id="tr-cnt" style="color:var(--text2);font-weight:700">—</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:3px">
+            <span style="color:var(--text3);font-size:10px">BEST COUNT</span>
+            <span id="tr-best" style="color:var(--green);font-weight:700">—</span>
+          </div>
+        </div>
+        <div style="margin-top:9px;padding-top:8px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px">
+          <div style="font-size:.61rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em">Answer</div>
+          <div id="tr-ans" style="font-family:var(--mono);font-size:16px;font-weight:800;color:var(--accent2)">—</div>
+        </div>
+      </div>
+
+      <!-- note -->
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:34px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+
+    <!-- RIGHT: code highlighter -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="code-hl">
+        <div style="font-size:.59rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:.6rem 1rem .2rem">Live trace</div>
+        <pre style="padding:.6rem 1rem 1rem">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">rowAndMaximumOnes</span>(mat):</span>
+<span class="hl" id="cl1">  best_idx, best_cnt = <span class="nm">0</span>, <span class="nm">0</span></span>
+<span class="hl" id="cl2">  <span class="kw">for</span> i, row <span class="kw">in</span> enumerate(mat):</span>
+<span class="hl" id="cl3">    cnt = sum(row)         <span class="cm"># count ones</span></span>
+<span class="hl" id="cl4">    <span class="kw">if</span> cnt > best_cnt:   <span class="cm"># strictly greater</span></span>
+<span class="hl" id="cl5">      best_idx = i</span>
+<span class="hl" id="cl6">      best_cnt = cnt</span>
+<span class="hl" id="cl7">  <span class="kw">return</span> [best_idx, best_cnt]</span></pre>
+      </div>
+
+      <!-- per-row counts table (built dynamically) -->
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--rl);padding:.9rem 1.1rem">
+        <div style="font-size:.61rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Row counts</div>
+        <div id="row-counts" style="display:flex;flex-direction:column;gap:5px">
+          <span style="font-family:var(--mono);font-size:12px;color:var(--ph)">—</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<!-- related -->
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.71rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.7rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="flood-fill.html">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+        <span class="rel-num">LC #733 · Easy</span><span class="badge b-topic">Matrix</span>
+      </div>
+      <div class="rel-title">Flood Fill</div>
+      <div class="rel-desc">DFS on a 2D grid — same matrix traversal pattern.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="rotting-oranges.html">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+        <span class="rel-num">LC #994 · Medium</span><span class="badge b-topic">Matrix</span>
+      </div>
+      <div class="rel-title">Rotting Oranges</div>
+      <div class="rel-desc">BFS on a grid — more complex matrix traversal to master next.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="word-search.html">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+        <span class="rel-num">LC #79 · Medium</span><span class="badge b-topic">Matrix</span>
+      </div>
+      <div class="rel-title">Word Search</div>
+      <div class="rel-desc">Backtracking on a 2D grid — the full power of matrix problems.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #2643 Row With Maximum Ones</p></footer>
+
+<script>
+// ── theme / tab / sol helpers ─────────────────────────
+function toggleTheme(){var h=document.documentElement;h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');}
+function switchTab(n,btn){document.querySelectorAll('.sec').forEach(function(s){s.classList.remove('active');});document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});document.getElementById('tab-'+n).classList.add('active');btn.classList.add('active');}
+function showSol(i,btn){['sv0','sv1'].forEach(function(id,j){var e=document.getElementById(id);if(e)e.style.display=j===i?'block':'none';});document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');}
+function cpSol(id){navigator.clipboard.writeText(document.getElementById(id).innerText);event.target.textContent='Copied!';setTimeout(function(){event.target.textContent='Copy';},1500);}
+
+// ── parse ─────────────────────────────────────────────
+function parseMat(s){
+  var rows=s.trim().split('|').map(function(r){return r.trim();}).filter(Boolean);
+  if(!rows.length)return null;
+  var mat=rows.map(function(r){return r.split(',').map(function(v){var n=parseInt(v.trim(),10);return n;});});
+  if(mat.some(function(r){return r.some(function(v){return isNaN(v)||v<0||v>1});}))return null;
+  var n=mat[0].length;
+  if(mat.some(function(r){return r.length!==n;}))return null;
+  return mat;
+}
+
+// ── step builder ──────────────────────────────────────
+function buildSteps(mat){
+  var m=mat.length,steps=[],rowCounts=new Array(m).fill(-1);
+  // cl map: 0=def, 1=init, 2=for, 3=cnt, 4=if, 5=idx, 6=cnt_upd, 7=return
+
+  steps.push({row:-1,col:-1,cnt:-1,best_idx:0,best_cnt:0,phase:'init',rowCounts:rowCounts.slice(),cl:1,note:'Initialise best_idx=0, best_cnt=0'});
+
+  var best_idx=0,best_cnt=0;
+  for(var i=0;i<m;i++){
+    steps.push({row:i,col:-1,cnt:-1,best_idx,best_cnt,phase:'enter',rowCounts:rowCounts.slice(),cl:2,note:'Row '+i+': start scanning…'});
+    var run=0;
+    for(var j=0;j<mat[i].length;j++){
+      run+=mat[i][j];
+      steps.push({
+        row:i,col:j,cnt:run,best_idx,best_cnt,phase:'cell',rowCounts:rowCounts.slice(),cl:3,
+        note:'('+i+','+j+') = '+mat[i][j]+' → running sum = '+run
+      });
+    }
+    var cnt=run;
+    rowCounts[i]=cnt;
+    steps.push({row:i,col:-1,cnt,best_idx,best_cnt,phase:'count',rowCounts:rowCounts.slice(),cl:3,note:'Row '+i+': sum(row) = '+cnt+' one'+(cnt===1?'':'s')});
+    // compare
+    if(cnt>best_cnt){
+      steps.push({row:i,col:-1,cnt,best_idx,best_cnt,phase:'compare',rowCounts:rowCounts.slice(),cl:4,note:cnt+' > '+best_cnt+' → update best!'});
+      best_idx=i;best_cnt=cnt;
+      steps.push({row:i,col:-1,cnt,best_idx,best_cnt,phase:'update',rowCounts:rowCounts.slice(),cl:5,note:'best_idx = '+i});
+      steps.push({row:i,col:-1,cnt,best_idx,best_cnt,phase:'update',rowCounts:rowCounts.slice(),cl:6,note:'best_cnt = '+cnt});
+    } else {
+      steps.push({row:i,col:-1,cnt,best_idx,best_cnt,phase:'skip',rowCounts:rowCounts.slice(),cl:4,note:cnt+' > '+best_cnt+'? No — keep best_idx='+best_idx});
+    }
+  }
+  steps.push({row:-1,col:-1,cnt:-1,best_idx,best_cnt,phase:'done',rowCounts:rowCounts.slice(),cl:7,note:'✓ Done → return ['+best_idx+', '+best_cnt+']',done:true});
+  return steps;
+}
+
+// ── render helpers ────────────────────────────────────
+function renderMat(mat,step){
+  var viz=document.getElementById('mat-viz');
+  if(!mat||!mat.length){viz.innerHTML='<span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span>';return;}
+  var s=step||{row:-1,best_idx:-999,phase:'',done:false};
+  var html='<div class="mat-grid">';
+  mat.forEach(function(row,i){
+    var isActive=(i===s.row);
+    var isBest=(i===s.best_idx&&s.best_cnt>0);
+    var isDone=s.done;
+    html+='<div class="mat-row">';
+    html+='<span class="row-label">r'+i+'</span>';
+    row.forEach(function(v,j){
+      var cls='mat-cell ';
+      if(isDone){cls+=isBest?'mc-done':'mc-idle';}
+      else if(isActive){
+        if(s.phase==='enter') cls+=v===1?'mc-one':'mc-zero';
+        else if(s.phase==='cell'){
+          if(j===s.col) cls+='mc-scan';
+          else if(typeof s.col==='number'&&j<s.col) cls+=v===1?'mc-one':'mc-zero';
+          else cls+='mc-idle';
+        }else cls+=v===1?'mc-one':'mc-zero';
+      }
+      else if(isBest&&!isActive){cls+='mc-best';}
+      else{cls+='mc-idle';}
+      html+='<div class="'+cls+'">'+v+'</div>';
+    });
+    var rcColor=i===s.best_idx&&s.best_cnt>0?'var(--accent2)':i===s.row?'var(--amber)':'var(--text3)';
+    var rcLabel='';
+    if(s.rowCounts&&s.rowCounts[i]>=0) rcLabel='→ '+s.rowCounts[i]+' ✓';
+    if(!isDone&&i===s.row&&s.phase==='cell'&&s.cnt>=0) rcLabel='→ '+s.cnt+' +';
+    html+='<span class="row-count" style="color:'+rcColor+'">'+rcLabel+'</span>';
+    html+='</div>';
+  });
+  html+='</div>';
+  viz.innerHTML=html;
+}
+
+function renderRowCounts(mat,step){
+  var el=document.getElementById('row-counts');
+  if(!mat){el.innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph)">—</span>';return;}
+  var s=step||{rowCounts:[],best_idx:-1,row:-1};
+  el.innerHTML='';
+  mat.forEach(function(_,i){
+    var cnt=s.rowCounts&&s.rowCounts[i]>=0?s.rowCounts[i]:null;
+    if(cnt===null&&i===s.row&&s.phase==='cell'&&s.cnt>=0) cnt=s.cnt;
+    var div=document.createElement('div');
+    div.style.cssText='display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;padding:4px 8px;border-radius:6px;transition:background .2s;';
+    var isActive=i===s.row;var isBest=i===s.best_idx&&s.best_cnt>0;
+    if(isActive)div.style.background='rgba(245,166,35,.1)';
+    else if(isBest)div.style.background='rgba(124,106,247,.1)';
+    var barW=cnt!==null?Math.round((cnt/(_mat[0].length||1))*80):0;
+    div.innerHTML='<span style="color:var(--text3);width:28px">row '+i+'</span>'
+      +'<div style="flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+barW+'px;background:'+(isBest?'var(--accent)':isActive?'var(--amber)':'var(--text3)')+';border-radius:3px;transition:width .3s"></div></div>'
+      +'<span style="color:'+(isBest?'var(--accent2)':isActive?'var(--amber)':'var(--text3)')+';width:20px;text-align:right">'+(cnt!==null?cnt:'—')+'</span>';
+    el.appendChild(div);
+  });
+}
+
+// ── viz state ─────────────────────────────────────────
+var _mat=[],_steps=[],_si=0,_built=false,_timer=null,_playing=false;
+
+function updCtrl(){
+  var h=_built&&_steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||_si<=0;
+  document.getElementById('btn-next').disabled=!h||_si>=_steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function applyStep(){
+  if(_si>=_steps.length)return false;
+  var s=_steps[_si];
+  for(var i=0;i<=7;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent=(_si+1)+'/'+_steps.length;
+  document.getElementById('tr-row').textContent=s.row>=0?'i='+s.row:'—';
+  document.getElementById('tr-cnt').textContent=s.cnt>=0?s.cnt:'—';
+  document.getElementById('tr-best').textContent=s.best_cnt;
+  document.getElementById('tr-ans').textContent=s.done?'['+s.best_idx+', '+s.best_cnt+']':'['+s.best_idx+', '+s.best_cnt+']';
+  renderMat(_mat,s);renderRowCounts(_mat,s);
+  _si++;updCtrl();return _si<_steps.length;
+}
+
+function rewindTo(t){
+  _si=0;for(var i=0;i<=7;i++){var e=document.getElementById('cl'+i);if(e)e.classList.remove('active');}
+  if(t>0){_si=t;var s=_steps[t-1];
+    document.getElementById('bt-note').textContent=s.note;
+    document.getElementById('step-info').textContent=t+'/'+_steps.length;
+    document.getElementById('tr-row').textContent=s.row>=0?'i='+s.row:'—';
+    document.getElementById('tr-cnt').textContent=s.cnt>=0?s.cnt:'—';
+    document.getElementById('tr-best').textContent=s.best_cnt;
+    document.getElementById('tr-ans').textContent='['+s.best_idx+', '+s.best_cnt+']';
+    for(var i=0;i<=7;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    renderMat(_mat,s);renderRowCounts(_mat,s);
+  } else {
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+    document.getElementById('step-info').textContent='';
+    document.getElementById('tr-row').textContent='—';document.getElementById('tr-cnt').textContent='—';
+    document.getElementById('tr-best').textContent='—';document.getElementById('tr-ans').textContent='—';
+    document.getElementById('row-counts').innerHTML='<span style="font-family:var(--mono);font-size:12px;color:var(--ph)">—</span>';
+    renderMat(_mat,null);
+  }
+  updCtrl();
+}
+
+function loadP(s){document.getElementById('mat-inp').value=s;runViz();}
+function runViz(){
+  stopAuto();
+  var mat=parseMat(document.getElementById('mat-inp').value);
+  if(!mat){document.getElementById('bt-note').textContent='Invalid input. Use | to separate rows, commas for cells. Only 0/1 allowed.';return;}
+  _mat=mat;_steps=buildSteps(mat);_si=0;_built=true;
+  rewindTo(0);
+  document.getElementById('bt-note').textContent='Use ← / → to step, or ▶ Auto-play.';
+  updCtrl();
+}
+function stepBy(d){stopAuto();if(!_built)return;if(d>0){if(_si<_steps.length)applyStep();}else{if(_si<=0)return;rewindTo(Math.max(0,_si-1));}updCtrl();}
+function stopAuto(){if(_timer){clearInterval(_timer);_timer=null;}_playing=false;var b=document.getElementById('btn-auto');if(b){b.textContent='▶ Auto-play';b.classList.add('pri');}}
+function autoPlay(){
+  if(_playing){stopAuto();return;}if(!_built)return;
+  if(_si>=_steps.length)rewindTo(0);
+  _playing=true;var b=document.getElementById('btn-auto');b.textContent='⏸ Pause';b.classList.add('pri');
+  var sl=document.getElementById('speed-sl');var SPDS=[900,550,280,140,60];
+  _timer=setInterval(function(){var more=applyStep();updCtrl();if(!more)stopAuto();},SPDS[sl.value-1]);
+}
+function resetViz(){stopAuto();if(!_built)return;rewindTo(0);updCtrl();}
+
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();autoPlay();}
+});
+
+var sl=document.getElementById('speed-sl');
+var SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+if(sl)sl.addEventListener('input',function(){document.getElementById('speed-lbl').textContent=SPNAMES[sl.value-1];});
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)document.documentElement.setAttribute('data-theme','light');
+  loadP('0,0,0|0,1,1|1,1,0');
+});
+</script>
+</body>
+</html>
