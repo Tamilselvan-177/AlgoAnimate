@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-37R33STE8M');
+</script>
+<title>498. Diagonal Traverse — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.12);--teal-border:rgba(45,212,191,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,.1);--teal-border:rgba(13,148,136,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:linear-gradient(165deg,var(--bg) 0%,#12121c 42%,var(--bg2) 100%);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+[data-theme="light"] body{background:linear-gradient(165deg,var(--bg) 0%,#ebe8e3 45%,var(--bg2) 100%)}
+body.learn-interview .learn-b{display:none!important}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:640px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}.hl .nm{color:#f78c6c}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+
+/* matrix viz */
+.mat-grid{display:inline-flex;flex-direction:column;gap:4px}
+.mat-row{display:flex;gap:4px;align-items:center}
+.mat-cell{width:46px;height:44px;position:relative;display:flex;align-items:center;justify-content:center;border-radius:8px;font-family:var(--mono);font-size:13px;font-weight:700;border:2px solid transparent;transition:background .35s,border-color .25s,transform .25s,color .25s,opacity .35s,box-shadow .3s}
+.mc-idle{background:var(--bg3);border-color:var(--border2);color:var(--text2)}
+.mc-cur{background:rgba(245,166,35,.32);border-color:var(--amber);color:var(--amber);transform:scale(1.09);box-shadow:0 0 18px rgba(245,166,35,.55),0 0 32px rgba(245,166,35,.2);z-index:2}
+.mc-vis{background:rgba(61,214,140,.2);border-color:var(--green);color:var(--green);opacity:.92}
+body.learn-interview .mat-cell.mc-idle{background:var(--bg3)!important}
+.debug-hud{display:grid;gap:6px;font-family:var(--mono);font-size:.78rem;color:var(--text2);padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid var(--teal)}
+.debug-hud strong{color:var(--accent2);font-weight:600}
+.debug-hud .dh-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.simple-panel{font-size:.84rem;color:var(--text2);line-height:1.65;padding:12px 14px;background:rgba(124,106,247,.08);border:1px solid var(--purple-border);border-radius:var(--radius);margin-top:8px}
+.simple-panel .sp-label{font-size:.62rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.mode-pill{padding:5px 14px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-family:var(--mono);font-size:.72rem;cursor:pointer;color:var(--text2)}
+.mode-pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.anim-opts{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;margin:.5rem 0 1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.anim-opts label{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer}
+.speed-ms-inp{width:72px;padding:5px 8px;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg3);font-family:var(--mono);font-size:.74rem;color:var(--text)}
+.row-label{font-family:var(--mono);font-size:10px;color:var(--text3);width:22px;text-align:right;flex-shrink:0}
+@media(prefers-reduced-motion:reduce){.mat-cell{transition:none}}
+
+.out-chip{display:inline-flex;align-items:center;padding:3px 8px;margin:2px;border-radius:6px;font-family:var(--mono);font-size:11px;font-weight:700;background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.out-chip.last{background:rgba(245,166,35,.15);border-color:var(--amber);color:var(--amber)}
+.dir-pill{display:inline-block;padding:4px 10px;border-radius:20px;font-family:var(--mono);font-size:.72rem;font-weight:700;margin-top:6px}
+.dir-up{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal)}
+.dir-down{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+
+.anim-tour{font-size:.78rem;color:var(--text2);line-height:1.55;padding:10px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-lg);border-left:3px solid var(--accent);margin-bottom:.85rem}
+.anim-tour strong{color:var(--accent2)}
+.viz-grid{display:grid;grid-template-columns:1fr minmax(260px,320px);gap:14px;align-items:start}
+@media(max-width:900px){.viz-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">LC #498 · Medium</span>
+    <span class="badge b-topic">Array</span>
+    <span class="badge b-topic">Matrix</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=matrix">Matrix</a><span>/</span>
+  <span style="color:var(--text2)">Diagonal Traverse</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Matrix traversal</div>
+      <div class="lc-number">LeetCode 498</div>
+      <h1>Diagonal Traverse</h1>
+      <p class="hero-sub">Return every cell of an <strong style="color:var(--text)">m × n</strong> matrix in <strong style="color:var(--text)">diagonal zig-zag</strong> order: walk ↗ and ↙, bouncing off the borders. The classic simulation keeps <strong style="color:var(--text)">O(m·n)</strong> time and <strong style="color:var(--text)">O(1)</strong> extra space (besides the output).</p>
+    </div>
+    <div class="time-est">⏱ <span>~10 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">Given an <strong>m × n</strong> integer matrix <code>mat</code>, return a <strong>1D array</strong> listing all elements in <strong>diagonal order</strong> (LeetCode 498): start at <code>(0,0)</code>, repeatedly move along diagonals, alternating direction so the path zig-zags across the grid.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — 3 × 3 (classic)</div>
+        <div class="ex-io"><strong>Input:</strong> mat = [[1,2,3],[4,5,6],[7,8,9]]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[1,2,4,7,5,3,6,8,9]</span></div>
+        <div class="ex-io" style="margin-top:6px;font-size:.76rem;color:var(--text3)">Anti-diagonals (same <code>i+j</code>): [1] → [2,4] → [7,5,3] → [6,8] → [9]. Stripes alternate: e.g. <code>k=1</code> reads top→bottom (2,4); <code>k=2</code> reads bottom→top (7,5,3).</div>
+      </div>
+      <div class="ex-block" style="margin-top:10px;border-left-color:var(--accent)">
+        <div class="ex-label">Example 2 — 2 × 2 (single diagonal stripes)</div>
+        <div class="ex-io"><strong>Input:</strong> mat = [[1,2],[3,4]]</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">[1,2,3,4]</span></div>
+        <div class="ex-io" style="margin-top:6px;font-size:.76rem;color:var(--text3)">Order: 1 → (2,3) on one diagonal → 4. No long “middle” diagonal — still the same edge rules.</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>m == mat.length, n == mat[i].length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ m, n ≤ 10⁴ and 1 ≤ m·n ≤ 10⁴</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>−10⁵ ≤ mat[i][j] ≤ 10⁵</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Complexity</div>
+        <div style="color:var(--accent2)">Time: O(m·n) — visit each cell once</div>
+        <div style="color:var(--accent2)">Space: O(1) extra (output array O(m·n) is required)</div>
+      </div>
+      <div style="margin-top:.9rem;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">Key insight</div>
+        <div style="color:var(--text2)">A boolean <code>up</code> tells you whether the <em>next</em> move is ↗ or ↙. When the next step would leave the grid, slide along the <strong>top / bottom / left / right</strong> edge instead and flip <code>up</code>. Order of <code>if</code> checks matters at corners.</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Edge simulation</div>
+    <div class="vtab" onclick="showSol(1,this)">By diagonal sum (i + j)</div>
+  </div>
+
+  <div id="sv0" style="display:block">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Simulate position (r, c) and direction</span>
+      <div class="cx-row"><span class="cx cx-t">O(m·n)</span><span class="cx cx-s">O(1)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0')">Copy</button></div>
+    <div class="code-block"><pre id="s0"><span class="kw">def</span> <span class="fn">findDiagonalOrder</span>(mat):
+    <span class="kw">if not</span> mat: <span class="kw">return</span> []
+    m, n = len(mat), len(mat[<span class="nm">0</span>])
+    res = []
+    r, c = <span class="nm">0</span>, <span class="nm">0</span>
+    up = <span class="kw">True</span>
+    <span class="kw">while</span> len(res) &lt; m * n:
+        res.append(mat[r][c])
+        <span class="kw">if</span> up:
+            <span class="kw">if</span> c == n - <span class="nm">1</span>: r += <span class="nm">1</span>; up = <span class="kw">False</span>
+            <span class="kw">elif</span> r == <span class="nm">0</span>: c += <span class="nm">1</span>; up = <span class="kw">False</span>
+            <span class="kw">else</span>: r -= <span class="nm">1</span>; c += <span class="nm">1</span>
+        <span class="kw">else</span>:
+            <span class="kw">if</span> r == m - <span class="nm">1</span>: c += <span class="nm">1</span>; up = <span class="kw">True</span>
+            <span class="kw">elif</span> c == <span class="nm">0</span>: r += <span class="nm">1</span>; up = <span class="kw">True</span>
+            <span class="kw">else</span>: r += <span class="nm">1</span>; c -= <span class="nm">1</span>
+    <span class="kw">return</span> res</pre></div>
+    <div style="margin-top:.85rem;background:var(--bg3);border-radius:var(--radius-lg);padding:.95rem 1.05rem;font-size:.82rem;color:var(--text2);line-height:1.65">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px;font-family:var(--mono)">Why this matches the statement</div>
+      While moving ↗, hitting the <strong>right</strong> border forces a step down; hitting the <strong>top</strong> (and not the right corner) forces a step right — then toggle to ↙. The ↙ branch mirrors that for bottom vs left. This is exactly what the animation steps through.
+    </div>
+  </div>
+
+  <div id="sv1" style="display:none">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Bucket by anti-diagonal, reverse every other bucket</span>
+      <div class="cx-row"><span class="cx cx-t">O(m·n)</span><span class="cx cx-s">O(m·n)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s1')">Copy</button></div>
+    <div class="code-block"><pre id="s1"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+
+<span class="kw">def</span> <span class="fn">findDiagonalOrder</span>(mat):
+    m, n = len(mat), len(mat[<span class="nm">0</span>])
+    d = defaultdict(list)
+    <span class="kw">for</span> i <span class="kw">in</span> range(m):
+        <span class="kw">for</span> j <span class="kw">in</span> range(n):
+            d[i + j].append(mat[i][j])
+    res = []
+    <span class="kw">for</span> k <span class="kw">in</span> range(m + n - <span class="nm">1</span>):
+        <span class="kw">if</span> k % <span class="nm">2</span> == <span class="nm">0</span>:
+            res.extend(reversed(d[k]))
+        <span class="kw">else</span>:
+            res.extend(d[k])
+    <span class="kw">return</span> res</pre></div>
+    <div style="margin-top:.85rem;background:var(--bg3);border-radius:var(--radius-lg);padding:.95rem 1.05rem;font-size:.82rem;color:var(--text2);line-height:1.65">
+      All cells with the same <code>i + j</code> sit on one anti-diagonal. For even <code>k</code>, LeetCode’s order reads that diagonal from <strong>bottom to top</strong> (<code>reversed</code>); for odd <code>k</code>, top to bottom. Extra memory for the buckets, but very clear in interviews.
+    </div>
+  </div>
+</div>
+
+<!-- EXPLANATION -->
+<div class="section" id="tab-explanation">
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — Anti-diagonals share i + j</h3>
+    <div class="prose" style="margin-bottom:.75rem">Index <code>k = i + j</code> is constant along a line from upper-right to lower-left. Example 1’s matrix has diagonals <code>k = 0…4</code>. The problem’s zig-zag is equivalent to visiting each group of <code>k</code> in order, alternating whether you list cells with <strong>increasing</strong> or <strong>decreasing</strong> row.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">k = i + j on the grid</div>
+        <div>[<span style="color:var(--accent2)">0</span>,1,2]</div>
+        <div>[1,<span style="color:var(--amber)">2</span>,3]</div>
+        <div>[2,3,<span style="color:var(--green)">4</span>]</div>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;font-family:var(--mono);font-size:.8rem;line-height:2">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Values in visit order</div>
+        <div><span style="color:var(--accent2)">1</span> | <span style="color:var(--amber)">2,4</span> | 7,5,3 | 6,8 | <span style="color:var(--green)">9</span></div>
+        <div style="margin-top:8px;font-size:.74rem;color:var(--text3)">Stripes alternate ↗ / ↙ reading direction.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Simulation: one step at a time</h3>
+    <div class="prose">After recording <code>mat[r][c]</code>, decide the <em>next</em> cell using <code>up</code>. If <code>up</code> is true, you prefer <code>(r-1, c+1)</code>; if that would leave the grid, apply the edge rule (right column → go down; top row → go right), then set <code>up = False</code>. The <code>else</code> branch handles ↙ symmetrically. Corners are covered because you test the “blocking” edge first (e.g. right column before top row when moving up).</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Trace: Example 1 (first six appends)</h3>
+    <div class="prose" style="margin-bottom:.75rem">Each row: cell visited, value appended, then position and <code>up</code> <em>after</em> the move (for the next iteration).</div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.15rem;font-family:var(--mono);font-size:.76rem;line-height:1.95;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="color:var(--text3);text-align:left"><th style="padding:4px 8px 8px 0">#</th><th style="padding:4px 8px">Cell</th><th style="padding:4px 8px">Append</th><th style="padding:4px 8px">Next (r,c)</th><th style="padding:4px 8px">up</th></tr></thead>
+        <tbody style="color:var(--text2)">
+          <tr><td style="padding:3px 8px 3px 0">1</td><td>(0,0)</td><td>1</td><td>(0,1)</td><td>False <span style="color:var(--text3)">top edge → right</span></td></tr>
+          <tr><td style="padding:3px 8px 3px 0">2</td><td>(0,1)</td><td>2</td><td>(1,0)</td><td>False <span style="color:var(--text3)">↙</span></td></tr>
+          <tr><td style="padding:3px 8px 3px 0">3</td><td>(1,0)</td><td>4</td><td>(2,0)</td><td>True <span style="color:var(--text3)">left edge → down</span></td></tr>
+          <tr><td style="padding:3px 8px 3px 0">4</td><td>(2,0)</td><td>7</td><td>(1,1)</td><td>True <span style="color:var(--text3)">↗</span></td></tr>
+          <tr><td style="padding:3px 8px 3px 0">5</td><td>(1,1)</td><td>5</td><td>(0,2)</td><td>True <span style="color:var(--text3)">↗</span></td></tr>
+          <tr><td style="padding:3px 8px 3px 0">6</td><td>(0,2)</td><td>3</td><td>(1,2)</td><td>False <span style="color:var(--text3)">right edge → down</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose" style="margin-top:.75rem;font-size:.82rem">Continue in the <strong>Animation</strong> tab for the remaining cells (6 → 8 → 9) and for other matrix shapes.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 4 — Pitfalls</h3>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Wrong if order at corners</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.65">When <code>up</code> is true, check <code>c == n-1</code> before <code>r == 0</code> so the top-right corner steps <strong>down</strong>, not right off the grid.</div>
+      </div>
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;margin-bottom:6px">✗ Off-by-one in bucket method</div>
+        <div style="font-family:var(--mono);font-size:.77rem;color:var(--text2);line-height:1.65">Diagonals are <code>k = 0 … m+n-2</code>. Reversing the wrong parity of <code>k</code> mirrors the traversal — compare with a 2×2 example.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Pattern recognition</h3>
+    <div class="prose" style="margin-bottom:.6rem"><strong>Problem type:</strong> matrix traversal<br><strong>Patterns:</strong> direction simulation (state = position + heading), or diagonal grouping by <code>i + j</code> with alternating read order.</div>
+    <div style="font-size:.8rem;font-family:var(--mono);color:var(--text2);line-height:1.7">
+      <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:4px">Similar ideas</div>
+      Zigzag / serpentine rows · Spiral matrix (layer walk) · BFS on grids
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Interview tip:</strong> Start with the simulation — it’s easy to narrate while drawing the matrix. Mention the <code>i+j</code> grouping as the “mathematical” view if the interviewer asks for an alternative.
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <div class="anim-tour learn-b">
+    <strong>How to use:</strong> Enter rows separated by <code>|</code>, cells by commas (e.g. <code>1,2,3|4,5,6|7,8,9</code>). Press <strong>Load</strong>, then <strong>Next</strong> / <strong>Prev</strong> or <strong>Auto-play</strong>. Amber = current cell being appended; green = already in the output. <strong>Beginner mode</strong> adds plain-English steps, row/column debugger readout, and colors by diagonal <code>k = i + j</code>. Matrices are capped at 49 cells.
+  </div>
+
+  <div class="anim-opts">
+    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase">Mode</span>
+      <button type="button" class="mode-pill on" id="mode-beginner" onclick="setLearnMode('beginner',this)">Beginner</button>
+      <button type="button" class="mode-pill" id="mode-interview" onclick="setLearnMode('interview',this)">Interview</button>
+    </div>
+    <label class="learn-b"><input type="checkbox" id="chk-diag-colors" checked> Color cells by <code>k = i + j</code></label>
+    <label class="learn-b"><input type="checkbox" id="pause-edge"> Pause auto-play when direction flips</label>
+    <div style="display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.74rem;color:var(--text3)">
+      <label>Delay <input type="number" class="speed-ms-inp" id="speed-ms" min="50" max="5000" step="10" placeholder="ms" title="Override slider (50–5000 ms). Leave empty to use slider."></label>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.8rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.04em">Matrix rows (use | between rows)</span>
+      <input class="grid-inp" id="mat-inp" type="text" value="1,2,3|4,5,6|7,8,9" style="width:min(100%,320px)">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="loadEx('1,2,3|4,5,6|7,8,9')">3×3 classic</button>
+    <button class="sbtn" onclick="loadEx('1,2|3,4')">2×2</button>
+    <button class="sbtn" onclick="loadEx('1,2,3,4|5,6,7,8')">2×4</button>
+    <button class="sbtn" onclick="loadEx('1|2|3|4')">4×1 column</button>
+    <button class="sbtn" onclick="loadEx('1,2,3,4')">1×4 row</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="autoPlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <button class="cbtn" id="btn-replay" onclick="replayStep()" disabled title="Re-show current step">⟲ Replay step</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+      <span style="font-size:.68rem;margin-left:4px">
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px">←</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">→</span>
+        <span style="padding:1px 5px;background:var(--bg4);border:1px solid var(--border2);border-radius:4px;margin-left:2px">Space</span>
+      </span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:60px;text-align:right"></span>
+  </div>
+  <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.85rem">
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+  </div>
+
+  <div class="viz-grid">
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div style="background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.25rem;overflow-x:auto;min-height:200px;display:flex;align-items:center;justify-content:center">
+        <div id="mat-viz"><span style="font-family:var(--mono);font-size:13px;color:var(--ph)">Press ▶ Load</span></div>
+      </div>
+      <div id="debug-hud" class="debug-hud learn-b" style="display:none">
+        <div class="dh-row">
+          <span>Array indices: <strong>r</strong> = <span id="dh-r">—</span>, <strong>c</strong> = <span id="dh-c">—</span></span>
+          <span>Anti-diagonal <strong>k</strong> = <strong>r + c</strong> = <span id="dh-k">—</span></span>
+        </div>
+        <div class="dh-row">Next walking direction: <span id="dh-dir">—</span></div>
+      </div>
+      <div id="dir-box" style="font-family:var(--mono);font-size:.8rem;color:var(--text2);padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);min-height:44px"></div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.95rem 1.05rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Output (building)</div>
+        <div id="out-viz" style="display:flex;flex-wrap:wrap;align-items:center;gap:4px;min-height:36px"></div>
+      </div>
+      <div id="simple-explain" class="simple-panel learn-b" style="display:none">
+        <div class="sp-label">In plain words</div>
+        <div id="simple-explain-txt"></div>
+      </div>
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 12px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:40px;line-height:1.6">Press ▶ Load to start</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="code-hl" style="max-height:min(52vh,420px);overflow-y:auto">
+        <div style="font-size:.59rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;padding:.65rem 1rem .15rem;position:sticky;top:0;background:var(--bg3);z-index:1">Simulation (same code as solution)</div>
+        <pre style="padding:.45rem 1rem 1rem;font-size:10.5px;line-height:1.95">
+<span class="hl" id="cl0"><span class="kw">def</span> <span class="fn">findDiagonalOrder</span>(mat):</span>
+<span class="hl" id="cl1">    <span class="kw">if not</span> mat: <span class="kw">return</span> []</span>
+<span class="hl" id="cl2">    m, n = len(mat), len(mat[<span class="nm">0</span>])</span>
+<span class="hl" id="cl3">    res = []</span>
+<span class="hl" id="cl4">    r, c = <span class="nm">0</span>, <span class="nm">0</span></span>
+<span class="hl" id="cl5">    up = <span class="kw">True</span></span>
+<span class="hl" id="cl6">    <span class="kw">while</span> len(res) &lt; m * n:</span>
+<span class="hl" id="cl7">        res.append(mat[r][c])</span>
+<span class="hl" id="cl8">        <span class="kw">if</span> up:</span>
+<span class="hl" id="cl9">            <span class="kw">if</span> c == n - <span class="nm">1</span>:</span>
+<span class="hl" id="cl10">                r += <span class="nm">1</span>; up = <span class="kw">False</span></span>
+<span class="hl" id="cl11">            <span class="kw">elif</span> r == <span class="nm">0</span>:</span>
+<span class="hl" id="cl12">                c += <span class="nm">1</span>; up = <span class="kw">False</span></span>
+<span class="hl" id="cl13">            <span class="kw">else</span>:</span>
+<span class="hl" id="cl14">                r -= <span class="nm">1</span>; c += <span class="nm">1</span></span>
+<span class="hl" id="cl15">        <span class="kw">else</span>:</span>
+<span class="hl" id="cl16">            <span class="kw">if</span> r == m - <span class="nm">1</span>:</span>
+<span class="hl" id="cl17">                c += <span class="nm">1</span>; up = <span class="kw">True</span></span>
+<span class="hl" id="cl18">            <span class="kw">elif</span> c == <span class="nm">0</span>:</span>
+<span class="hl" id="cl19">                r += <span class="nm">1</span>; up = <span class="kw">True</span></span>
+<span class="hl" id="cl20">            <span class="kw">else</span>:</span>
+<span class="hl" id="cl21">                r += <span class="nm">1</span>; c -= <span class="nm">1</span></span>
+<span class="hl" id="cl22">    <span class="kw">return</span> res</span>
+        </pre>
+      </div>
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Legend</div>
+        <div style="display:flex;flex-direction:column;gap:5px;font-size:11px;font-family:var(--mono)">
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:20px;border-radius:6px;background:rgba(245,166,35,.28);border:2px solid var(--amber);flex-shrink:0"></div><span style="color:var(--text2)">Current (about to append)</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:20px;border-radius:6px;background:rgba(61,214,140,.16);border:2px solid var(--green);flex-shrink:0"></div><span style="color:var(--text2)">Already in output</span></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="width:22px;height:20px;border-radius:6px;background:var(--bg3);border:2px solid var(--border2);flex-shrink:0"></div><span style="color:var(--text2)">Not visited yet</span></div>
+          <div class="learn-b" style="display:flex;align-items:flex-start;gap:8px;margin-top:4px;padding-top:6px;border-top:1px solid var(--border)"><span style="color:var(--text3)">Hover a cell for value, (r,c), and k.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;padding:9px 14px;margin-top:12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <div id="st-dot" style="width:8px;height:8px;border-radius:50%;background:var(--ph);flex-shrink:0"></div>
+    <span id="st-txt" style="font-family:var(--mono);font-size:11px;color:var(--text2)">Ready — open this tab and load a matrix</span>
+  </div>
+</div>
+
+</div><!-- /sections -->
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="rotate-image.html">
+      <div class="rel-top"><span class="rel-num">LC #48 · Medium</span><span class="badge b-topic">Matrix</span></div>
+      <div class="rel-title">Rotate Image</div>
+      <div class="rel-desc">In-place reorder along diagonals and rows — pairs well with matrix geometry.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="search-2d-matrix.html">
+      <div class="rel-top"><span class="rel-num">LC #74 · Medium</span><span class="badge b-topic">Binary search</span></div>
+      <div class="rel-title">Search a 2D Matrix</div>
+      <div class="rel-desc">Treat sorted 2D data as 1D — another way to reason about grid indexing.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="row-with-maximum-ones.html">
+      <div class="rel-top"><span class="rel-num">LC #2643 · Easy</span><span class="badge b-topic">Matrix</span></div>
+      <div class="rel-title">Row With Maximum Ones</div>
+      <div class="rel-desc">Row-wise scan with a live grid highlight — similar visualization style.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #498 Diagonal Traverse</p></footer>
+
+<script>
+function toggleTheme(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+n).classList.add('active');
+  btn.classList.add('active');
+}
+function showSol(i,btn){
+  document.getElementById('sv0').style.display=i===0?'block':'none';
+  document.getElementById('sv1').style.display=i===1?'block':'none';
+  document.querySelectorAll('.vtabs .vtab').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+function cp(id){
+  var t=document.getElementById(id);
+  if(t)navigator.clipboard.writeText(t.innerText);
+  var b=window.event&&window.event.target;
+  if(b){b.textContent='Copied!';setTimeout(function(){b.textContent='Copy';},1500);}
+}
+</script>
+<script src="diagonal-traverse.js"></script>
+</body>
+</html>
