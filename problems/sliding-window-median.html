@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-37R33STE8M');
+</script>
+<title>480. Sliding Window Median — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;
+  --border:rgba(255,255,255,0.09);--border2:rgba(255,255,255,0.18);
+  --text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;
+  --accent:#7c6af7;--accent2:#a594f9;
+  --green:#3dd68c;--green-bg:rgba(61,214,140,0.12);--green-border:rgba(61,214,140,0.35);
+  --amber:#f5a623;--amber-bg:rgba(245,166,35,0.12);--amber-border:rgba(245,166,35,0.35);
+  --coral:#f07060;--coral-bg:rgba(240,112,96,0.12);--coral-border:rgba(240,112,96,0.35);
+  --purple-bg:rgba(124,106,247,0.12);--purple-border:rgba(124,106,247,0.35);
+  --teal:#2dd4bf;--teal-bg:rgba(45,212,191,0.12);--teal-border:rgba(45,212,191,0.35);
+  --radius:10px;--radius-lg:16px;
+  --mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;
+}
+[data-theme="light"]{
+  --bg:#f0ede8;--bg2:#ffffff;--bg3:#e8e5e0;--bg4:#dddad5;
+  --border:rgba(0,0,0,0.09);--border2:rgba(0,0,0,0.18);
+  --text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;
+  --accent:#5b48e8;--accent2:#7c6af7;
+  --green:#1a9e5c;--green-bg:rgba(26,158,92,0.1);--green-border:rgba(26,158,92,0.4);
+  --amber:#c47d0a;--amber-bg:rgba(196,125,10,0.1);--amber-border:rgba(196,125,10,0.4);
+  --coral:#d04030;--coral-bg:rgba(208,64,48,0.1);--coral-border:rgba(208,64,48,0.4);
+  --purple-bg:rgba(91,72,232,0.08);--purple-border:rgba(91,72,232,0.35);
+  --teal:#0d9488;--teal-bg:rgba(13,148,136,0.1);--teal-border:rgba(13,148,136,0.35);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:200;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-0.02em}
+.nav-logo span{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.nav-back{font-size:0.8rem;color:var(--text2);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--accent)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-num{font-size:.82rem;font-family:var(--mono);color:var(--accent);font-weight:700;margin-bottom:.4rem}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.15;margin-bottom:.6rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:640px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-hard{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:1.5rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}
+.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-link{font-size:.78rem;margin-top:.5rem}
+.ex-link a{color:var(--accent);text-decoration:none}
+.ex-link a:hover{text-decoration:underline}
+.explain-pair-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:.5rem}
+@media(max-width:720px){.explain-pair-grid{grid-template-columns:1fr}}
+.ex-val{color:var(--green);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.vtabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.1rem}
+.vtab{padding:5px 13px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);font-size:.74rem;font-family:var(--mono);color:var(--text2);cursor:pointer;transition:all .2s}
+.vtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vsec{display:none}.vsec.on{display:block}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}
+.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}
+.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}
+.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.arr-wrap{overflow-x:auto;padding:2rem 1.5rem 1rem;background:var(--bg4);border-radius:var(--radius-lg);border:1px solid var(--border2);margin-bottom:.6rem}
+.arr-display{display:flex;gap:8px;flex-wrap:nowrap;align-items:flex-end;min-height:88px}
+.acell{
+  min-width:58px;width:58px;height:58px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:1.05rem;font-weight:700;border:2px solid var(--border2);background:var(--bg3);color:var(--text3);
+  transition:background .22s,border-color .22s,color .22s,box-shadow .22s,transform .22s;flex-shrink:0;
+}
+.acell.win{
+  background:var(--purple-bg);border-color:var(--accent);color:var(--accent2);
+  box-shadow:0 0 0 1px var(--accent) inset, 0 8px 20px rgba(124,106,247,.22);transform:translateY(-12px);
+}
+.ptr-row{display:flex;gap:8px;margin-top:6px}
+.ptr-lbl{min-width:58px;width:58px;text-align:center;font-family:var(--mono);font-size:.72rem;font-weight:700;color:var(--text3);height:16px}
+.ptr-lbl.active{color:var(--accent2)}
+.idx-row{display:flex;gap:8px;margin-top:4px}
+.aidx{min-width:58px;width:58px;text-align:center;font-family:var(--mono);font-size:.65rem;color:var(--text3)}
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:1rem 0}
+@media(max-width:900px){.stats-bar{grid-template-columns:repeat(2,1fr)}}
+.stat{border-radius:var(--radius);padding:10px 14px;border:1px solid var(--border)}
+.stat.s-win{background:rgba(124,106,247,.1);border-color:var(--purple-border)}
+.stat.s-sort{background:var(--bg3);border-color:var(--border2)}
+.stat.s-med{background:rgba(245,166,35,.12);border-color:var(--amber-border)}
+.stat.s-ans{background:rgba(61,214,140,.14);border-color:var(--green);border-width:1.5px}
+.stat-l{font-size:.65rem;font-family:var(--mono);color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.stat.s-win .stat-l{color:var(--accent2)}
+.stat.s-med .stat-l{color:var(--amber)}
+.stat.s-ans .stat-l{color:var(--green)}
+.stat-v{font-size:1.05rem;font-weight:700;font-family:var(--mono);color:var(--text);word-break:break-all}
+.stat.s-win .stat-v{color:var(--accent2)}
+.stat.s-med .stat-v{color:var(--amber)}
+.stat.s-ans .stat-v{color:var(--green)}
+.msg-bar{font-family:var(--mono);font-size:.82rem;color:var(--text2);padding:10px 16px;background:var(--bg3);border-radius:var(--radius);border-left:3px solid var(--accent);margin:.8rem 0;min-height:44px;line-height:1.5}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden;margin:1rem 0}
+.code-hl pre{padding:1.1rem 1.3rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;transition:background .2s;color:var(--text3)}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:1rem}
+.leg{display:flex;align-items:center;gap:7px;font-size:.73rem;font-family:var(--mono);color:var(--text2)}
+.ldot{width:14px;height:14px;border-radius:4px;border:2px solid;flex-shrink:0}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;flex-wrap:wrap;gap:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-hard">LC #480 · Hard</span>
+    <span class="badge b-topic">Array</span>
+    <span class="badge b-topic">Heap</span>
+    <span class="badge b-topic">Sliding Window</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle dark / light"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=array">Array</a><span>/</span>
+  <span style="color:var(--text2)">Sliding Window Median</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Sliding window · Order statistics</div>
+      <div class="lc-num">LeetCode 480</div>
+      <h1>Sliding Window Median</h1>
+      <p class="hero-sub">The <strong style="color:var(--text)">median</strong> of a sorted list is the middle value; if the size is even, use the <strong style="color:var(--text)">average of the two middles</strong>. Slide a window of size <strong style="color:var(--text)">k</strong> across <code>nums</code> and return the median for <strong style="color:var(--text)">each position</strong> (answers within 10⁻⁵ are accepted).</p>
+    </div>
+    <div class="time-est">⏱ <span>~15 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">You are given an integer array <code>nums</code> and an integer <code>k</code>. There is a sliding window of size <code>k</code> that moves from the left of the array to the right; at each position you only see those <code>k</code> numbers. Return the array of <strong>medians</strong>, one per window, in order.</div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1</div>
+        <div class="ex-val">nums = [1,3,-1,-3,5,3,6,7], k = 3</div>
+        <div class="ex-val">Output: [1.00000,-1.00000,-1.00000,3.00000,5.00000,6.00000]</div>
+        <div style="margin-top:8px;font-size:.74rem;color:var(--text3)">Windows: [1,3,-1]→1, [3,-1,-3]→-1, [-1,-3,5]→-1, …</div>
+        <div class="ex-link"><a href="#med-ex-trace" onclick="event.preventDefault();var tabs=document.querySelectorAll('.tab');switchTab('explanation',tabs[2]);setTimeout(function(){var el=document.getElementById('med-ex-trace');if(el)el.scrollIntoView({behavior:'smooth',block:'start'});},60);return false;">Explanation → Step 7</a> has a full window-by-window table for this array.</div>
+      </div>
+      <div class="ex-block" style="margin-top:8px;border-left-color:var(--accent)">
+        <div class="ex-label">Example 2</div>
+        <div class="ex-val">nums = [1,2,3,4,2,3,1,4,2], k = 3</div>
+        <div class="ex-val">Output: [2.00000,3.00000,3.00000,3.00000,2.00000,3.00000,2.00000]</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>1 ≤ k ≤ nums.length ≤ 10⁵</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>−2³¹ ≤ nums[i] ≤ 2³¹ − 1</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Typical complexity</div>
+        <div style="color:var(--accent2)">Naive (sort each window): O(n · k log k)</div>
+        <div style="color:var(--accent2)">Two heaps / multiset: O(n log k) time</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('solution',document.querySelectorAll('.tab')[1])">See Solution →</button>
+</div>
+
+<div class="section" id="tab-solution">
+  <div class="vtabs">
+    <div class="vtab on" onclick="showSol(0,this)">Optimal — two heaps + lazy delete</div>
+    <div class="vtab" onclick="showSol(1,this)">Naive (per window sort)</div>
+  </div>
+  <div class="vsec on" id="sv0">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Passes all LeetCode constraints — O(n log k)</span>
+      <div class="cx-row"><span class="cx cx-t">O(n log k)</span><span class="cx cx-s">O(k)</span></div>
+    </div>
+    <div class="prose" style="margin-bottom:1rem"><strong>small</strong> = max-heap of the lower half (Python: store <code>-x</code>). <strong>large</strong> = min-heap of the upper half. Track <em>logical</em> sizes with <code>small_size</code> / <code>large_size</code>. Values leaving the window go into <code>delayed</code>; when they reach a heap top, <code>prune</code> pops them. <code>rebalance</code> keeps <code>small_size == large_size</code> or <code>small_size == large_size + 1</code> (median is always at <code>small</code>’s top for odd <code>k</code>, or average of both tops for even <code>k</code>).</div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('c0')">Copy</button></div>
+    <div class="code-block"><pre id="c0"><span class="kw">from</span> collections <span class="kw">import</span> defaultdict
+<span class="kw">from</span> heapq <span class="kw">import</span> heappush, heappop
+<span class="kw">from</span> typing <span class="kw">import</span> List
+
+
+<span class="kw">class</span> <span class="fn">MedianFinder</span>:
+    <span class="kw">def</span> <span class="fn">__init__</span>(self, k: int):
+        self.k = k
+        self.small = []  <span class="cm"># max-heap (negated values)</span>
+        self.large = []  <span class="cm"># min-heap</span>
+        self.delayed = defaultdict(int)
+        self.small_size = <span class="nm">0</span>
+        self.large_size = <span class="nm">0</span>
+
+    <span class="kw">def</span> <span class="fn">prune</span>(self, pq):
+        sign = -<span class="nm">1</span> <span class="kw">if</span> pq <span class="kw">is</span> self.small <span class="kw">else</span> <span class="nm">1</span>
+        <span class="kw">while</span> pq <span class="kw">and</span> sign * pq[<span class="nm">0</span>] <span class="kw">in</span> self.delayed:
+            self.delayed[sign * pq[<span class="nm">0</span>]] -= <span class="nm">1</span>
+            <span class="kw">if</span> self.delayed[sign * pq[<span class="nm">0</span>]] == <span class="nm">0</span>:
+                self.delayed.pop(sign * pq[<span class="nm">0</span>])
+            heappop(pq)
+
+    <span class="kw">def</span> <span class="fn">rebalance</span>(self):
+        <span class="kw">if</span> self.small_size &gt; self.large_size + <span class="nm">1</span>:
+            heappush(self.large, -heappop(self.small))
+            self.small_size -= <span class="nm">1</span>
+            self.large_size += <span class="nm">1</span>
+            self.prune(self.small)
+        <span class="kw">elif</span> self.small_size &lt; self.large_size:
+            heappush(self.small, -heappop(self.large))
+            self.large_size -= <span class="nm">1</span>
+            self.small_size += <span class="nm">1</span>
+            self.prune(self.large)
+
+    <span class="kw">def</span> <span class="fn">add_num</span>(self, num: int):
+        <span class="kw">if not</span> self.small <span class="kw">or</span> num &lt;= -self.small[<span class="nm">0</span>]:
+            heappush(self.small, -num)
+            self.small_size += <span class="nm">1</span>
+        <span class="kw">else</span>:
+            heappush(self.large, num)
+            self.large_size += <span class="nm">1</span>
+        self.rebalance()
+
+    <span class="kw">def</span> <span class="fn">remove_num</span>(self, num: int):
+        self.delayed[num] += <span class="nm">1</span>
+        <span class="kw">if</span> num &lt;= -self.small[<span class="nm">0</span>]:
+            self.small_size -= <span class="nm">1</span>
+            <span class="kw">if</span> num == -self.small[<span class="nm">0</span>]:
+                self.prune(self.small)
+        <span class="kw">else</span>:
+            self.large_size -= <span class="nm">1</span>
+            <span class="kw">if</span> num == self.large[<span class="nm">0</span>]:
+                self.prune(self.large)
+        self.rebalance()
+
+    <span class="kw">def</span> <span class="fn">find_median</span>(self) -&gt; float:
+        self.prune(self.small)
+        self.prune(self.large)
+        <span class="kw">if</span> self.k &amp; <span class="nm">1</span>:
+            <span class="kw">return</span> float(-self.small[<span class="nm">0</span>])
+        <span class="kw">return</span> (-self.small[<span class="nm">0</span>] + self.large[<span class="nm">0</span>]) / <span class="nm">2.0</span>
+
+
+<span class="kw">class</span> <span class="fn">Solution</span>:
+    <span class="kw">def</span> <span class="fn">medianSlidingWindow</span>(self, nums: List[int], k: int) -&gt; List[float]:
+        finder = MedianFinder(k)
+        <span class="kw">for</span> x <span class="kw">in</span> nums[:k]:
+            finder.add_num(x)
+        ans = [finder.find_median()]
+        <span class="kw">for</span> i <span class="kw">in</span> range(k, len(nums)):
+            finder.add_num(nums[i])
+            finder.remove_num(nums[i - k])
+            ans.append(finder.find_median())
+        <span class="kw">return</span> ans</pre></div>
+  </div>
+  <div class="vsec" id="sv1" style="display:none">
+    <div class="sol-header">
+      <span style="font-size:.95rem;font-weight:700">Sort each window — TLE on large inputs; matches the animation</span>
+      <div class="cx-row"><span class="cx cx-t">O(n·k log k)</span><span class="cx cx-s">O(k)</span></div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('c1')">Copy</button></div>
+    <div class="code-block"><pre id="c1"><span class="kw">def</span> <span class="fn">medianSlidingWindow</span>(nums, k):
+    out = []
+    <span class="kw">for</span> i <span class="kw">in</span> range(len(nums) - k + <span class="nm">1</span>):
+        w = sorted(nums[i : i + k])
+        <span class="kw">if</span> k % <span class="nm">2</span> == <span class="nm">1</span>:
+            out.append(float(w[k // <span class="nm">2</span>]))
+        <span class="kw">else</span>:
+            out.append((w[k // <span class="nm">2</span> - <span class="nm">1</span>] + w[k // <span class="nm">2</span>]) / <span class="nm">2.0</span>)
+    <span class="kw">return</span> out</pre></div>
+  </div>
+</div>
+
+<!-- ═══ EXPLANATION (pattern: sliding-window.html + trapping-rain-water.html) ═══ -->
+<div class="section" id="tab-explanation">
+
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2);display:flex;align-items:center;gap:10px">
+    <span>💡</span>
+    <span><strong style="color:var(--text)">Same window motion as max-sum sliding window</strong> — drop the left element, add the right — but the median needs <em>order statistics</em>, so maintaining the window costs <code>O(log k)</code> per step with two heaps, not <code>O(1)</code>.</span>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent)">
+    <h3>Step 1 — What “median” means here</h3>
+    <div class="prose">For each contiguous block of <code>k</code> values, sort them mentally. <strong>Odd <code>k</code>:</strong> the median is the single middle (sorted index <code>k // 2</code>). <strong>Even <code>k</code>:</strong> average the two middles at indices <code>k//2 - 1</code> and <code>k//2</code> (e.g. <code>[1,2,3,4]</code> → <code>2.5</code>). Return <code>float</code>s; <code>10⁻⁵</code> error is allowed.</div>
+    <div class="prose" style="margin-top:.75rem"><code style="color:var(--accent2)">odd k → median = w[k//2] &nbsp;&nbsp; even k → median = (w[k//2 - 1] + w[k//2]) / 2</code></div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--amber)">
+    <h3>Step 2 — Naive TLE vs optimal complexity</h3>
+    <div class="prose" style="margin-bottom:1rem">A sliding <strong>sum</strong> updates with one add and one subtract. The median is not additive: it depends on how <strong>all <code>k</code></strong> numbers rank together.</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div style="background:var(--coral-bg);border:1px solid var(--coral-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--coral);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">❌ Sort each window</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9"><code>O(k log k)</code> per stop × <code>O(n)</code> windows → <strong>O(n · k log k)</strong>. Too slow for <code>n ≤ 10⁵</code> (matches the <strong>Animation</strong> tab).</div>
+      </div>
+      <div style="background:var(--green-bg);border:1px solid var(--green-border);border-radius:var(--radius-lg);padding:1rem">
+        <div style="font-size:.7rem;font-family:var(--mono);color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✅ Two heaps + lazy delete</div>
+        <div style="font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.9">Each slide: insert + lazy-remove in <code>O(log k)</code> amortized → <strong>O(n log k)</strong> time, <strong>O(k)</strong> space (<strong>Solution</strong> tab, optimal variant).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--green)">
+    <h3>Step 3 — Split the window into two halves</h3>
+    <div class="prose" style="margin-bottom:.75rem">Use a <strong>max-heap</strong> for the lower half and a <strong>min-heap</strong> for the upper half. Python’s <code>heapq</code> is a min-heap, so store <strong>negated</strong> values in <code>small</code> to simulate max-heap.</div>
+    <div class="explain-pair-grid">
+      <div style="background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">small (max-heap)</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2);line-height:1.7">The “smaller” half. Heap top = <strong>largest</strong> on that side — the natural lower-middle candidate.</div>
+      </div>
+      <div style="background:var(--teal-bg);border:1px solid var(--teal-border);border-radius:var(--radius-lg);padding:.9rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">large (min-heap)</div>
+        <div style="font-family:var(--mono);font-size:.79rem;color:var(--text2);line-height:1.7">The “larger” half. Heap top = <strong>smallest</strong> on that side — the upper-middle candidate.</div>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:.85rem"><strong>Invariant:</strong> every window value is in exactly one heap; all of <code>small</code> ≤ all of <code>large</code>. After <code>rebalance</code>, <code>small_size == large_size</code> or <code>small_size == large_size + 1</code> (the extra element sits in <code>small</code> when <code>k</code> is odd).</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--teal)">
+    <h3>Step 4 — Read the median from heap tops</h3>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1.1rem;font-family:var(--mono);font-size:.8rem;line-height:2.2;color:var(--text2)">
+      <div><span style="color:var(--accent2)">k odd</span> → <code>median = -small[0]</code></div>
+      <div><span style="color:var(--teal)">k even</span> → <code>median = (-small[0] + large[0]) / 2</code></div>
+    </div>
+    <div class="prose" style="margin-top:.75rem">Call <code>prune</code> on <strong>both</strong> heaps in <code>find_median</code> so the tops are not values that already left the window (Step 5).</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--purple-border)">
+    <h3>Step 5 — Lazy deletion and <code>prune</code></h3>
+    <div class="prose"><code>heapq</code> does not support “delete this value anywhere” in <code>O(log k)</code>. When the window slides, mark the outgoing value in <code>delayed</code> and decrease the <em>logical</em> size of the half it belonged to; leave the stale copy inside the heap.</div>
+    <div class="prose" style="margin-top:.75rem"><strong>prune(heap):</strong> while the top is delayed, <code>heappop</code> and decrement <code>delayed</code>. When that value eventually surfaces at the top, it disappears for good. Total pushes and pops per element stay bounded, so the whole algorithm stays <code>O(n log k)</code>.</div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--coral)">
+    <h3>Step 6 — Slide loop and helpers (matches Solution code)</h3>
+    <div class="code-block"><pre><span class="kw">for</span> x <span class="kw">in</span> nums[:k]: add_num(x)
+ans = [find_median()]
+<span class="kw">for</span> i <span class="kw">in</span> range(k, len(nums)):
+    add_num(nums[i])           <span class="cm"># enter window on the right</span>
+    remove_num(nums[i - k])    <span class="cm"># exit window on the left</span>
+    ans.append(find_median())</pre></div>
+    <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;margin-top:.85rem;font-family:var(--mono);font-size:.78rem;line-height:1.9;color:var(--text2)">
+      <div><span style="color:var(--green)">add_num</span> — push toward <code>small</code> or <code>large</code> by comparing to <code>-small[0]</code>, then <code>rebalance</code>.</div>
+      <div><span style="color:var(--coral)">remove_num</span> — <code>delayed[x] += 1</code>, fix <code>small_size</code> / <code>large_size</code>, <code>prune</code> if <code>x</code> was at a top, then <code>rebalance</code>.</div>
+      <div><span style="color:var(--amber)">rebalance</span> — move tops between heaps until the size rule holds; <code>prune</code> the heap you popped.</div>
+    </div>
+  </div>
+
+  <div class="card" style="border-left:3px solid var(--accent)" id="med-ex-trace">
+    <h3>Step 7 — Full trace: Example 1, k = 3</h3>
+    <div class="prose" style="margin-bottom:.75rem">Same medians as the <strong>Animation</strong> tab (explicit sort per window). The optimal solution never builds these sorted rows — only two heaps — but the outputs must match row for row.</div>
+    <div style="overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.79rem;margin-top:.25rem">
+        <thead>
+          <tr style="background:var(--bg3)">
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);font-weight:500;border-bottom:1px solid var(--border)">Window</th>
+            <th style="padding:8px 10px;text-align:left;color:var(--accent2);border-bottom:1px solid var(--border)">Values</th>
+            <th style="padding:8px 10px;text-align:left;color:var(--text2);border-bottom:1px solid var(--border)">Sorted</th>
+            <th style="padding:8px 10px;text-align:center;color:var(--amber);border-bottom:1px solid var(--border)">Median</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:7px 10px;color:var(--text3)">[0 … 2]</td><td style="padding:7px 10px;color:var(--text2)">1, 3, -1</td><td style="padding:7px 10px;color:var(--text2)">-1, 1, 3</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">1.0</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">[1 … 3]</td><td style="padding:7px 10px;color:var(--text2)">3, -1, -3</td><td style="padding:7px 10px;color:var(--text2)">-3, -1, 3</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">-1.0</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--text3)">[2 … 4]</td><td style="padding:7px 10px;color:var(--text2)">-1, -3, 5</td><td style="padding:7px 10px;color:var(--text2)">-3, -1, 5</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">-1.0</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">[3 … 5]</td><td style="padding:7px 10px;color:var(--text2)">-3, 5, 3</td><td style="padding:7px 10px;color:var(--text2)">-3, 3, 5</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">3.0</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--text3)">[4 … 6]</td><td style="padding:7px 10px;color:var(--text2)">5, 3, 6</td><td style="padding:7px 10px;color:var(--text2)">3, 5, 6</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">5.0</td></tr>
+          <tr style="background:rgba(124,106,247,.05)"><td style="padding:7px 10px;color:var(--text3)">[5 … 7]</td><td style="padding:7px 10px;color:var(--text2)">3, 6, 7</td><td style="padding:7px 10px;color:var(--text2)">3, 6, 7</td><td style="padding:7px 10px;text-align:center;color:var(--green);font-weight:700">6.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose" style="margin-top:1rem;font-size:.84rem">Row <strong>[1 … 3]</strong> is the first slide: drop <code>1</code>, add <code>-3</code>. Output array = <code>[1, -1, -1, 3, 5, 6]</code> as floats.</p>
+  </div>
+
+  <div class="tip">
+    <strong>Related on AlgoAnimate:</strong> <a href="sliding-window.html" style="color:var(--accent2)">Sliding Window</a> explains the two-pointer / fixed-window <em>template</em> in <code>O(n)</code> when state updates are cheap. Here the expensive state is the median; <strong>Interview:</strong> say naive <code>O(n · k log k)</code>, then two heaps + lazy delete or ordered multiset for <code>O(n log k)</code>.
+  </div>
+</div>
+
+<div class="section" id="tab-animation">
+  <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:.7rem 1.2rem;margin-bottom:.8rem;font-family:var(--mono);font-size:.82rem;color:var(--text2)">
+    <strong style="color:var(--text)">Purple window</strong> = current k cells. Stats show sorted copy, median, and medians so far. Animation uses small inputs (≤18 numbers, k ≤ 8) so steps stay smooth.
+  </div>
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.6rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase">nums (comma separated)</span>
+      <input class="grid-inp" id="med-input" type="text" value="1,3,-1,-3,5,3,6,7" style="width:min(100%,340px)">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase">k</span>
+      <input class="grid-inp" id="med-k" type="number" value="3" min="1" style="width:64px">
+    </div>
+    <button class="run-btn" onclick="medInit()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button class="sbtn" onclick="medSample('1,3,-1,-3,5,3,6,7',3)">Example 1</button>
+    <button class="sbtn" onclick="medSample('1,2,3,4,2,3,1,4,2',3)">Example 2</button>
+    <button class="sbtn" onclick="medSample('1,2,3,4',2)">Even k (2.5 median)</button>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:1rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="mprev" onclick="medStep(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="mnext" onclick="medStep(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="mauto" onclick="medAuto()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="mreset" onclick="medReset()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:8px;margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--text3)">
+      Speed <input type="range" id="mspeed" min="1" max="5" value="3" style="width:75px;accent-color:var(--accent)">
+      <span id="mspeed-lbl">Normal</span>
+    </div>
+    <span id="mstep-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700;min-width:55px;text-align:right"></span>
+  </div>
+  <div class="legend">
+    <div class="leg"><div class="ldot" style="background:var(--bg3);border-color:var(--border2)"></div>outside window</div>
+    <div class="leg"><div class="ldot" style="background:var(--purple-bg);border-color:var(--accent)"></div>current window</div>
+  </div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.2rem">
+    <div class="arr-wrap">
+      <div class="arr-display" id="med-arr"></div>
+      <div class="ptr-row" id="med-ptr"></div>
+      <div class="idx-row" id="med-idx"></div>
+    </div>
+    <div class="stats-bar">
+      <div class="stat s-win"><div class="stat-l">Window [L..R]</div><div class="stat-v" id="mstat-lr">—</div></div>
+      <div class="stat s-sort"><div class="stat-l">Sorted window</div><div class="stat-v" id="mstat-sort" style="font-size:.85rem">—</div></div>
+      <div class="stat s-med"><div class="stat-l">Median</div><div class="stat-v" id="mstat-med">—</div></div>
+      <div class="stat s-ans"><div class="stat-l">Medians so far</div><div class="stat-v" id="mstat-out" style="font-size:.82rem">—</div></div>
+    </div>
+    <div class="msg-bar" id="med-msg">Press ▶ Load</div>
+    <div class="code-hl">
+      <pre>
+<span class="hl" id="ml0"><span class="kw">def</span> <span class="fn">medianSlidingWindow</span>(nums, k):</span>
+<span class="hl" id="ml1">    out = []</span>
+<span class="hl" id="ml2">    <span class="kw">for</span> i <span class="kw">in</span> range(len(nums) - k + <span class="nm">1</span>):</span>
+<span class="hl" id="ml3">        w = sorted(nums[i : i + k])</span>
+<span class="hl" id="ml4">        <span class="kw">if</span> k % <span class="nm">2</span>: median = w[k//<span class="nm">2</span>]</span>
+<span class="hl" id="ml5">        <span class="kw">else</span>: median = (w[k//<span class="nm">2</span>-<span class="nm">1</span>] + w[k//<span class="nm">2</span>]) / <span class="nm">2</span></span>
+<span class="hl" id="ml6">        out.append(median)</span></pre>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="sliding-window.html">
+      <div class="rel-top"><span class="rel-num">Technique #01</span><span class="badge b-topic">Window</span></div>
+      <div class="rel-title">Sliding Window</div>
+      <div class="rel-desc">Fixed and dynamic windows — O(n) when state updates in O(1).</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="binary-search.html">
+      <div class="rel-top"><span class="rel-num">LC #704</span><span class="badge b-topic">Binary search</span></div>
+      <div class="rel-title">Binary Search</div>
+      <div class="rel-desc">Order and “find middle” themes complement median thinking.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="threesum.html">
+      <div class="rel-top"><span class="rel-num">LC #15</span><span class="badge b-topic">Two pointers</span></div>
+      <div class="rel-title">3Sum</div>
+      <div class="rel-desc">Sorted array + two pointers — another use of ordering.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · LeetCode #480 Sliding Window Median</p></footer>
+
+<script>
+function toggleTheme(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+n).classList.add('active');
+  btn.classList.add('active');
+}
+function showSol(i,btn){
+  document.getElementById('sv0').style.display=i===0?'block':'none';
+  document.getElementById('sv1').style.display=i===1?'block':'none';
+  document.querySelectorAll('#tab-solution .vtab').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+}
+function cp(id){
+  navigator.clipboard.writeText(document.getElementById(id).innerText);
+  var t=window.event&&window.event.target;
+  if(t){t.textContent='Copied!';setTimeout(function(){t.textContent='Copy';},1500);}
+}
+
+var MAX_N=18,MAX_K=8;
+var SPDS=[900,580,320,180,80];
+var SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+var mSteps=[],mCur=0,mTimer=null,mPlaying=false,mNums=[],mK=3;
+
+document.getElementById('mspeed').addEventListener('input',function(e){
+  document.getElementById('mspeed-lbl').textContent=SPNAMES[e.target.value-1];
+});
+
+function fmtMed(x){
+  var s=Number(x).toFixed(5);
+  return s;
+}
+
+function medianOfSorted(sorted){
+  var k=sorted.length;
+  if(k%2===1)return sorted[(k-1)/2];
+  return (sorted[k/2-1]+sorted[k/2])/2;
+}
+
+function buildMedSteps(nums,k){
+  var n=nums.length,out=[],steps=[],i;
+  steps.push({phase:'intro',L:-1,R:-1,sorted:[],median:null,out:[],msg:'Ready: slide a window of size '+k+' across indices 0…'+(n-1)+', and record the median at each stop.',cl:0});
+  for(i=0;i<=n-k;i++){
+    var L=i,R=i+k-1;
+    var win=nums.slice(L,R+1);
+    var sorted=win.slice().sort(function(a,b){return a-b;});
+    var med=medianOfSorted(sorted);
+    out.push(med);
+    var odd=k%2===1;
+    var pickLine=odd
+      ?('Odd k: middle index k//2 in sorted list → '+sorted[(k-1)/2])
+      :('Even k: average of positions k/2−1 and k/2 → ('+sorted[k/2-1]+'+'+sorted[k/2]+')/2');
+    steps.push({
+      phase:'win',L:L,R:R,win:win,sorted:sorted,median:med,out:out.slice(),odd:odd,
+      msg:'Window ['+L+'..'+R+']: ['+win.join(', ')+'] → sorted ['+sorted.join(', ')+'] → '+pickLine+' → median '+fmtMed(med)+'. '+(i<n-k?'Then slide right.':''),
+      cl:2+(i%5)
+    });
+  }
+  steps.push({phase:'done',L:n-k,R:n-1,sorted:[],median:null,out:out.slice(),msg:'✓ Return ['+out.map(fmtMed).join(', ')+']',cl:6});
+  return steps;
+}
+
+function medSample(str,k){
+  document.getElementById('med-input').value=str;
+  document.getElementById('med-k').value=k;
+  medInit();
+}
+
+function medInit(){
+  medStop();
+  var raw=document.getElementById('med-input').value;
+  mNums=raw.split(',').map(function(x){return parseInt(x.trim(),10);}).filter(function(x){return !isNaN(x);});
+  mK=Math.max(1,parseInt(document.getElementById('med-k').value,10)||1);
+  var msgEl=document.getElementById('med-msg');
+  var dis=['mprev','mnext','mauto','mreset'];
+  if(mK>mNums.length){msgEl.textContent='k must be ≤ length of nums.';mSteps=[];dis.forEach(function(id){document.getElementById(id).disabled=true;});return;}
+  if(mNums.length>MAX_N){msgEl.textContent='Use at most '+MAX_N+' numbers in the animator.';mSteps=[];dis.forEach(function(id){document.getElementById(id).disabled=true;});return;}
+  if(mK>MAX_K){msgEl.textContent='Use k ≤ '+MAX_K+' in the animator.';mSteps=[];dis.forEach(function(id){document.getElementById(id).disabled=true;});return;}
+  mSteps=buildMedSteps(mNums,mK);
+  mCur=0;
+  medRender();
+  dis.forEach(function(id){document.getElementById(id).disabled=false;});
+  medUpdateCtrl();
+}
+
+function setMhl(cl){
+  for(var i=0;i<=6;i++){
+    var e=document.getElementById('ml'+i);
+    if(e)e.classList.toggle('active',i===cl);
+  }
+}
+
+function medRender(){
+  if(!mSteps.length||!mNums.length){
+    document.getElementById('med-arr').innerHTML='';
+    return;
+  }
+  var s=mSteps[mCur],arr=mNums;
+  var row=document.getElementById('med-arr');
+  row.innerHTML='';
+  arr.forEach(function(v,idx){
+    var c=document.createElement('div');
+    c.className='acell';
+    if(s.phase==='win'&&s.L>=0&&idx>=s.L&&idx<=s.R)c.classList.add('win');
+    c.textContent=v;
+    row.appendChild(c);
+  });
+  var ptr=document.getElementById('med-ptr');
+  ptr.innerHTML='';
+  arr.forEach(function(_,idx){
+    var d=document.createElement('div');
+    d.className='ptr-lbl';
+    if(s.phase==='win'&&s.L>=0){
+      if(idx===s.L&&idx===s.R){d.classList.add('active');d.textContent='L R';}
+      else if(idx===s.L){d.classList.add('active');d.textContent='L';}
+      else if(idx===s.R){d.classList.add('active');d.textContent='R';}
+    }
+    ptr.appendChild(d);
+  });
+  var ix=document.getElementById('med-idx');
+  ix.innerHTML='';
+  arr.forEach(function(_,idx){
+    var d=document.createElement('div');
+    d.className='aidx';
+    d.textContent=idx;
+    ix.appendChild(d);
+  });
+  document.getElementById('mstat-lr').textContent=(s.L>=0&&s.R>=0)?'['+s.L+' … '+s.R+']':'—';
+  document.getElementById('mstat-sort').textContent=s.sorted&&s.sorted.length?'['+s.sorted.join(', ')+']':'—';
+  document.getElementById('mstat-med').textContent=s.median!=null?fmtMed(s.median):'—';
+  document.getElementById('mstat-out').textContent=s.out&&s.out.length?'['+s.out.map(fmtMed).join(', ')+']':'[]';
+  document.getElementById('med-msg').textContent=s.msg||'';
+  setMhl(s.cl!=null?s.cl:0);
+  document.getElementById('mstep-info').textContent=(mCur+1)+'/'+mSteps.length;
+}
+
+function medUpdateCtrl(){
+  document.getElementById('mprev').disabled=mCur<=0;
+  document.getElementById('mnext').disabled=mCur>=mSteps.length-1;
+}
+
+function medStep(d){
+  medStop();
+  if(!mSteps.length)return;
+  mCur=Math.max(0,Math.min(mSteps.length-1,mCur+d));
+  medRender();
+  medUpdateCtrl();
+}
+
+function medStop(){
+  if(mTimer){clearInterval(mTimer);mTimer=null;}
+  mPlaying=false;
+  var b=document.getElementById('mauto');
+  if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}
+}
+
+function medAuto(){
+  if(mPlaying){medStop();return;}
+  if(!mSteps.length)return;
+  if(mCur>=mSteps.length-1)mCur=0;
+  mPlaying=true;
+  document.getElementById('mauto').textContent='⏸ Pause';
+  document.getElementById('mauto').classList.add('primary');
+  var sl=document.getElementById('mspeed');
+  mTimer=setInterval(function(){
+    if(mCur>=mSteps.length-1){medStop();medUpdateCtrl();return;}
+    mCur++;
+    medRender();
+    medUpdateCtrl();
+  },SPDS[sl?parseInt(sl.value,10)-1:2]);
+}
+
+function medReset(){
+  medStop();
+  mCur=0;
+  if(mSteps.length)medRender();
+  medUpdateCtrl();
+}
+
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  var anim=document.getElementById('tab-animation');
+  if(!anim||!anim.classList.contains('active'))return;
+  if(e.key==='ArrowRight'){e.preventDefault();medStep(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();medStep(-1);}
+  else if(e.key===' '){e.preventDefault();medAuto();}
+});
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme: dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  medInit();
+});
+</script>
+</body>
+</html>
