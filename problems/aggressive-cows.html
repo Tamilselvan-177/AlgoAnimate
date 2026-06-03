@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script>
+(function(){
+  try{
+    if(window.matchMedia('(max-width:900px)').matches){
+      var m=document.querySelector('meta[name="viewport"]');
+      if(m)m.setAttribute('content','width=1200, initial-scale=1, maximum-scale=5, user-scalable=yes, viewport-fit=cover');
+    }
+  }catch(e){}
+})();
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-37R33STE8M"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-37R33STE8M');
+</script>
+<title>Aggressive Cows — AlgoAnimate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Syne:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0e11;--bg2:#16161a;--bg3:#1e1e24;--bg4:#252530;--border:rgba(255,255,255,.09);--border2:rgba(255,255,255,.18);--text:#e8e6e0;--text2:#9a9890;--text3:#5a5856;--accent:#7c6af7;--accent2:#a594f9;--green:#3dd68c;--green-bg:rgba(61,214,140,.12);--green-border:rgba(61,214,140,.35);--amber:#f5a623;--amber-bg:rgba(245,166,35,.12);--amber-border:rgba(245,166,35,.35);--coral:#f07060;--coral-bg:rgba(240,112,96,.12);--coral-border:rgba(240,112,96,.35);--purple-bg:rgba(124,106,247,.12);--purple-border:rgba(124,106,247,.35);--teal:#2dd4bf;--teal-bg:rgba(45,212,191,.12);--teal-border:rgba(45,212,191,.35);--radius:10px;--radius-lg:16px;--mono:'JetBrains Mono',monospace;--sans:'Syne',sans-serif;--cv:#0a0a0f;--cvb:#2a2a3e;--ph:#3a3a5e}
+[data-theme="light"]{--bg:#f0ede8;--bg2:#fff;--bg3:#e8e5e0;--bg4:#dddad5;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.18);--text:#1a1a1e;--text2:#5a5856;--text3:#9a9890;--accent:#5b48e8;--accent2:#7c6af7;--green:#1a9e5c;--green-bg:rgba(26,158,92,.1);--green-border:rgba(26,158,92,.4);--amber:#c47d0a;--amber-bg:rgba(196,125,10,.1);--amber-border:rgba(196,125,10,.4);--coral:#d04030;--coral-bg:rgba(208,64,48,.1);--coral-border:rgba(208,64,48,.4);--purple-bg:rgba(91,72,232,.08);--purple-border:rgba(91,72,232,.35);--teal:#0d9488;--teal-bg:rgba(13,148,136,.1);--teal-border:rgba(13,148,136,.35);--cv:#f5f2ee;--cvb:#d0cdc8;--ph:#b0ada8}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;line-height:1.6;transition:background .25s,color .25s}
+nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;gap:10px;flex-wrap:wrap}
+.nav-logo{font-size:1.1rem;font-weight:800;color:var(--text);text-decoration:none;letter-spacing:-.02em}.nav-logo span{color:var(--accent)}
+.nav-back{font-size:.8rem;color:var(--text2);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--accent)}
+.nav-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:20px;font-size:.7rem;font-family:var(--mono);font-weight:500}
+.b-med{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.b-topic{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.theme-btn{width:36px;height:20px;border-radius:10px;background:var(--bg3);border:1px solid var(--border2);cursor:pointer;position:relative;flex-shrink:0}
+.theme-btn::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;background:var(--accent);transition:transform .2s}
+[data-theme="light"] .theme-btn::after{transform:translateX(16px)}
+.breadcrumb{max-width:1100px;margin:0 auto;padding:.8rem 2rem 0;display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3)}
+.breadcrumb a{color:var(--text3);text-decoration:none}.breadcrumb a:hover{color:var(--accent)}
+.hero{padding:1.5rem 2rem 0;max-width:1100px;margin:0 auto}
+.hero-top{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.hero-tag{font-size:.7rem;font-family:var(--mono);color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.lc-number{font-size:.82rem;font-family:var(--mono);color:var(--accent);margin-bottom:.5rem;font-weight:700}
+.hero h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-.03em;line-height:1.15;margin-bottom:.8rem}
+.hero-sub{font-size:.92rem;color:var(--text2);max-width:640px;line-height:1.75}
+.time-est{display:flex;align-items:center;gap:6px;padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.75rem;color:var(--text2);white-space:nowrap}
+.time-est span{color:var(--amber)}
+.tabs-wrap{max-width:1100px;margin:0 auto;padding:0 2rem}
+.tabs{display:flex;gap:2px;border-bottom:1px solid var(--border);margin-top:2rem}
+.tab{padding:.7rem 1.2rem;font-size:.82rem;font-family:var(--mono);color:var(--text2);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}.tab.active{color:var(--accent2);border-bottom-color:var(--accent)}
+.sections{max-width:1100px;margin:0 auto;padding:2rem}.section{display:none}.section.active{display:block}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1rem}
+.card h3{font-size:.72rem;font-family:var(--mono);color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem}
+.prob-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:720px){.prob-grid{grid-template-columns:1fr}}
+.prose{font-size:.88rem;color:var(--text2);line-height:1.85}.prose strong{color:var(--text);font-weight:500}
+.prose ul{padding-left:1.2rem;margin-top:.5rem}.prose li{margin-bottom:.4rem}
+.ex-block{background:var(--bg3);border-radius:var(--radius);padding:1rem 1.2rem;margin-top:.8rem;font-family:var(--mono);font-size:.8rem;border-left:3px solid var(--border2)}
+.ex-label{font-size:.68rem;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px}
+.ex-io{color:var(--text2);margin-bottom:3px}
+.cr-list{display:flex;flex-direction:column;gap:6px}
+.cr{display:flex;align-items:flex-start;gap:8px;font-size:.8rem;font-family:var(--mono);color:var(--text2)}
+.cr-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0;margin-top:6px}
+.sol-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;flex-wrap:wrap;gap:10px}
+.cx-row{display:flex;gap:8px}.cx{padding:4px 12px;border-radius:20px;font-size:.73rem;font-family:var(--mono)}
+.cx-t{background:var(--purple-bg);color:var(--accent2)}.cx-s{background:var(--green-bg);color:var(--green)}
+.code-block{background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+.code-block pre{padding:1.4rem;overflow-x:auto;font-family:var(--mono);font-size:.8rem;line-height:1.95;color:var(--text2)}
+.kw{color:#c792ea}.fn{color:var(--green)}.cm{color:var(--text3)}.nm{color:#f78c6c}
+.copy-btn{padding:6px 14px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.73rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.copy-btn:hover{color:var(--text);background:var(--bg4)}
+.tip{background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.2rem 1.5rem;font-size:.85rem;color:var(--text2);line-height:1.75;margin-bottom:1rem}
+.tip strong{color:var(--accent2)}
+.cbtn{padding:7px 15px;background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);font-family:var(--mono);font-size:.77rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.cbtn:hover{border-color:var(--accent);color:var(--accent)}.cbtn:disabled{opacity:.3;cursor:not-allowed}
+.cbtn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.cbtn.primary:hover{background:var(--accent2)}
+.sbtn{padding:5px 11px;background:var(--bg3);border:1px solid var(--border2);border-radius:20px;font-family:var(--mono);font-size:.72rem;color:var(--text2);cursor:pointer;transition:all .2s}
+.sbtn:hover{border-color:var(--accent);color:var(--accent)}
+.grid-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius);padding:7px 11px;font-family:var(--mono);font-size:.8rem;color:var(--text);outline:none;transition:border-color .2s}
+.grid-inp:focus{border-color:var(--accent)}
+.run-btn{padding:8px 20px;background:var(--accent);border:none;border-radius:var(--radius);font-family:var(--mono);font-size:.8rem;font-weight:700;color:#fff;cursor:pointer;transition:all .2s}
+.run-btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.code-hl{background:var(--bg3);border-radius:var(--radius-lg);border:1px solid var(--border);overflow:hidden}
+.code-hl pre{padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem;line-height:2.1}
+.hl{display:block;padding:1px 5px;border-radius:4px;color:var(--text3);transition:background .2s}
+.hl .kw{color:#c792ea}.hl .fn{color:var(--green)}.hl .cm{color:var(--text3);opacity:.6}
+.hl.active{background:rgba(124,106,247,.22);color:var(--text)}
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin-top:1rem}
+.rel-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.1rem 1.3rem;text-decoration:none;display:block;transition:all .2s}
+.rel-card:hover{border-color:var(--accent);transform:translateY(-2px)}
+.rel-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.rel-num{font-size:.7rem;font-family:var(--mono);color:var(--text3)}
+.rel-title{font-size:.9rem;font-weight:700;color:var(--text);margin-bottom:4px}
+.rel-desc{font-size:.78rem;color:var(--text2);line-height:1.55}
+.rel-arrow{color:var(--accent);font-size:.85rem;margin-top:.5rem;display:block}
+footer{border-top:1px solid var(--border);padding:2rem;text-align:center;font-size:.78rem;font-family:var(--mono);color:var(--text3);margin-top:4rem}
+footer a{color:var(--accent);text-decoration:none}
+
+/* stall viz */
+.stall-stage{background:var(--cv);border:1px solid var(--cvb);border-radius:var(--radius-lg);padding:1.2rem 1rem;overflow-x:auto}
+.stall-track{position:relative;height:108px;min-width:320px;margin:0 auto}
+.gap-brackets{position:absolute;left:24px;right:24px;top:2px;height:26px;pointer-events:none}
+.gap-seg{position:absolute;height:20px;border:2px solid var(--green);border-bottom:none;border-radius:5px 5px 0 0;opacity:.85;transition:opacity .2s,width .25s,left .25s}
+.gap-seg.min-gap{border-color:var(--coral);background:rgba(240,112,96,.12)}
+.gap-seg.min-gap.best{border-color:var(--green);background:rgba(61,214,140,.15)}
+.gap-seg-lbl{position:absolute;top:1px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:8px;font-weight:700;white-space:nowrap}
+.gap-seg.min-gap .gap-seg-lbl{color:var(--coral)}
+.gap-seg.min-gap.best .gap-seg-lbl{color:var(--green)}
+.stall-pin.cow.just-placed .cow-icon{animation:cowPop .35s ease}
+.stall-pin.cow.just-placed .stall-post{box-shadow:0 0 12px rgba(61,214,140,.6)}
+@keyframes cowPop{0%{transform:scale(.6);opacity:.5}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.score-banner{margin-top:8px;padding:8px 12px;border-radius:var(--radius);font-family:var(--mono);font-size:.78rem;display:none}
+.score-banner.show{display:block}
+.score-banner.bad{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.score-banner.good{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.feas-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:.72rem;font-weight:700;margin-left:6px}
+.feas-badge.yes{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.feas-badge.no{background:var(--coral-bg);color:var(--coral);border:1px solid var(--coral-border)}
+.asc.sx{background:rgba(240,112,96,.12);border-color:var(--coral);color:var(--coral)}
+@media(max-width:900px){#anim-grid{grid-template-columns:1fr!important}}
+.stall-rail{position:absolute;left:24px;right:24px;top:52px;height:3px;background:var(--border2);border-radius:2px}
+.stall-pin{position:absolute;top:28px;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .25s}
+.stall-post{width:3px;height:28px;background:var(--border2);border-radius:2px;transition:all .25s}
+.stall-lbl{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--text3);padding:2px 6px;border-radius:6px;background:var(--bg3);border:1px solid var(--border);transition:all .25s}
+.stall-pin.active .stall-post{background:var(--accent);box-shadow:0 0 10px rgba(124,106,247,.5)}
+.stall-pin.active .stall-lbl{border-color:var(--accent);color:var(--accent2);background:rgba(124,106,247,.15)}
+.stall-pin.cow .stall-lbl{border-color:var(--green);color:var(--green);background:var(--green-bg)}
+.stall-pin.cow .stall-post{background:var(--green)}
+.stall-pin.skip .stall-lbl{opacity:.45}
+.stall-pin.try .stall-lbl{border-color:var(--amber);color:var(--amber);background:var(--amber-bg)}
+.cow-icon{font-size:16px;line-height:1}
+.dist-bracket{position:absolute;top:8px;height:22px;border:2px solid var(--green);border-bottom:none;border-radius:6px 6px 0 0;pointer-events:none;opacity:0;transition:opacity .2s}
+.dist-bracket.show{opacity:1}
+.dist-bracket-lbl{position:absolute;top:0;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--green);white-space:nowrap}
+
+.ans-space{display:flex;flex-wrap:wrap;gap:5px;margin-top:.6rem}
+.asc{width:44px;height:48px;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;border:2px solid;font-family:var(--mono);transition:all .25s;flex-shrink:0}
+.asc .asp-n{font-size:8px;opacity:.7}.asc .asp-v{font-size:12px;font-weight:700}
+.asc.sf{background:var(--bg3);border-color:var(--border2);color:var(--text3)}
+.asc.st{background:rgba(61,214,140,.12);border-color:var(--green);color:var(--green)}
+.asc.sm{background:rgba(124,106,247,.2);border-color:var(--accent);color:var(--accent2);transform:scale(1.08)}
+.asc.sa{background:rgba(45,212,191,.15);border-color:var(--teal);color:var(--teal);transform:scale(1.1)}
+
+.stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:.6rem 0}
+@media(max-width:560px){.stat-row{grid-template-columns:repeat(2,1fr)}}
+.stat-box{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.75rem .9rem;text-align:center}
+.stat-lbl{font-size:.58rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.stat-val{font-family:var(--mono);font-size:1rem;font-weight:700;color:var(--text)}
+.stat-val.ok{color:var(--green)}.stat-val.bad{color:var(--coral)}.stat-val.mid{color:var(--accent2)}
+
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:.7rem;font-size:11px;font-family:var(--mono);color:var(--text2)}
+.leg-dot{width:14px;height:14px;border-radius:4px;border:2px solid;flex-shrink:0}
+
+@media(prefers-reduced-motion:reduce){
+  .stall-pin,.asc,.dist-bracket{transition:none!important}
+}
+
+/* Picture-book explanation figures */
+.kid-gallery{display:flex;flex-direction:column;gap:1.25rem}
+.kid-fig{background:var(--bg3);border:1px solid var(--border2);border-radius:var(--radius-lg);padding:1rem 1rem 1.1rem;overflow:hidden}
+.kid-fig-head{display:flex;align-items:center;gap:10px;margin-bottom:.75rem;flex-wrap:wrap}
+.kid-badge{padding:5px 12px;border-radius:20px;font-family:var(--mono);font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.kid-badge.what{background:var(--purple-bg);color:var(--accent2);border:1px solid var(--purple-border)}
+.kid-badge.why{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+.kid-badge.how{background:var(--teal-bg);color:var(--teal);border:1px solid var(--teal-border)}
+.kid-badge.ans{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+.kid-fig-title{font-size:1rem;font-weight:700;color:var(--text);letter-spacing:-.02em}
+.kid-fig svg{display:block;width:100%;max-width:640px;margin:0 auto;height:auto}
+.kid-cap{margin-top:.85rem;padding-top:.85rem;border-top:1px solid var(--border);font-size:.88rem;color:var(--text2);line-height:1.7}
+.kid-cap strong{color:var(--text)}
+.kid-row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:.5rem}
+@media(max-width:640px){.kid-row2{grid-template-columns:1fr}}
+.kid-mini{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:.75rem;text-align:center}
+.kid-mini-lbl{font-family:var(--mono);font-size:.62rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.kid-flow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:.6rem}
+.kid-step-pill{padding:8px 14px;background:var(--bg2);border:2px solid var(--border2);border-radius:12px;font-family:var(--mono);font-size:.72rem;color:var(--text2);text-align:center;min-width:100px;line-height:1.45}
+.kid-step-pill b{display:block;font-size:.85rem;color:var(--text);margin-bottom:2px}
+.kid-arrow-pill{color:var(--accent2);font-size:1.1rem;padding:8px 4px;align-self:center}
+.kid-fig svg .kt{fill:var(--text)}
+.kid-fig svg .ks{fill:var(--text2)}
+.kid-fig svg .km{fill:var(--text3)}
+.kid-fig svg .kl{stroke:var(--text3)}
+.lecture-wrap{margin-top:2.5rem;padding-top:2rem;border-top:2px dashed var(--border2)}
+.lecture-wrap > h2{font-size:1.2rem;font-weight:800;letter-spacing:-.03em;margin-bottom:.35rem;color:var(--text)}
+.lecture-wrap > .lecture-sub{font-size:.88rem;color:var(--text2);margin-bottom:1.25rem;line-height:1.65}
+.lecture-card{margin-bottom:1rem}
+.lecture-card h3{font-size:1rem;margin-bottom:.65rem}
+.lecture-card .prose{font-size:.9rem}
+.placement-grid{display:grid;gap:10px;margin-top:.75rem}
+.placement-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius)}
+.placement-row .pl-label{font-family:var(--mono);font-size:.68rem;color:var(--text3);min-width:88px;text-transform:uppercase}
+.placement-row .pl-body{flex:1;min-width:0}
+.placement-row .pl-cows{font-family:var(--mono);font-size:.8rem;color:var(--text2);line-height:1.5}
+.placement-row .pl-cows strong{color:var(--accent2)}
+.placement-row .pl-gaps{font-family:var(--mono);font-size:.78rem;color:var(--text3);margin-top:4px;line-height:1.5}
+.placement-row .pl-gaps strong{color:var(--text2)}
+.placement-row .pl-gaps .pl-warn{color:var(--coral);font-weight:700}
+.placement-row .pl-gaps .pl-ok{color:var(--green);font-weight:700}
+.placement-row .pl-note{font-size:.8rem;color:var(--text2);margin-top:6px;line-height:1.45}
+.placement-row .pl-min{font-family:var(--mono);font-size:.82rem;font-weight:700;min-width:80px;text-align:right;align-self:center}
+.placement-row.best{border-color:var(--green-border);background:var(--green-bg)}
+.placement-row.bad{border-color:var(--coral-border);background:var(--coral-bg)}
+.bs-polarity{display:flex;gap:8px;flex-wrap:wrap;margin:.75rem 0}
+.bs-pill{flex:1;min-width:140px;padding:12px;border-radius:var(--radius-lg);font-family:var(--mono);font-size:.78rem;line-height:1.55;text-align:center}
+.bs-pill.lo-p{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+.bs-pill.hi-p{background:var(--coral-bg);border:1px solid var(--coral-border);color:var(--coral)}
+.search-dist-box{background:linear-gradient(135deg,var(--purple-bg),var(--amber-bg));border:2px solid var(--accent);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-bottom:1.25rem}
+.search-dist-box h3{font-size:1.05rem;margin:0 0 .65rem;color:var(--text)}
+.search-dist-list{list-style:none;padding:0;margin:0 0 .75rem;font-family:var(--mono);font-size:.88rem;line-height:2}
+.search-dist-list li::before{content:'✕ ';color:var(--coral);font-weight:700}
+.search-dist-list li.ok-search::before{content:'✓ ';color:var(--green)}
+.search-dist-list li.ok-search{color:var(--green);font-weight:700;font-size:1rem}
+.boundary-timeline{display:flex;flex-wrap:wrap;gap:6px;margin:.75rem 0}
+.boundary-chip{width:42px;padding:8px 4px;border-radius:8px;border:2px solid;font-family:var(--mono);font-size:11px;font-weight:700;text-align:center;line-height:1.3}
+.boundary-chip.bc-unk{background:var(--bg3);border-color:var(--border2);color:var(--text3)}
+.boundary-chip.bc-yes{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.boundary-chip.bc-no{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
+.boundary-chip.bc-last{border-width:2.5px;box-shadow:0 0 0 2px rgba(61,214,140,.25)}
+.boundary-label{font-family:var(--mono);font-size:.68rem;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.observe-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.85rem 1rem;margin-top:.85rem;font-size:.88rem;color:var(--text2);line-height:1.65}
+.observe-box strong{color:var(--amber)}
+.mistake-grid{display:grid;gap:10px;margin-top:.75rem}
+.mistake-card{padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);border-left:3px solid var(--coral)}
+.mistake-card h4{font-size:.82rem;font-family:var(--mono);color:var(--coral);margin:0 0 6px;text-transform:uppercase;letter-spacing:.04em}
+.mistake-card p{margin:0;font-size:.85rem;color:var(--text2);line-height:1.6}
+.complexity-breakdown{background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.15rem;font-family:var(--mono);font-size:.82rem;line-height:2;color:var(--text2)}
+.complexity-breakdown .cb-total{margin-top:8px;padding-top:8px;border-top:1px solid var(--border);color:var(--accent2);font-weight:700}
+.bs-tree-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.75rem;overflow-x:auto}
+.bs-tree{display:flex;flex-direction:column;align-items:center;font-family:var(--mono);font-size:11px;gap:4px;min-height:100px}
+.bs-t-node{padding:6px 12px;border-radius:8px;border:2px solid;font-weight:700;min-width:36px;text-align:center;transition:all .2s}
+.bs-t-node.cur{background:rgba(124,106,247,.25);border-color:var(--accent);color:var(--accent2);transform:scale(1.08)}
+.bs-t-node.vis-yes{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.bs-t-node.vis-no{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
+.bs-t-row{display:flex;gap:12px;justify-content:center;align-items:flex-start;position:relative}
+.bs-t-connector{color:var(--text3);font-size:10px;line-height:1}
+.bs-log-list{list-style:none;padding:0;margin:0;font-family:var(--mono);font-size:.76rem;line-height:1.9;max-height:140px;overflow-y:auto}
+.bs-log-list li{padding:4px 8px;border-radius:6px;margin-bottom:4px}
+.bs-log-list li.log-yes{background:var(--green-bg);color:var(--green)}
+.bs-log-list li.log-no{background:var(--coral-bg);color:var(--coral)}
+.bs-log-list li.log-cur{outline:2px solid var(--accent)}
+.dist-timeline-row{display:flex;flex-wrap:wrap;gap:5px}
+.dist-tl-chip{min-width:36px;padding:6px 4px;border-radius:6px;border:2px solid;font-family:var(--mono);font-size:10px;font-weight:700;text-align:center}
+.dist-tl-chip.tl-unk{background:var(--bg3);border-color:var(--border);color:var(--text3)}
+.dist-tl-chip.tl-yes{background:var(--green-bg);border-color:var(--green);color:var(--green)}
+.dist-tl-chip.tl-no{background:var(--coral-bg);border-color:var(--coral);color:var(--coral)}
+.dist-tl-chip.tl-cur{border-color:var(--accent);background:rgba(124,106,247,.2);color:var(--accent2)}
+.dist-tl-chip.tl-ans{border-color:var(--teal);background:rgba(45,212,191,.15);color:var(--teal)}
+.final-summary{display:none;background:linear-gradient(135deg,rgba(45,212,191,.12),rgba(61,214,140,.1));border:2px solid var(--teal);border-radius:var(--radius-lg);padding:1.1rem 1.25rem;margin-top:10px}
+.final-summary.show{display:block}
+.final-summary h3{margin:0 0 .5rem;color:var(--teal);font-size:1.1rem}
+.final-summary .fs-ans{font-family:var(--mono);font-size:1.5rem;font-weight:800;color:var(--green);margin:.5rem 0}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-logo">Algo<span>Animate</span></a>
+  <div class="nav-meta">
+    <span class="badge b-med">Medium</span>
+    <span class="badge b-topic">Binary Search</span>
+    <span class="badge b-topic">Greedy</span>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <button class="theme-btn" onclick="toggleTheme()" title="Toggle theme"></button>
+    <a href="../index.html" class="nav-back">← All Problems</a>
+  </div>
+</nav>
+
+<div class="breadcrumb">
+  <a href="../index.html">Home</a><span>/</span>
+  <a href="../index.html?filter=binary-search">Binary Search</a><span>/</span>
+  <span style="color:var(--text2)">Aggressive Cows</span>
+</div>
+
+<div class="hero">
+  <div class="hero-top">
+    <div>
+      <div class="hero-tag">Classic · GFG / SPOJ</div>
+      <div class="lc-number">Aggressive Cows</div>
+      <h1>Aggressive Cows</h1>
+      <p class="hero-sub">You have <strong style="color:var(--text)">k cows</strong> and stalls on a straight barn line. Put one cow per stall. Make the <strong style="color:var(--text)">closest pair of cows</strong> as far apart as possible — that closest-pair distance is your answer.</p>
+    </div>
+    <div class="time-est">⏱ <span>~30 min</span> to understand</div>
+  </div>
+</div>
+
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('problem',this)">Problem</button>
+    <button class="tab" onclick="switchTab('solution',this)">Solution</button>
+    <button class="tab" onclick="switchTab('explanation',this)">Explanation</button>
+    <button class="tab" onclick="switchTab('animation',this)">Animation</button>
+  </div>
+</div>
+
+<div class="sections">
+
+<!-- PROBLEM -->
+<div class="section active" id="tab-problem">
+  <div class="prob-grid">
+    <div class="card">
+      <h3>Problem Statement</h3>
+      <div class="prose">
+        Imagine stalls as <strong>numbered spots on a straight road</strong> (positions like 1, 2, 4, 8, 9). You must place exactly <code>k</code> cows, <strong>one cow per stall</strong>, on some of those spots.
+      </div>
+      <div style="margin-top:1rem;background:var(--purple-bg);border:1px solid var(--purple-border);border-radius:var(--radius-lg);padding:1.1rem 1.2rem">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--accent2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">In one sentence</div>
+        <div style="font-size:.9rem;color:var(--text);line-height:1.75">
+          Among all ways to place <code>k</code> cows, pick the way where the <strong>two cows that are closest together</strong> are still as far apart as possible. Return that distance.
+        </div>
+      </div>
+      <div class="prose" style="margin-top:1rem">
+        <strong>Rules (only two):</strong>
+        <ul>
+          <li>Each stall holds <strong>at most one</strong> cow.</li>
+          <li>You must place exactly <strong>k</strong> cows (not fewer).</li>
+        </ul>
+        Stalls can be given in any order in the input — you may sort them mentally as positions on a line.
+      </div>
+      <div style="margin-top:1rem;background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.2rem;font-family:var(--mono);font-size:.8rem;line-height:1.9">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:8px">What “minimum distance” means (this confuses many people)</div>
+        <div style="color:var(--text2)">
+          Place 3 cows at positions <span style="color:var(--green)">1</span>, <span style="color:var(--green)">4</span>, <span style="color:var(--green)">8</span>.<br>
+          Gaps between neighbors: |4−1| = <span style="color:var(--amber)">3</span>, |8−4| = <span style="color:var(--amber)">4</span>.<br>
+          The <strong style="color:var(--text)">smallest</strong> gap is <span style="color:var(--green)">3</span> → score for this placement = 3.<br><br>
+          Another placement: cows at 1, 2, 9 → gaps 1 and 7 → smallest gap = <span style="color:var(--coral)">1</span> (worse).<br>
+          We want the placement with the <strong style="color:var(--text)">largest</strong> smallest gap.
+        </div>
+      </div>
+      <div class="ex-block">
+        <div class="ex-label">Example 1 — walk through</div>
+        <div class="ex-io"><strong>Input:</strong> stalls = [1, 2, 4, 8, 9], k = 3</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">3</span></div>
+        <div class="ex-io" style="color:var(--text2);margin-top:6px;line-height:1.7">
+          Best choice: cows at <strong>1, 4, 8</strong>.<br>
+          Distances: 4−1 = 3, 8−4 = 4. Closest pair is 3 units apart → answer is <strong>3</strong>.<br>
+          You cannot make the closest pair 4 apart (you only fit 2 cows with gap ≥ 4).
+        </div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 2</div>
+        <div class="ex-io"><strong>Input:</strong> stalls = [10, 1, 2, 7, 5], k = 3</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">4</span></div>
+        <div class="ex-io" style="color:var(--text2);margin-top:4px;line-height:1.7">
+          On a line: 1 — 2 — 5 — 7 — 10. Best: cows at <strong>1, 5, 10</strong> → gaps 4 and 5 → closest pair distance = <strong>4</strong>.
+        </div>
+      </div>
+      <div class="ex-block" style="margin-top:8px">
+        <div class="ex-label">Example 3 (why answer can be small)</div>
+        <div class="ex-io"><strong>Input:</strong> stalls = [2, 12, 11, 3, 26, 7], k = 5</div>
+        <div class="ex-io"><strong>Output:</strong> <span style="color:var(--green)">1</span></div>
+        <div class="ex-io" style="color:var(--text2);margin-top:4px;line-height:1.7">
+          6 stalls but 5 cows — almost every stall gets a cow, so some neighbors are only 1 apart. The best you can do is closest-pair distance <strong>1</strong>.
+        </div>
+      </div>
+      <p class="prose" style="margin-top:1rem;font-size:.85rem">If the wording still feels heavy, open the <strong>Explanation</strong> tab — picture guide first, then the full lecture walkthrough (stalls <code>0,3,4,7,9,10</code>, <code>k=4</code> → answer <code>3</code>).</p>
+    </div>
+    <div class="card">
+      <h3>Constraints</h3>
+      <div class="cr-list">
+        <div class="cr"><div class="cr-dot"></div><span>2 ≤ stalls.length ≤ 10⁶</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>0 ≤ stalls[i] ≤ 10⁸</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>2 ≤ k ≤ stalls.length</span></div>
+        <div class="cr"><div class="cr-dot"></div><span>All stall positions are unique</span></div>
+      </div>
+      <div style="margin-top:1.2rem;background:var(--bg3);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Expected complexity</div>
+        <div style="color:var(--accent2)">Time: O(n log n + n log W)</div>
+        <div style="color:var(--accent2)">Space: O(1) extra (after sort)</div>
+        <div style="color:var(--text3);font-size:.72rem;margin-top:6px">W = max position − min position (answer range)</div>
+      </div>
+      <div style="margin-top:.8rem;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.9rem 1rem;font-family:var(--mono);font-size:.79rem">
+        <div style="color:var(--amber);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Pattern</div>
+        <div style="color:var(--text2)"><strong style="color:var(--text)">Binary search on answer</strong> + <strong style="color:var(--text)">greedy feasibility</strong> (can we place k cows with min gap ≥ d?).</div>
+      </div>
+    </div>
+  </div>
+  <button class="cbtn primary" onclick="switchTab('explanation',document.querySelectorAll('.tab')[2])">Read Explanation →</button>
+</div>
+
+<!-- SOLUTION -->
+<div class="section" id="tab-solution">
+  <div class="card" style="border-left:3px solid var(--teal);margin-bottom:1.2rem">
+    <h3>How to read the solution (4 parts)</h3>
+    <div class="prose" style="margin-bottom:.8rem">The code does <strong>not</strong> try every placement of cows (that would be impossibly slow). It uses a standard trick:</div>
+    <ol class="prose" style="padding-left:1.3rem;line-height:1.9">
+      <li><strong>Sort</strong> stall positions so the barn line goes left → right.</li>
+      <li><strong>Guess</strong> an answer: “What if every pair of cows must be at least <code>d</code> apart?”</li>
+      <li><strong>Check</strong> the guess with a fast greedy pass: “Can I actually place <code>k</code> cows with gap ≥ <code>d</code>?”</li>
+      <li><strong>Binary search</strong> on <code>d</code>: if the guess works, try a bigger <code>d</code>; if not, try smaller — until you find the largest <code>d</code> that works.</li>
+    </ol>
+    <div style="background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:var(--radius);padding:.85rem 1rem;font-family:var(--mono);font-size:.78rem;color:var(--text2);line-height:1.65">
+      <span style="color:var(--amber)">Why this works:</span> If gap 5 is possible, then gap 4, 3, 2… are also possible (easier). So answers are “impossible, impossible, possible, possible…” — binary search finds the boundary.
+    </div>
+  </div>
+
+  <div class="sol-header">
+    <span style="font-size:.95rem;font-weight:700">Full code — binary search on distance</span>
+    <div class="cx-row"><span class="cx cx-t">O(n log n + n log W)</span><span class="cx cx-s">O(1)</span></div>
+  </div>
+  <div style="display:flex;justify-content:flex-end;margin-bottom:8px"><button class="copy-btn" onclick="cp('s0',event)">Copy</button></div>
+  <div class="code-block"><pre id="s0"><span class="kw">from</span> typing <span class="kw">import</span> List
+
+<span class="kw">def</span> <span class="fn">aggressiveCows</span>(stalls: List[int], k: int) -> int:
+    stalls = sorted(stalls)
+    n = len(stalls)
+
+    <span class="kw">def</span> <span class="fn">can_place</span>(dist: int) -> bool:
+        <span class="cm"># Greedy: always put next cow at earliest valid stall</span>
+        count, last = <span class="nm">1</span>, stalls[<span class="nm">0</span>]
+        <span class="kw">for</span> i <span class="kw">in</span> range(<span class="nm">1</span>, n):
+            <span class="kw">if</span> stalls[i] - last &gt;= dist:
+                count += <span class="nm">1</span>
+                last = stalls[i]
+                <span class="kw">if</span> count &gt;= k:
+                    <span class="kw">return True</span>
+        <span class="kw">return</span> count &gt;= k
+
+    lo, hi = <span class="nm">1</span>, stalls[-<span class="nm">1</span>] - stalls[<span class="nm">0</span>]
+    ans = <span class="nm">0</span>
+    <span class="kw">while</span> lo &lt;= hi:
+        mid = lo + (hi - lo) // <span class="nm">2</span>
+        <span class="kw">if</span> can_place(mid):
+            ans = mid
+            lo = mid + <span class="nm">1</span>   <span class="cm"># feasible → try larger distance</span>
+        <span class="kw">else</span>:
+            hi = mid - <span class="nm">1</span>   <span class="cm"># too tight → shrink</span>
+    <span class="kw">return</span> ans</pre></div>
+  <div class="card" style="margin-top:1.2rem">
+    <h3>Line-by-line map (matches the code above)</h3>
+    <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.76rem;margin-top:.5rem">
+      <thead>
+        <tr style="background:var(--bg3)">
+          <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">Code block</th>
+          <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">Plain English</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">stalls = sorted(stalls)</td><td style="padding:8px 10px;color:var(--text2)">Line up stalls from smallest position to largest.</td></tr>
+        <tr style="background:rgba(124,106,247,.04)"><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">can_place(dist)</td><td style="padding:8px 10px;color:var(--text2)">“If cows must be ≥ dist apart, can we fit k cows?” Put first cow at the leftmost stall, then always jump to the next stall far enough to the right.</td></tr>
+        <tr><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">lo, hi = 1, max−min</td><td style="padding:8px 10px;color:var(--text2)">Search space for the answer: smallest possible gap is 1; largest possible is distance from first to last stall.</td></tr>
+        <tr style="background:rgba(124,106,247,.04)"><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">if can_place(mid)</td><td style="padding:8px 10px;color:var(--text2)">Gap <code>mid</code> is achievable → record it and try an even bigger gap (<code>lo = mid + 1</code>).</td></tr>
+        <tr><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">else: hi = mid − 1</td><td style="padding:8px 10px;color:var(--text2)">Gap <code>mid</code> is too ambitious → search smaller gaps.</td></tr>
+        <tr style="background:rgba(124,106,247,.04)"><td style="padding:8px 10px;color:var(--accent2);vertical-align:top">return ans</td><td style="padding:8px 10px;color:var(--text2)">Largest gap that still allows k cows — that is the problem answer.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- EXPLANATION — picture book (WHAT / WHY diagrams) -->
+<div class="section" id="tab-explanation">
+
+  <div class="tip" style="margin-bottom:1.2rem">
+    <strong>Two parts:</strong> (1) quick picture guide below, (2) full lecture walkthrough after that — same idea as a DSA course video on <strong>max of min</strong> / binary search on answers.
+  </div>
+
+  <div class="search-dist-box">
+    <h3>What are we binary searching?</h3>
+    <ul class="search-dist-list">
+      <li>We are <strong>NOT</strong> searching a <strong>stall</strong>.</li>
+      <li>We are <strong>NOT</strong> searching a <strong>cow</strong>.</li>
+      <li class="ok-search">We are searching a <strong>DISTANCE</strong> (the answer number d).</li>
+    </ul>
+    <p style="margin:0;font-size:.88rem;color:var(--text2);line-height:1.65">Each guess asks: “If every pair of cows must be at least <strong>d</strong> apart, can I still place <strong>k</strong> cows?” That question is yes/no — perfect for binary search on the answer.</p>
+  </div>
+
+  <div class="kid-gallery">
+
+    <!-- FIG 1: WHAT -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge what">What?</span>
+        <span class="kid-fig-title">The puzzle in one picture</span>
+      </div>
+      <svg viewBox="0 0 560 200" role="img" aria-label="Barn line with five stalls and three cows to place">
+        <rect x="8" y="12" width="544" height="176" rx="12" fill="rgba(124,106,247,.06)" stroke="rgba(124,106,247,.25)" stroke-width="1.5"/>
+        <text x="280" y="36" text-anchor="middle" class="km" font-family="Syne,sans-serif" font-size="13" font-weight="700">A straight barn road</text>
+        <line x1="40" y1="120" x2="520" y2="120" class="kl" stroke-width="3" stroke-linecap="round"/>
+        <!-- stalls -->
+        <g font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">
+          <line x1="72" y1="95" x2="72" y2="120" stroke="#7c6af7" stroke-width="2"/><rect x="52" y="128" width="40" height="26" rx="6" fill="rgba(124,106,247,.2)" stroke="#7c6af7"/><text x="72" y="146" text-anchor="middle" fill="#a594f9">1</text>
+          <line x1="128" y1="95" x2="128" y2="120" stroke="#7c6af7" stroke-width="2"/><rect x="108" y="128" width="40" height="26" rx="6" fill="rgba(124,106,247,.2)" stroke="#7c6af7"/><text x="128" y="146" text-anchor="middle" fill="#a594f9">2</text>
+          <line x1="210" y1="95" x2="210" y2="120" stroke="#7c6af7" stroke-width="2"/><rect x="190" y="128" width="40" height="26" rx="6" fill="rgba(124,106,247,.2)" stroke="#7c6af7"/><text x="210" y="146" text-anchor="middle" fill="#a594f9">4</text>
+          <line x1="360" y1="95" x2="360" y2="120" stroke="#7c6af7" stroke-width="2"/><rect x="340" y="128" width="40" height="26" rx="6" fill="rgba(124,106,247,.2)" stroke="#7c6af7"/><text x="360" y="146" text-anchor="middle" fill="#a594f9">8</text>
+          <line x1="448" y1="95" x2="448" y2="120" stroke="#7c6af7" stroke-width="2"/><rect x="428" y="128" width="40" height="26" rx="6" fill="rgba(124,106,247,.2)" stroke="#7c6af7"/><text x="448" y="146" text-anchor="middle" fill="#a594f9">9</text>
+        </g>
+        <!-- 3 cows to place -->
+        <text x="280" y="78" text-anchor="middle" fill="#3dd68c" font-family="Syne,sans-serif" font-size="22">🐄 🐄 🐄</text>
+        <text x="280" y="98" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="10">Place 3 cows — one per stall</text>
+        <rect x="120" y="168" width="320" height="22" rx="6" fill="rgba(61,214,140,.12)" stroke="#3dd68c"/>
+        <text x="280" y="183" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">You pick WHICH stalls — not every stall</text>
+      </svg>
+      <figcaption class="kid-cap"><strong>WHAT:</strong> Stalls are spots on a line (numbers = distance along the road). You have <strong>3 cows</strong> and <strong>5 stalls</strong>. Put each cow on a different stall.</figcaption>
+    </figure>
+
+    <!-- FIG 2: WHY closest pair -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge why">Why?</span>
+        <span class="kid-fig-title">We only care about the closest pair</span>
+      </div>
+      <svg viewBox="0 0 560 220" role="img" aria-label="Closest two cows define the score">
+        <text x="140" y="28" text-anchor="middle" fill="#f07060" font-family="Syne,sans-serif" font-size="12" font-weight="700">Too cramped 😟</text>
+        <text x="420" y="28" text-anchor="middle" fill="#3dd68c" font-family="Syne,sans-serif" font-size="12" font-weight="700">More space 😊</text>
+        <!-- cramped -->
+        <line x1="60" y1="100" x2="220" y2="100" class="kl" stroke-width="2"/>
+        <text x="80" y="130" font-size="20">🐄</text><text x="110" y="130" font-size="20">🐄</text>
+        <path d="M88 75 L122 75" stroke="#f07060" stroke-width="2" fill="none"/><text x="105" y="68" text-anchor="middle" fill="#f07060" font-family="JetBrains Mono,monospace" font-size="14" font-weight="700">1</text>
+        <text x="105" y="168" text-anchor="middle" fill="#f07060" font-family="JetBrains Mono,monospace" font-size="10">Score = 1 (small!)</text>
+        <!-- good -->
+        <line x1="300" y1="100" x2="500" y2="100" class="kl" stroke-width="2"/>
+        <text x="310" y="130" font-size="20">🐄</text><text x="390" y="130" font-size="20">🐄</text><text x="470" y="130" font-size="20">🐄</text>
+        <path d="M328 72 L398 72" stroke="#3dd68c" stroke-width="2" fill="none"/><text x="363" y="65" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="11">3</text>
+        <path d="M408 72 L478 72" stroke="#9a9890" stroke-width="2" fill="none" stroke-dasharray="4 3"/><text x="443" y="65" text-anchor="middle" class="km" font-family="JetBrains Mono,monospace" font-size="11">4</text>
+        <rect x="330" y="152" width="130" height="28" rx="6" fill="rgba(61,214,140,.15)" stroke="#3dd68c" stroke-width="2"/>
+        <text x="395" y="170" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="10" font-weight="700">Score = min gap = 3</text>
+        <text x="280" y="204" text-anchor="middle" class="kt" font-family="Syne,sans-serif" font-size="12" font-weight="700">
+          <tspan x="280" dy="0">Find the biggest</tspan>
+          <tspan x="280" dy="14">smallest gap you can!</tspan>
+        </text>
+      </svg>
+      <figcaption class="kid-cap"><strong>WHY:</strong> Measure gaps between neighboring cows. The <strong>smallest</strong> gap is your score. We want that score to be as <strong>big</strong> as possible.</figcaption>
+    </figure>
+
+    <!-- FIG 3: BAD vs GOOD on line -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge what">What?</span>
+        <span class="kid-fig-title">Bad way vs best way (same stalls)</span>
+      </div>
+      <div class="kid-row2">
+        <div class="kid-mini">
+          <div class="kid-mini-lbl" style="color:var(--coral)">Not great</div>
+          <svg viewBox="0 0 260 140" style="max-width:260px">
+            <line x1="20" y1="80" x2="240" y2="80" class="kl" stroke-width="2"/>
+            <g font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" fill="#a594f9">
+              <circle cx="35" cy="80" r="4" fill="#7c6af7"/><text x="35" y="100" text-anchor="middle">1</text>
+              <circle cx="65" cy="80" r="4" fill="#7c6af7"/><text x="65" y="100" text-anchor="middle">2</text>
+              <circle cx="115" cy="80" r="4" fill="#7c6af7"/><text x="115" y="100" text-anchor="middle">4</text>
+              <circle cx="175" cy="80" r="4" fill="#7c6af7"/><text x="175" y="100" text-anchor="middle">8</text>
+              <circle cx="215" cy="80" r="4" fill="#7c6af7"/><text x="215" y="100" text-anchor="middle">9</text>
+            </g>
+            <text x="35" y="62" font-size="16">🐄</text><text x="65" y="62" font-size="16">🐄</text><text x="215" y="62" font-size="16">🐄</text>
+            <path d="M42 42 L58 42" stroke="#f07060" stroke-width="2"/><text x="50" y="36" text-anchor="middle" fill="#f07060" font-size="12" font-weight="700">1</text>
+            <text x="130" y="125" text-anchor="middle" fill="#f07060" font-family="JetBrains Mono,monospace" font-size="11">Answer would be 1</text>
+          </svg>
+        </div>
+        <div class="kid-mini">
+          <div class="kid-mini-lbl" style="color:var(--green)">Best for this puzzle</div>
+          <svg viewBox="0 0 260 140" style="max-width:260px">
+            <line x1="20" y1="80" x2="240" y2="80" class="kl" stroke-width="2"/>
+            <g font-family="JetBrains Mono,monospace" font-size="10" font-weight="700" fill="#a594f9">
+              <circle cx="35" cy="80" r="4" fill="#7c6af7"/><text x="35" y="100" text-anchor="middle">1</text>
+              <circle cx="65" cy="80" r="4" fill="#7c6af7"/><text x="65" y="100" text-anchor="middle">2</text>
+              <circle cx="115" cy="80" r="4" fill="#7c6af7"/><text x="115" y="100" text-anchor="middle">4</text>
+              <circle cx="175" cy="80" r="4" fill="#7c6af7"/><text x="175" y="100" text-anchor="middle">8</text>
+              <circle cx="215" cy="80" r="4" fill="#7c6af7"/><text x="215" y="100" text-anchor="middle">9</text>
+            </g>
+            <text x="35" y="62" font-size="16">🐄</text><text x="115" y="62" font-size="16">🐄</text><text x="175" y="62" font-size="16">🐄</text>
+            <path d="M42 42 L108 42" stroke="#3dd68c" stroke-width="2.5"/><text x="75" y="36" text-anchor="middle" fill="#3dd68c" font-size="11" font-weight="700">3 ★</text>
+            <path d="M122 42 L168 42" stroke="#9a9890" stroke-width="2" stroke-dasharray="3 2"/><text x="145" y="36" text-anchor="middle" class="km" font-size="10">4</text>
+            <text x="130" y="125" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">Answer = 3</text>
+          </svg>
+        </div>
+      </div>
+      <figcaption class="kid-cap"><strong>WHAT we return:</strong> Just the number <strong>3</strong> — not which stalls. That number is “how far apart the closest two cows are” in the best plan.</figcaption>
+    </figure>
+
+    <!-- FIG 4: WHY sort -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge why">Why?</span>
+        <span class="kid-fig-title">Line up the stalls first</span>
+      </div>
+      <svg viewBox="0 0 560 160" role="img" aria-label="Sort stalls left to right">
+        <text x="140" y="30" text-anchor="middle" fill="#f07060" font-family="Syne,sans-serif" font-size="11">Messy list 😵</text>
+        <text x="140" y="48" text-anchor="middle" class="km" font-family="JetBrains Mono,monospace" font-size="10">10, 1, 2, 7, 5</text>
+        <text x="420" y="30" text-anchor="middle" fill="#3dd68c" font-family="Syne,sans-serif" font-size="11">Neat line 😌</text>
+        <text x="420" y="48" text-anchor="middle" class="km" font-family="JetBrains Mono,monospace" font-size="10">1 — 2 — 5 — 7 — 10</text>
+        <path d="M250 40 L250 120" stroke="#f5a623" stroke-width="2" marker-end="url(#kid-arr)"/>
+        <text x="280" y="85" fill="#f5a623" font-size="28">→</text>
+        <defs><marker id="kid-arr" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#f5a623"/></marker></defs>
+        <line x1="320" y1="100" x2="520" y2="100" class="kl" stroke-width="2"/>
+        <text x="330" y="88" font-size="14">🐄</text>
+        <text x="355" y="115" class="km" font-family="JetBrains Mono,monospace" font-size="9">then →</text>
+        <text x="390" y="88" font-size="14">🐄</text>
+        <text x="450" y="88" font-size="14">🐄</text>
+        <text x="280" y="140" text-anchor="middle" class="kt" font-family="Syne,sans-serif" font-size="12">Walk left → right: “next stall far enough?”</text>
+      </svg>
+      <figcaption class="kid-cap"><strong>WHY sort:</strong> Cows live on a <strong>line</strong>, not in a jumbled list. After sorting, we always try the <strong>next stall to the right</strong>.</figcaption>
+    </figure>
+
+    <!-- FIG 5: CHECK + BINARY SEARCH (merged) -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge how">How?</span>
+        <span class="kid-fig-title">Test distance d, then binary search for the last ✓</span>
+      </div>
+      <div class="kid-row2">
+        <div class="kid-mini">
+          <div class="kid-mini-lbl" style="color:var(--green)">can_place(3)? ✓</div>
+          <svg viewBox="0 0 260 150" style="max-width:260px">
+            <line x1="15" y1="85" x2="245" y2="85" class="kl" stroke-width="2"/>
+            <text x="30" y="55" font-size="18">🐄</text><text x="100" y="55" font-size="18">🐄</text><text x="170" y="55" font-size="18">🐄</text>
+            <rect x="28" y="38" width="72" height="20" rx="4" fill="none" stroke="#3dd68c" stroke-width="2"/>
+            <text x="64" y="52" text-anchor="middle" fill="#3dd68c" font-size="10" font-family="JetBrains Mono,monospace">≥ 3</text>
+            <text x="130" y="120" text-anchor="middle" fill="#3dd68c" font-family="JetBrains Mono,monospace" font-size="11" font-weight="700">k cows fit</text>
+          </svg>
+        </div>
+        <div class="kid-mini">
+          <div class="kid-mini-lbl" style="color:var(--coral)">can_place(4)? ✗</div>
+          <svg viewBox="0 0 260 150" style="max-width:260px">
+            <line x1="15" y1="85" x2="245" y2="85" class="kl" stroke-width="2"/>
+            <text x="30" y="55" font-size="18">🐄</text><text x="170" y="55" font-size="18">🐄</text>
+            <rect x="28" y="38" width="142" height="20" rx="4" fill="none" stroke="#f07060" stroke-width="2" stroke-dasharray="5 3"/>
+            <text x="99" y="52" text-anchor="middle" fill="#f07060" font-size="10" font-family="JetBrains Mono,monospace">≥ 4 too strict</text>
+            <text x="130" y="120" text-anchor="middle" fill="#f07060" font-family="JetBrains Mono,monospace" font-size="11">Not enough cows</text>
+          </svg>
+        </div>
+      </div>
+      <div class="boundary-label" style="margin-top:.75rem">Formal pattern — distances (example [1,2,4,8,9], k=3):</div>
+      <div class="boundary-timeline" aria-label="Monotonic feasibility timeline">
+        <div class="boundary-chip bc-yes">1<br>✓</div>
+        <div class="boundary-chip bc-yes">2<br>✓</div>
+        <div class="boundary-chip bc-yes bc-last">3<br>✓</div>
+        <div class="boundary-chip bc-no">4<br>✗</div>
+        <div class="boundary-chip bc-no">5<br>✗</div>
+        <div class="boundary-chip bc-no">6<br>✗</div>
+        <div class="boundary-chip bc-no">7<br>✗</div>
+        <div class="boundary-chip bc-no">8<br>✗</div>
+      </div>
+      <p style="margin:.5rem 0 0;font-family:var(--mono);font-size:.82rem;color:var(--green);font-weight:700">We need the <strong>LAST TRUE</strong> → answer = 3</p>
+      <div class="observe-box">
+        <strong>Observe the pattern:</strong> All ✓ are together on the left. All ✗ are together on the right. One clean boundary — that is why <strong>binary search on the answer</strong> works.
+      </div>
+      <figcaption class="kid-cap"><strong>HOW:</strong> Fast check <code>can_place(d)</code> for each guess. <strong>WHY BS:</strong> Feasibility is monotonic (✓✓✓✗✗) — search for the largest feasible <strong>distance</strong>.</figcaption>
+    </figure>
+
+    <!-- FIG 6: Solution flow pictures -->
+    <figure class="kid-fig">
+      <div class="kid-fig-head">
+        <span class="kid-badge ans">Answer</span>
+        <span class="kid-fig-title">How the computer solves it (4 pictures)</span>
+      </div>
+      <div class="kid-flow">
+        <div class="kid-step-pill"><b>① Sort</b>📏 Line up stalls</div>
+        <span class="kid-arrow-pill">→</span>
+        <div class="kid-step-pill"><b>② Guess d</b>🎯 Try a number</div>
+        <span class="kid-arrow-pill">→</span>
+        <div class="kid-step-pill"><b>③ Check</b>🐄 Fit 3 cows?</div>
+        <span class="kid-arrow-pill">→</span>
+        <div class="kid-step-pill"><b>④ Fix guess</b>↑ bigger / ↓ smaller</div>
+      </div>
+      <svg viewBox="0 0 560 100" style="margin-top:1rem">
+        <rect x="80" y="20" width="400" height="60" rx="14" fill="rgba(45,212,191,.12)" stroke="#2dd4bf" stroke-width="2"/>
+        <text x="280" y="48" text-anchor="middle" fill="#2dd4bf" font-family="Syne,sans-serif" font-size="28" font-weight="800">ANSWER = 3</text>
+        <text x="280" y="72" text-anchor="middle" class="km" font-family="JetBrains Mono,monospace" font-size="11">for stalls 1,2,4,8,9 and k=3</text>
+      </svg>
+      <figcaption class="kid-cap"><strong>When you’re ready for code:</strong> open <strong>Solution</strong> (same 4 steps). Open <strong>Animation</strong> to see cows move on the line step by step.</figcaption>
+    </figure>
+
+  </div>
+
+  <!-- Lecture walkthrough (course-style, from transcript) -->
+  <div class="lecture-wrap">
+    <h2>Complete lecture walkthrough</h2>
+    <p class="lecture-sub">Aggressive Cows is the first problem in the pattern <strong>“minimum of maximum” / “maximum of minimum”</strong> — after plain “find min” or “find max” on the answer. Below follows the classic teaching flow: understand placements → linear check → binary search.</p>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--accent)">
+      <h3>Where this fits in your DSA path</h3>
+      <div class="prose">
+        <ol style="padding-left:1.2rem;line-height:1.9;margin:0">
+          <li><strong>Binary search on 1D arrays</strong> — sorted arrays, rotated sorted arrays.</li>
+          <li><strong>Binary search on answers</strong> — “find minimum of …” or “find maximum of …” (one goal word).</li>
+          <li><strong>This pattern</strong> — “find <em>minimum of maximum</em>” or “<em>maximum of minimum</em>” (two words — confusing at first, then it clicks).</li>
+        </ol>
+        <p style="margin-top:.85rem;margin-bottom:0">Aggressive Cows is problem #1 in that third bucket. You will see ~4–5 similar problems so the pattern sticks.</p>
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--teal)">
+      <h3>Problem statement (tutorial example)</h3>
+      <div class="prose">
+        You get <strong>n stalls</strong> at coordinates on a line (input order may be random). You must place exactly <strong>k cows</strong>, one cow per stall (each stall used at most once).
+      </div>
+      <div style="margin-top:1rem;background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.2rem;font-family:var(--mono);font-size:.85rem;line-height:1.9;color:var(--text2)">
+        <div style="color:var(--text3);font-size:.65rem;text-transform:uppercase;margin-bottom:6px">Tutorial stalls (unsorted input)</div>
+        Raw: <span style="color:var(--amber)">0, 3, 4, 7, 10, 9</span><br>
+        Sorted on the line: <span style="color:var(--green)">0 — 3 — 4 — 7 — 9 — 10</span><br>
+        <span style="color:var(--text)">k = 4 cows</span> (exactly four, not fewer)
+      </div>
+      <div class="prose" style="margin-top:1rem">
+        <strong>Goal (read carefully):</strong> Among all valid ways to place 4 cows, look at the <strong>minimum distance between any two cows</strong> in that placement. You want that number to be as <strong>large</strong> as possible.<br><br>
+        In words: <em>maximize the minimum distance</em>. Return that minimum distance (not the stall list).
+      </div>
+      <button type="button" class="sbtn" style="margin-top:.85rem" onclick="switchTab('animation',document.querySelectorAll('.tab')[3]);loadEx('0, 3, 4, 7, 9, 10',4)">▶ Animate this example (answer 3)</button>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--coral)">
+      <h3>What is “minimum distance between any two cows”?</h3>
+      <div class="prose">Pick one placement. Measure distances between pairs (C1–C3, C2–C4, …). Take the <strong>smallest</strong> of those — that is the score for this placement.</div>
+      <div class="placement-grid">
+        <div class="placement-row bad">
+          <span class="pl-label">Placement A</span>
+          <div class="pl-body">
+            <div class="pl-cows">Cows at stalls: <strong>0, 3, 4, 7</strong></div>
+            <div class="pl-gaps">Gaps left → right: <strong>3</strong>, <strong class="pl-warn">1</strong>, <strong>3</strong></div>
+            <div class="pl-note">Closest pair sits at stalls <strong>3 &amp; 4</strong> (only 1 apart). That 1 is the score.</div>
+          </div>
+          <span class="pl-min" style="color:var(--coral)">min = 1</span>
+        </div>
+        <div class="placement-row bad">
+          <span class="pl-label">Placement B</span>
+          <div class="pl-body">
+            <div class="pl-cows">Cows at stalls: <strong>0, 4, 9, 10</strong></div>
+            <div class="pl-gaps">Gaps left → right: <strong>4</strong>, <strong>5</strong>, <strong class="pl-warn">1</strong></div>
+            <div class="pl-note">Again the tightest neighbors are <strong>9 &amp; 10</strong> — score stays 1.</div>
+          </div>
+          <span class="pl-min" style="color:var(--coral)">min = 1</span>
+        </div>
+        <div class="placement-row best">
+          <span class="pl-label">Placement C</span>
+          <div class="pl-body">
+            <div class="pl-cows">Cows at stalls: <strong>0, 4, 7, 10</strong></div>
+            <div class="pl-gaps">Gaps left → right: <strong>4</strong>, <strong class="pl-ok">3</strong>, <strong class="pl-ok">3</strong></div>
+            <div class="pl-note">No pair closer than 3. This is the best valid placement — <strong>answer = 3</strong>.</div>
+          </div>
+          <span class="pl-min" style="color:var(--green)">min = 3 ★</span>
+        </div>
+      </div>
+      <div class="prose" style="margin-top:.85rem">You prefer placement C because its minimum (3) is bigger. The answer for this instance is <strong>3</strong>.</div>
+      <div class="tip" style="margin-top:.85rem;margin-bottom:0">
+        <strong>Invalid idea:</strong> Only two cows at 0 and 10 (gap 10) — you must place <strong>all k cows</strong>. The score is always computed after placing exactly k cows.
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--amber)">
+      <h3>Insight 1 — Only consecutive cows matter for the minimum</h3>
+      <div class="prose">
+        After sorting stalls, cows sit in order on the line. The <strong>closest</strong> pair is always between two cows on <strong>neighboring stalls they occupy</strong> — you do not need non-adjacent pairs to find the minimum.<br><br>
+        That is why we <strong>sort first</strong>: then we can walk left → right and only look at consecutive placed cows.
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--green)">
+      <h3>Insight 2 — Checking “can we keep minimum distance ≥ d?”</h3>
+      <div class="prose" style="margin-bottom:.75rem">
+        Instead of trying every placement, ask one question for a guessed number <code>d</code>:<br>
+        <em>If every pair must be at least <code>d</code> apart, can I still place k cows?</em>
+      </div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.2rem;font-family:var(--mono);font-size:.82rem;line-height:2;color:var(--text2)">
+        <strong style="color:var(--green)">Greedy rule (always optimal for the check):</strong><br>
+        1. Put first cow at the <strong>leftmost</strong> stall (index 0).<br>
+        2. Scan stalls to the right; place the next cow at the <strong>earliest</strong> stall with <code>stall[i] − last ≥ d</code>.<br>
+        3. Stop when you placed k cows (return true) or run out of stalls (return false).
+      </div>
+      <p class="prose" style="margin-top:.85rem;font-size:.85rem">We only care <strong>yes/no</strong>, not which exact stalls — but the greedy left-to-right placement is the right way to test.</p>
+      <div style="margin-top:1rem;background:var(--bg3);border-radius:var(--radius-lg);padding:1rem 1.15rem;border-left:3px solid var(--amber)">
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--amber);text-transform:uppercase;margin-bottom:6px">Why earliest valid stall? (classic proof)</div>
+        <p class="prose" style="margin:0;font-size:.88rem">If you skip a stall that was already far enough from the last cow, every later cow can only move <strong>right</strong> — you have <strong>less</strong> room, never more. Placing at the <strong>earliest</strong> valid stall keeps maximum space for the remaining cows. So if any placement works at distance <code>d</code>, this greedy one works too.</p>
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--accent)">
+      <h3>Binary search on answer — LAST TRUE</h3>
+      <div class="prose" style="margin-bottom:.5rem">Predicate: <code>can_place(d)</code> is false for large d and true for small d (monotonic). We want the <strong>last</strong> distance that is still true.</div>
+      <div class="boundary-timeline">
+        <div class="boundary-chip bc-yes">1✓</div><div class="boundary-chip bc-yes">2✓</div><div class="boundary-chip bc-yes bc-last">3✓</div>
+        <div class="boundary-chip bc-no">4✗</div><div class="boundary-chip bc-no">5✗</div><div class="boundary-chip bc-no">6✗</div>
+      </div>
+      <div class="observe-box" style="margin-top:.75rem;margin-bottom:0">
+        <strong>Key:</strong> Not searching stalls or cows — only the number <strong>d</strong>. Animation tab shows each guess update the timeline.
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--purple-border)">
+      <h3>Linear search on d (brute force the answer)</h3>
+      <div class="prose" style="margin-bottom:.75rem">
+        Try <code>d = 1, 2, 3, …</code> up to <code>max − min</code> (here 10 − 0 = 10). For each <code>d</code>, run <code>can_place(d)</code>. Last <code>d</code> that still works is the answer.
+      </div>
+      <table style="width:100%;border-collapse:collapse;font-family:var(--mono);font-size:.78rem">
+        <thead>
+          <tr style="background:var(--bg3)">
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">Try d</th>
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">4 cows with gap ≥ d?</th>
+            <th style="padding:8px 10px;text-align:left;color:var(--text3);border-bottom:1px solid var(--border)">Typical greedy placement</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding:7px 10px;color:var(--amber)">1</td><td style="padding:7px 10px;color:var(--green)">Yes</td><td style="padding:7px 10px;color:var(--text2)">0, 3, 4, 7 (many choices)</td></tr>
+          <tr style="background:rgba(124,106,247,.04)"><td style="padding:7px 10px;color:var(--amber)">2</td><td style="padding:7px 10px;color:var(--green)">Yes</td><td style="padding:7px 10px;color:var(--text2)">0, 4, 7, 9 — min gap still ≥ 2</td></tr>
+          <tr><td style="padding:7px 10px;color:var(--amber)">3</td><td style="padding:7px 10px;color:var(--green)">Yes</td><td style="padding:7px 10px;color:var(--text2)">0, 4, 7, 10 — min gap 3</td></tr>
+          <tr style="background:rgba(240,112,96,.06)"><td style="padding:7px 10px;color:var(--amber)">4</td><td style="padding:7px 10px;color:var(--coral)">No</td><td style="padding:7px 10px;color:var(--text2)">Only 3 cows fit (e.g. 0, 4, 7)</td></tr>
+        </tbody>
+      </table>
+      <div class="prose" style="margin-top:.85rem">
+        <strong>Why not test d = 5, 6, …?</strong> If 4 cows cannot fit with gap 4, they cannot fit with gap 5 either (stricter rule). Answers look like: ✓ ✓ ✓ ✗ ✗ ✗ …
+      </div>
+      <div style="margin-top:.75rem;font-family:var(--mono);font-size:.78rem;color:var(--text3)">
+        Time: O((max−min) × n) — too slow for large coordinates → use binary search on d.
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--accent)">
+      <h3><code>can_place</code> — pseudocode</h3>
+      <div class="code-block" style="margin-top:.5rem"><pre style="margin:0;font-size:.8rem"><span class="fn">can_place</span>(stalls_sorted, min_dist, k):
+    count = <span class="nm">1</span>
+    last = stalls_sorted[<span class="nm">0</span>]   <span class="cm"># first cow at leftmost stall</span>
+    <span class="kw">for</span> i <span class="kw">from</span> <span class="nm">1</span> <span class="kw">to</span> n−<span class="nm">1</span>:
+        <span class="kw">if</span> stalls_sorted[i] − last &gt;= min_dist:
+            count++
+            last = stalls_sorted[i]
+            <span class="kw">if</span> count &gt;= k: <span class="kw">return</span> <span class="nm">true</span>   <span class="cm"># early exit</span>
+    <span class="kw">return</span> count &gt;= k</pre></div>
+      <p class="prose" style="margin-top:.75rem;font-size:.85rem"><code>last</code> tracks where the previous cow sits — distance is always measured from the <strong>last placed</strong> cow, not from the first cow.</p>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--teal)">
+      <h3>Binary search on d (optimize linear scan)</h3>
+      <div class="prose" style="margin-bottom:.75rem">
+        Search range: <code>lo = 1</code>, <code>hi = stalls[n−1] − stalls[0]</code> (or 1 … 10⁹ on some platforms). While <code>lo ≤ hi</code>, pick <code>mid</code>, call <code>can_place(mid)</code>:
+      </div>
+      <ul class="prose" style="padding-left:1.2rem;line-height:1.85;margin-top:0">
+        <li>If <strong>possible</strong> → record answer, search <strong>right</strong> for a bigger d (<code>lo = mid + 1</code>).</li>
+        <li>If <strong>not possible</strong> → search left (<code>hi = mid − 1</code>).</li>
+      </ul>
+      <div style="margin-top:1rem;font-size:.88rem;color:var(--text2)"><strong style="color:var(--text)">Tutorial trace</strong> on [0,3,4,7,9,10], k=4:</div>
+      <div style="background:var(--bg3);border-radius:var(--radius-lg);padding:1rem;margin-top:.5rem;font-family:var(--mono);font-size:.78rem;line-height:1.85;color:var(--text2)">
+        mid=5 → no &nbsp;|&nbsp; mid=2 → yes, ans=2, lo=3 &nbsp;|&nbsp; mid=3 → yes, ans=3, lo=4 &nbsp;|&nbsp; mid=4 → no, hi=3 → stop → <span style="color:var(--green)">answer 3</span>
+      </div>
+      <div class="bs-polarity">
+        <div class="bs-pill lo-p"><strong>lo</strong><br>moves on ✓ (possible)<br>ends at first ✗</div>
+        <div class="bs-pill hi-p"><strong>hi</strong><br>moves on ✗ (impossible)<br>ends at last ✓ boundary</div>
+      </div>
+      <div class="tip" style="margin-bottom:0">
+        <strong>Polarity trick (no extra ans variable):</strong> Keep <code>lo</code> in the “possible” zone and <code>hi</code> in the “impossible” zone. When the loop ends, <code>hi</code> is the maximum feasible d. (Our Solution tab uses an <code>ans</code> variable — same answer.)
+      </div>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--green)">
+      <h3>Full solution outline + complexity (broken down)</h3>
+      <div class="complexity-breakdown">
+        <div><strong style="color:var(--text)">Sorting stalls:</strong> O(n log n)</div>
+        <div>One-time — line up coordinates left → right.</div>
+        <div style="margin-top:8px"><strong style="color:var(--text)">Binary search on d:</strong> O(log W) guesses</div>
+        <div>W = max stall − min stall (search range for distance).</div>
+        <div style="margin-top:8px"><strong style="color:var(--text)">Each can_place(d):</strong> O(n)</div>
+        <div>Single left → right scan; early exit when k cows placed.</div>
+        <div class="cb-total">Total time: O(n log n) + O(log W) × O(n) = O(n log n + n log W)</div>
+        <div>Extra space: O(1) besides sorting input</div>
+      </div>
+      <p class="prose" style="margin-top:1rem;margin-bottom:0">Optional: tighten <code>lo</code> to the minimum gap between consecutive stalls after sort — same logic, slightly smaller range. Not required for interviews.</p>
+    </div>
+
+    <div class="card lecture-card" style="border-left:3px solid var(--coral)">
+      <h3>Common mistakes</h3>
+      <div class="mistake-grid">
+        <div class="mistake-card">
+          <h4>Mistake 1 — BS on stall index</h4>
+          <p><strong>Wrong:</strong> binary search which stall to put a cow on.<br><strong>Right:</strong> binary search the <strong>distance d</strong> (the answer), then greedy-check feasibility.</p>
+        </div>
+        <div class="mistake-card">
+          <h4>Mistake 2 — checking all pairs</h4>
+          <p><strong>Wrong:</strong> compare every pair of cows to validate a placement.<br><strong>Right:</strong> after sorting, only consecutive cows matter for the minimum; greedy scan is enough.</p>
+        </div>
+        <div class="mistake-card">
+          <h4>Mistake 3 — distance &gt; d</h4>
+          <p><strong>Wrong:</strong> require gap strictly greater than d.<br><strong>Right:</strong> use <strong>distance ≥ d</strong> (code: <code>stalls[i] - last &gt;= dist</code>).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>Practice:</strong> Use the Animation tab presets, then implement from the Solution tab. GFG / SPOJ links use the same core idea with different examples (e.g. <code>[1,2,4,8,9], k=3 → 3</code>).
+    </div>
+
+    and place a cow one here and the cow 2 goes here and checks that the distance is 3 not possible cow 1 is here cow took possible possible so now this is your last this is your last where it was possible so you placed one more cow so can I say I have placed one more cow I've placed one more cow and now the last cow was placed at this index and now the last car was placed at the syntax and you can terminate it you can terminate it and the end of the day at the end of the day if the number of cows rather count of cows if you are able to place more than the required number of cows that means you a you were able to place cows by maintaining a minimum Distance by maintaining a minimum distance thereby you go ahead and return that it is possible or else you see it is not possible where you can say return false and by the way uh this particular statement can written inside the for loop as well so that you don't do a lot of iterations the moment you reach the number of cows you say return true return I don't want to play small cows if done cows return and this is making sure that you keep a track where was the last place because in order to compute distance in order to compute distance imagine you're placing it here you have to compute it with C2 not with C1 that is why just keep a track where the last first place I hope this can be placed makes sense what if now if I ask you the time complexity what is it I'm going till Max minus twin so that's like going till Max minus Min multiplied by B go of n because you're going through the entire thing what about the space that's a big O of one obviously the interviewer will not be happy with this one because yeah utilizing some extra like it's a quadratic time complexity and I'll ask you to optimize it this is when we will move to the binary search solution so can we apply binary search we can because we have already done similar problems if you remember one was possible two was possible three was possible four is not possible 5 is not possible 6 is not possible and it will go until 10 which is also not possible why 10 because the maximum that you can have is 0 minus 10 so it's not possible we know a section where it is possible we know a section where it is not possible what are we looking for by the way this will be cross and what are we looking for we're looking for the max possible answer so go ahead and do it you are at low you are at a high can we perform the binary search we can so the law is pointing to the first possible answer that is one and the highest point in the last possible answer that is 10 if I have to figure out the mid it is 1 plus 10 by 2 5.5 so the mid will be 5 is 5 possible no so everything on the right is also not possible yes so basically the high will move to this place perfect I can omit this mid and what I can do is I can also keep an answer variable as -1 okay now what is the mid the value of mid will be 1 plus 4 by 2 that's 2.5 so that's 2 as an integer is 2 possible he says yes it is possible and if you remember if it is possible you're looking for Max so anything on the left will be small so what you do is you store the two you store the two and you say hey can you move to one place ahead so he moves to one place head so he moves to one place ahead that would be the mid three plus four y two is three point five so the mid is there a is three possible whether this is eliminated is three possible S3 is possible three is possible you update your answer to 3 and what you do is you just say that okay three is possible I'm looking for Max increase so the left portion will go because on the left you'll get smaller values so increase and when you're increasing where will the logo low will go to 1 plus mid so that's one place ahead next when you try to find the mid the mid will also be pointing to this is it possible not possible if it is not possible you eliminate you eliminate the right and whenever you eliminate the right the high moves to one place before mid so this is here the low is pointing here and that's when you stop the binary search and that's when you stop the binary search and on stopping the answer is stored as three which will be your possible answer but do we need the answer variable no if you have been seeing the playlist you know how to find it yes yes you know it first one low was at a possible point I was at a impossible Point most of the in most of the cases solo will always go to the opposite polarity not possible I will always go to a possible polarity so which one will be your answer hi is always going to be your answer I hope that makes sense so no need to use an extra variable answer so we don't need to store any particular answer variable and for anyone who's watching my playlist from the first he knows the polarity process and if in case you're watching it for the first time it's very simple the logo is pointing to how I like possible case the highest pointing to non-possible case binary search will make sure that it ends up at a not possible place and this ends up at a possible place it just changes polarity possible it goes to non possible not possible goes to possible since you are looking for a possible answer hence I will be my answer got it so we just need to return the high no need of storing any extra variable answer got that so let's quickly write down the pseudo code it's going to be super simple I take the array I take the number of cows yeah that's it I say low will be 0 and the high will be pointing to Max minus min which is which can be straight away written as a of n minus 1 minus of a of 0 and I can say uh sort array comma array plus n this is in C plus plus you you can figure out the alternative in Java as well and the other languages just figure out the sort method and then what I can do is while low is lesser than equal to high what do we do we figure out the mint because that is what we have to maintain as a distance and we say can we place we call the function that we have written in the linear search we call the function that we have written in the linear search can we place in the array with a distance of mid and these many cars if you can place if you can place this is a possible answer this is a possible answer maybe you can store it in an answer and we need bigger values so look for the right half because the right half has bigger values or else look for smaller values because that's not possible at the end of the day the while loop will end here and then you can return the high or you can return the answer as well your wish either high or either answer and then you end up the function this is how easy it is this is the reason at first I do the linear search because once you understand the linear search it's super simple to convert it into a binary search so what will be the time complexity sorting at first so that's an N login Plus getting a binary search so that's a log base 2 and the range is this so goes to this multiplied with a big O of n because we are calling it can be place which takes a big often so this will be the overall time complexity this multiplied with this plus the sorting and login now what is the external space nothing big often sorry big of one is the external space that we are using so let's quickly get back into the code editor and check out The Code by the way you can figure out the C plus plus Java python JavaScript codes from the notes in the description and also you can find out the problem Link in the description itself to try it out so written the exact same code and I've just taken the conditional statement inside the phone Loop don't even get the number of calls that you require stop or after after it if you don't find it just return false there's other thing low I've written as one you can experiment and you can actually increase the value of flow the low can go to something like Min of all consecutive like distance differences uh what do I mean by that uh so if I go to this example yeah not this one yeah this one so the difference between this is three the difference between this is one the difference between this is three the difference between this is uh three the difference between this is one so if you take the consecutive differences uh and whatever is the minimum of that you can just change it to that as well but I do not want to complicate it you can think and trim down the range more as well but that's not required because the core of the problem is to solve it unless like if you're taking a 10 to the power 9 then the interview might have an issue if you're taking it like this it's okay he will not care that much so yeah you can try trimming it down as well but yeah this one will be working fine in interviews as well if you're still watching I I hope you've understood everything and in case you have please please uh do consider giving us that like and if you're new to our Channel what are you waiting for hit that subscribe button right away and uh yes if you haven't followed me on Instagram Twitter LinkedIn you can find out all the profile links in the description make sure you uh follow me there as well and with this I'll be wrapping up this video let's fill in some other videos and then provide again whenever your heart is broken don't ever forget you're golden I I will find the light
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ANIMATION -->
+<div class="section" id="tab-animation">
+  <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap;margin-bottom:.6rem">
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase">Stalls (comma-separated)</span>
+      <input class="grid-inp" id="stalls-inp" type="text" value="0, 3, 4, 7, 9, 10" style="width:220px">
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase">Cows k</span>
+      <input class="grid-inp" id="k-inp" type="number" value="4" min="2" style="width:64px">
+    </div>
+    <button class="run-btn" onclick="runViz()">▶ Load</button>
+  </div>
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.8rem">
+    <button type="button" class="sbtn" onclick="loadEx('1, 2, 4, 8, 9',3)">Example 1 → 3</button>
+    <button type="button" class="sbtn" onclick="loadEx('0, 3, 4, 7, 9, 10',4)">Lecture: 0,3,4,7,9,10 k=4 → 3</button>
+    <button type="button" class="sbtn" onclick="loadEx('10, 1, 2, 7, 5',3)">Example 2 → 4</button>
+    <button type="button" class="sbtn" onclick="loadEx('2, 12, 11, 3, 26, 7',5)">Example 3 → 1</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:.6rem;padding:10px 14px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg)">
+    <button class="cbtn" id="btn-prev" onclick="stepBy(-1)" disabled>← Prev</button>
+    <button class="cbtn" id="btn-next" onclick="stepBy(1)" disabled>Next →</button>
+    <button class="cbtn primary" id="btn-auto" onclick="togglePlay()" disabled>▶ Auto-play</button>
+    <button class="cbtn" id="btn-reset" onclick="resetViz()" disabled>↺ Reset</button>
+    <div style="display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:.72rem;color:var(--text3);margin-left:auto">
+      Speed <input type="range" id="speed-sl" min="1" max="5" value="3" style="width:70px;accent-color:var(--accent)">
+      <span id="speed-lbl">Normal</span>
+    </div>
+    <span id="step-info" style="font-family:var(--mono);font-size:.77rem;color:var(--text2);font-weight:700">—</span>
+  </div>
+  <div style="background:var(--bg3);border-radius:4px;height:4px;width:100%;overflow:hidden;margin-bottom:.8rem">
+    <div id="prog-fill" style="height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;transition:width .2s;width:0%"></div>
+  </div>
+
+  <div class="legend">
+    <div class="leg-dot" style="background:rgba(124,106,247,.2);border-color:var(--accent)"></div><span>stall</span>
+    <div class="leg-dot" style="background:var(--green-bg);border-color:var(--green)"></div><span>cow placed</span>
+    <div class="leg-dot" style="background:rgba(240,112,96,.15);border-color:var(--coral)"></div><span>tightest gap ★</span>
+    <div class="leg-dot" style="background:var(--amber-bg);border-color:var(--amber)"></div><span>trying d (BS)</span>
+    <div class="leg-dot" style="background:rgba(45,212,191,.15);border-color:var(--teal)"></div><span>final answer</span>
+  </div>
+
+  <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.5rem">
+    <span style="font-size:.65rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;align-self:center">Lecture placements (0…10, k=4):</span>
+    <button type="button" class="sbtn" onclick="previewPlacement('A')">A → min 1</button>
+    <button type="button" class="sbtn" onclick="previewPlacement('B')">B → min 1</button>
+    <button type="button" class="sbtn" onclick="previewPlacement('C')">C → min 3 ★</button>
+    <button type="button" class="sbtn" onclick="runViz()">↩ Back to BS run</button>
+  </div>
+
+  <div id="anim-grid" style="display:grid;grid-template-columns:1fr 280px;gap:12px">
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="stall-stage">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--ph);text-transform:uppercase;margin-bottom:10px">Sorted stalls on a line (🐄 = cow · brackets = gaps between neighbors)</div>
+        <div class="stall-track" id="stall-track">
+          <div class="gap-brackets" id="gap-brackets"></div>
+          <div class="stall-rail"></div>
+          <div id="stall-pins"></div>
+          <div id="dist-bracket" class="dist-bracket" aria-hidden="true"><span class="dist-bracket-lbl" id="dist-lbl"></span></div>
+        </div>
+        <div id="score-banner" class="score-banner"></div>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-box"><div class="stat-lbl">lo</div><div class="stat-val" id="sv-lo">—</div></div>
+        <div class="stat-box"><div class="stat-lbl">mid (try d)</div><div class="stat-val mid" id="sv-mid">—</div></div>
+        <div class="stat-box"><div class="stat-lbl">hi</div><div class="stat-val" id="sv-hi">—</div></div>
+        <div class="stat-box"><div class="stat-lbl">answer</div><div class="stat-val ok" id="sv-ans">—</div></div>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Feasibility timeline (updates after each test)</div>
+        <div id="dist-timeline" class="dist-timeline-row"></div>
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin:10px 0 6px">Binary search tree (visited guesses)</div>
+        <div class="bs-tree-wrap"><div id="bs-tree-viz" class="bs-tree"><span style="color:var(--ph)">Load to see search path</span></div></div>
+      </div>
+
+      <div id="final-summary" class="final-summary" aria-live="polite">
+        <h3>Run complete</h3>
+        <div class="fs-ans" id="fs-ans">—</div>
+        <div style="font-size:.68rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Distances tested</div>
+        <ul id="fs-log" class="bs-log-list"></ul>
+        <p id="fs-msg" style="margin:.75rem 0 0;font-family:var(--mono);font-size:.8rem;color:var(--text2)">—</p>
+      </div>
+
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.9rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Greedy check <span id="feas-badge"></span></div>
+        <div id="greedy-txt" style="font-family:var(--mono);font-size:.82rem;color:var(--text2);min-height:40px;line-height:1.6">—</div>
+        <div id="placed-stat" style="font-family:var(--mono);font-size:.75rem;color:var(--text3);margin-top:6px">—</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:.85rem 1rem">
+        <div style="font-size:.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;margin-bottom:6px">Binary search log</div>
+        <ul id="bs-log" class="bs-log-list"><li style="color:var(--ph);background:transparent">—</li></ul>
+      </div>
+      <div class="code-hl">
+        <pre style="padding:.9rem 1rem;font-size:11px;line-height:2.1">
+<span class="hl" id="cl0">stalls = sorted(stalls)</span>
+<span class="hl" id="cl1"><span class="kw">def</span> <span class="fn">can_place</span>(dist):</span>
+<span class="hl" id="cl2">  count, last = <span class="nm">1</span>, stalls[<span class="nm">0</span>]</span>
+<span class="hl" id="cl3">  <span class="kw">if</span> stalls[i]-last &gt;= dist: count++, last=stalls[i]</span>
+<span class="hl" id="cl4">lo, hi = <span class="nm">1</span>, stalls[-<span class="nm">1</span>]-stalls[<span class="nm">0</span>]</span>
+<span class="hl" id="cl5">  mid = (lo+hi)//<span class="nm">2</span></span>
+<span class="hl" id="cl6">  <span class="kw">if</span> can_place(mid): ans=mid; lo=mid+<span class="nm">1</span></span>
+<span class="hl" id="cl7">  <span class="kw">else</span>: hi=mid-<span class="nm">1</span></span></pre>
+      </div>
+      <div id="bt-note" style="font-family:var(--mono);font-size:11px;color:var(--text2);padding:8px 10px;background:var(--bg3);border-radius:8px;border-left:2.5px solid var(--accent);min-height:48px;line-height:1.6" aria-live="polite">Press ▶ Load to start.</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:0 2rem">
+  <div style="font-size:.72rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.8rem">Related Problems</div>
+  <div class="related-grid">
+    <a class="rel-card" href="binary-search.html">
+      <div class="rel-top"><span class="rel-num">Technique</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">Advanced Binary Search</div>
+      <div class="rel-desc">Answer-space pattern (monotonic predicate) — the same “search the answer, not the array” idea.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+    <a class="rel-card" href="search-2d-matrix.html">
+      <div class="rel-top"><span class="rel-num">LC #74</span><span class="badge b-topic">Binary Search</span></div>
+      <div class="rel-title">Search a 2D Matrix</div>
+      <div class="rel-desc">Classic binary search on sorted data — complements answer-space BS on feasibility.</div>
+      <span class="rel-arrow">→</span>
+    </a>
+  </div>
+</div>
+
+<footer><p>AlgoAnimate · <a href="../index.html">← All Problems</a> · Aggressive Cows</p></footer>
+
+<script>
+function toggleTheme(){
+  var h=document.documentElement;
+  h.setAttribute('data-theme',h.getAttribute('data-theme')==='dark'?'light':'dark');
+}
+function switchTab(n,btn){
+  document.querySelectorAll('.section').forEach(function(s){s.classList.remove('active');});
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
+  document.getElementById('tab-'+n).classList.add('active');
+  btn.classList.add('active');
+}
+function cp(id,ev){
+  var el=document.getElementById(id);
+  if(!el)return;
+  var t=el.innerText;
+  var btn=ev&&ev.currentTarget;
+  function flash(){if(btn){btn.textContent='Copied!';setTimeout(function(){btn.textContent='Copy';},1500);}}
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(flash).catch(function(){window.prompt('Copy:',t);});
+  }else window.prompt('Copy:',t);
+}
+
+var SPDS=[900,550,280,140,60],SPNAMES=['Very slow','Slow','Normal','Fast','Very fast'];
+document.getElementById('speed-sl').addEventListener('input',function(){
+  document.getElementById('speed-lbl').textContent=SPNAMES[document.getElementById('speed-sl').value-1];
+  if(V.timer){clearTimeout(V.timer);V.timer=null;}
+  if(isPlaying) scheduleAutoTick(60);
+});
+
+function parseStalls(raw){
+  return raw.split(',').map(function(t){return parseInt(t.trim(),10);}).filter(function(x){return!isNaN(x);});
+}
+
+function canPlaceGreedy(stalls,k,dist){
+  var count=1,last=stalls[0],placed=[0];
+  for(var i=1;i<stalls.length;i++){
+    if(stalls[i]-last>=dist){
+      count++;
+      last=stalls[i];
+      placed.push(i);
+      if(count>=k) return {ok:true,count:count,placed:placed};
+    }
+  }
+  return {ok:count>=k,count:count,placed:placed};
+}
+
+function buildSteps(stalls,k){
+  var steps=[];
+  var sorted=stalls.slice().sort(function(a,b){return a-b;});
+  var n=sorted.length;
+  if(n<2||k<2||k>n) return steps;
+
+  var testLog=[];
+
+  function snap(note,detail,cl,lo,hi,mid,ans,placed,tryD,feas,phase){
+    steps.push({
+      stalls:sorted.slice(),k:k,lo:lo,hi:hi,mid:mid,ans:ans,
+      placed:placed?placed.slice():[],
+      tryD:tryD,feas:feas,phase:phase||'',
+      note:note,detail:detail||'',cl:cl!=null?cl:-1,
+      ansRangeLo:1,ansRangeHi:sorted[n-1]-sorted[0],
+      testLog:testLog.slice()
+    });
+  }
+
+  snap('Ready — sorted stalls: ['+sorted.join(', ')+']. Goal: maximize min gap for '+k+' cows.',
+    'We binary-search DISTANCE d (not stalls, not cows).',-1,null,null,null,0,[],null,null,'intro');
+
+  var lo=1,hi=sorted[n-1]-sorted[0],ans=0;
+
+  snap('Sort stalls → ['+sorted.join(', ')+']. Search d in [1, '+hi+'] — find LAST TRUE.',
+    'Answer = largest distance d where can_place(d) is true.',4,lo,hi,null,ans,[],null,null,'sort');
+
+  while(lo<=hi){
+    var mid=lo+Math.floor((hi-lo)/2);
+    snap('Binary search: try minimum distance d = '+mid+' (range lo='+lo+', hi='+hi+').',
+      'Can we place '+k+' cows so every pair is at least '+mid+' apart?',5,lo,hi,mid,ans,[],mid,null,'bs');
+
+    var g=canPlaceGreedy(sorted,k,mid);
+    var placed=g.placed;
+    var feas=g.ok;
+
+    for(var pi=0;pi<placed.length;pi++){
+      var idx=placed[pi];
+      var prevIdx=pi>0?placed[pi-1]:null;
+      var gapNote=prevIdx!=null?' (gap '+ (sorted[idx]-sorted[prevIdx]) +')':' (first cow)';
+      snap('can_place('+mid+'): place cow '+(pi+1)+' at stall '+sorted[idx]+gapNote,
+        'Greedy: earliest stall with stalls[i]-last ≥ '+mid+'. Count so far: '+(pi+1)+'/'+k,
+        pi===0?1:3,lo,hi,mid,ans,placed.slice(),mid,true,'greedy');
+    }
+
+    if(!feas){
+      testLog.push({d:mid,ok:false,lo:lo,hi:hi});
+      snap('can_place('+mid+'): only '+g.count+' cows — need '+k+'. ✗ Not feasible.',
+        'Could not place '+k+' cows with every gap ≥ '+mid+'. Shrink hi → '+(mid-1)+'.',7,lo,hi,mid,ans,placed,mid,false,'fail');
+      hi=mid-1;
+    }else{
+      var mgOk=minConsecGap(sorted,placed);
+      testLog.push({d:mid,ok:true,lo:lo,hi:hi});
+      snap('can_place('+mid+'): placed '+k+' cows at stalls '+placed.map(function(i){return sorted[i];}).join(', ')+'. ✓',
+        'All consecutive gaps ≥ '+mid+' (neighbor min = '+mgOk+'). Record ans = '+mid+'; search larger d → lo = '+(mid+1)+'.',6,lo,hi,mid,mid,placed,mid,true,'ok');
+      ans=mid;
+      lo=mid+1;
+    }
+  }
+
+  var finalPlaced=canPlaceGreedy(sorted,k,ans).placed;
+  snap('✓ Maximum minimum distance = '+ans+' (LAST TRUE in timeline)',
+    'Best placement (greedy at d='+ans+'): stalls '+finalPlaced.map(function(i){return sorted[i];}).join(', ')+'.',
+    -1,lo,hi+1,ans,ans,finalPlaced,null,true,'done');
+
+  return steps;
+}
+
+var V={steps:[],si:0,built:false,timer:null,stalls:[],k:3,preview:false};
+var isPlaying=false;
+
+var LECTURE_STALLS=[0,3,4,7,9,10];
+var PLACEMENT_DEMOS={
+  A:{stalls:[0,3,4,7],title:'Placement A',note:'Cows at 0, 3, 4, 7 — neighbor gap 3→4 is only 1.',detail:'Score = minimum of consecutive gaps (3, 1, 3) = 1.'},
+  B:{stalls:[0,4,9,10],title:'Placement B',note:'Cows at 0, 4, 9, 10 — stalls 9 & 10 are only 1 apart.',detail:'Score = min(4, 5, 1) = 1. Still worse than placement C.'},
+  C:{stalls:[0,4,7,10],title:'Placement C (best)',note:'Cows at 0, 4, 7, 10 — every consecutive gap is at least 3.',detail:'Score = min(4, 3, 3) = 3. This matches the problem answer.'}
+};
+
+function stallIndices(sorted,coords){
+  return coords.map(function(c){
+    var i=sorted.indexOf(c);
+    return i>=0?i:0;
+  });
+}
+
+function previewPlacement(id){
+  stopAuto();
+  var demo=PLACEMENT_DEMOS[id];
+  if(!demo) return;
+  document.getElementById('stalls-inp').value=LECTURE_STALLS.join(', ');
+  document.getElementById('k-inp').value=4;
+  var sorted=LECTURE_STALLS.slice();
+  var placed=stallIndices(sorted,demo.stalls);
+  V.preview=true;V.built=false;
+  var s={
+    stalls:sorted,k:4,lo:null,hi:null,mid:null,ans:null,
+    placed:placed,tryD:null,feas:null,phase:'demo',demoId:id,
+    note:demo.title+': '+demo.note,detail:demo.detail,cl:-1
+  };
+  renderStalls(s);
+  renderVizPanels(s);
+  document.getElementById('sv-lo').textContent='—';
+  document.getElementById('sv-mid').textContent='—';
+  document.getElementById('sv-hi').textContent='—';
+  document.getElementById('sv-ans').textContent=id==='C'?'3':'1';
+  document.getElementById('greedy-txt').textContent=s.detail;
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent='Preview '+id;
+  document.getElementById('prog-fill').style.width='0%';
+  for(var j=0;j<=7;j++){var el=document.getElementById('cl'+j);if(el)el.classList.remove('active');}
+  document.getElementById('feas-badge').innerHTML='';
+  document.getElementById('placed-stat').textContent='Cows placed: 4 / 4 · min gap between neighbors: '+(id==='C'?'3':'1');
+  updCtrl();
+  document.getElementById('btn-prev').disabled=true;
+  document.getElementById('btn-next').disabled=true;
+  document.getElementById('btn-auto').disabled=true;
+}
+
+function stallLeftPct(val,stalls){
+  var min=stalls[0],max=stalls[stalls.length-1];
+  if(max===min) return 50;
+  return 24+((val-min)/(max-min))*52;
+}
+
+function minConsecGap(stalls,placed){
+  if(!placed||placed.length<2) return null;
+  var m=Infinity;
+  for(var i=1;i<placed.length;i++){
+    var g=stalls[placed[i]]-stalls[placed[i-1]];
+    if(g<m) m=g;
+  }
+  return m;
+}
+
+function renderGapBrackets(s){
+  var el=document.getElementById('gap-brackets');
+  if(!el) return;
+  var stalls=s.stalls,placed=s.placed||[];
+  if(placed.length<2){
+    el.innerHTML='';
+    return;
+  }
+  var minG=minConsecGap(stalls,placed);
+  var isBest=s.phase==='done'||s.phase==='demo'&&s.demoId==='C';
+  var html='';
+  for(var j=1;j<placed.length;j++){
+    var i0=placed[j-1],i1=placed[j];
+    var g=stalls[i1]-stalls[i0];
+    var l0=stallLeftPct(stalls[i0],stalls),l1=stallLeftPct(stalls[i1],stalls);
+    var left=Math.min(l0,l1),w=Math.max(Math.abs(l1-l0),3);
+    var cls='gap-seg';
+    if(g===minG) cls+=' min-gap'+(isBest?' best':'');
+    html+='<div class="'+cls+'" style="left:'+left+'%;width:'+w+'%">'+
+      '<span class="gap-seg-lbl">'+g+(g===minG?' ★':'')+'</span></div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderScoreBanner(s){
+  var ban=document.getElementById('score-banner');
+  if(!ban) return;
+  var placed=s.placed||[];
+  if(placed.length<2||(s.phase!=='done'&&s.phase!=='demo'&&s.phase!=='fail'&&s.phase!=='ok')){
+    ban.classList.remove('show','good','bad');
+    ban.textContent='';
+    return;
+  }
+  var mg=minConsecGap(s.stalls,placed);
+  if(mg==null){ban.classList.remove('show');return;}
+  var isDemo=s.phase==='demo';
+  var isFinal=s.phase==='done'||(s.phase==='ok'&&s.placed.length>=s.k);
+  if(!isDemo&&!isFinal&&s.phase!=='fail'){ban.classList.remove('show');return;}
+  ban.classList.add('show');
+  ban.classList.toggle('good',isDemo&&s.demoId==='C'||s.phase==='done');
+  ban.classList.toggle('bad',isDemo&&s.demoId!=='C'||s.phase==='fail');
+  if(isDemo){
+    ban.textContent='Score for this placement: closest pair distance = '+mg+(s.demoId==='C'?' (best possible)':'');
+  }else if(s.phase==='done'){
+    ban.textContent='Final answer: maximum minimum distance = '+s.ans+' (closest pair at d='+mg+' in greedy layout)';
+  }else if(s.phase==='fail'){
+    ban.textContent='Only '+placed.length+'/'+s.k+' cows placed at required gap ≥ '+s.tryD;
+  }else{
+    ban.textContent='Placed '+placed.length+' cows with gap ≥ '+s.tryD+' — consecutive min so far: '+mg;
+  }
+}
+
+function renderStalls(s){
+  var stalls=s.stalls;
+  var pins=document.getElementById('stall-pins');
+  var placed=s.placed||[];
+  var placedSet={},lastIdx=placed.length?placed[placed.length-1]:-1;
+  placed.forEach(function(i){placedSet[i]=true;});
+  var html='';
+  for(var i=0;i<stalls.length;i++){
+    var left=stallLeftPct(stalls[i],stalls);
+    var cls='stall-pin';
+    if(placedSet[i]){
+      cls+=' cow';
+      if(i===lastIdx&&s.phase==='greedy') cls+=' just-placed';
+    }else if(s.phase==='greedy'&&s.feas===false) cls+=' skip';
+    html+='<div class="'+cls+'" style="left:'+left+'%">'+
+      (placedSet[i]?'<span class="cow-icon">🐄</span>':'')+
+      '<div class="stall-post"></div><div class="stall-lbl">'+stalls[i]+'</div></div>';
+  }
+  pins.innerHTML=html;
+  renderGapBrackets(s);
+  renderScoreBanner(s);
+  document.getElementById('dist-bracket').classList.remove('show');
+}
+
+function testMapFromLog(testLog){
+  var m={};
+  (testLog||[]).forEach(function(t){m[t.d]=t.ok;});
+  return m;
+}
+
+function renderDistTimeline(s){
+  var el=document.getElementById('dist-timeline');
+  if(!el) return;
+  if(s.phase==='demo'||s.phase==='intro'){
+    el.innerHTML='<span style="font-family:var(--mono);font-size:11px;color:var(--ph)">—</span>';
+    return;
+  }
+  var hi=s.ansRangeHi||(s.stalls[s.stalls.length-1]-s.stalls[0]);
+  var tm=testMapFromLog(s.testLog);
+  var html='';
+  for(var d=1;d<=hi;d++){
+    var cls='dist-tl-chip';
+    var known=tm[d];
+    if(s.phase==='done'&&s.ans!=null){
+      if(d===s.ans) cls='dist-tl-chip tl-ans';
+      else if(d<s.ans) cls+=' tl-yes';
+      else cls+=' tl-no';
+    }else if(s.mid===d&&(s.phase==='bs'||s.phase==='greedy'||(s.phase==='fail'||s.phase==='ok')&&known===undefined)){
+      cls+=known===undefined?' tl-cur':known?' tl-yes':' tl-no';
+    }else if(known===true) cls+=' tl-yes';
+    else if(known===false) cls+=' tl-no';
+    else cls+=' tl-unk';
+    var sym=known===true?'✓':known===false?'✗':s.phase==='done'&&s.ans!=null?(d<=s.ans?'✓':'✗'):'';
+    html+='<div class="'+cls+'" title="d='+d+'">'+d+sym+'</div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderBsLog(s){
+  var el=document.getElementById('bs-log');
+  if(!el) return;
+  var log=s.testLog||[];
+  if(!log.length){
+    el.innerHTML='<li style="color:var(--ph);background:transparent">No tests yet</li>';
+    return;
+  }
+  var html='';
+  for(var i=0;i<log.length;i++){
+    var t=log[i];
+    var isLast=i===log.length-1&&(s.phase==='fail'||s.phase==='ok'||s.phase==='bs'||s.phase==='greedy');
+    html+='<li class="'+(t.ok?'log-yes':'log-no')+(isLast?' log-cur':'')+'">d='+t.d+' '+(t.ok?'✓':'✗')+'</li>';
+  }
+  if(s.mid!=null&&s.phase==='bs'){
+    html+='<li style="color:var(--accent2);background:rgba(124,106,247,.1)">→ trying d='+s.mid+'…</li>';
+  }
+  el.innerHTML=html;
+}
+
+function renderBsTree(s){
+  var el=document.getElementById('bs-tree-viz');
+  if(!el) return;
+  var log=s.testLog||[];
+  if(s.phase==='demo'||s.phase==='intro'){
+    el.innerHTML='<span style="color:var(--ph)">Tests appear here</span>';
+    return;
+  }
+  if(s.lo!=null&&s.hi!=null){
+    var hdr='<div style="font-size:9px;color:var(--text3);margin-bottom:6px;text-align:center">search range ['+s.lo+', '+s.hi+']</div>';
+  }else var hdr='';
+  if(!log.length&&s.phase==='bs'&&s.mid!=null){
+    el.innerHTML=hdr+'<div class="bs-t-node cur">'+s.mid+'?</div><div class="bs-t-connector">can_place('+s.mid+')</div>';
+    return;
+  }
+  if(!log.length){
+    el.innerHTML='<span style="color:var(--ph)">Tests appear here</span>';
+    return;
+  }
+  var html=hdr;
+  for(var i=0;i<log.length;i++){
+    var t=log[i];
+    if(i>0){
+      var prev=log[i-1];
+      html+='<div class="bs-t-connector">'+(prev.ok?'↓ need larger d (lo = mid+1)':'↓ need smaller d (hi = mid−1)')+'</div>';
+    }
+    html+='<div style="font-size:9px;color:var(--text3);text-align:center">['+t.lo+', '+t.hi+'] → try '+t.d+'</div>';
+    html+='<div class="bs-t-node '+(t.ok?'vis-yes':'vis-no')+(i===log.length-1&&(s.phase==='fail'||s.phase==='ok')?' cur':'')+'">'+t.d+(t.ok?' ✓':' ✗')+'</div>';
+    if(!t.ok){
+      html+='<div class="bs-t-row" style="margin-top:4px"><div class="bs-t-connector" style="opacity:.55">↙ smaller</div><div class="bs-t-connector" style="opacity:.3">↘ larger (pruned)</div></div>';
+    }else if(i<log.length-1){
+      html+='<div class="bs-t-connector" style="opacity:.55">↘ larger branch</div>';
+    }
+  }
+  if(s.phase==='bs'&&s.mid!=null&&!log.some(function(t){return t.d===s.mid;})){
+    html+='<div class="bs-t-connector">↓ next guess</div>';
+    html+='<div style="font-size:9px;color:var(--text3);text-align:center">['+s.lo+', '+s.hi+']</div>';
+    html+='<div class="bs-t-node cur">'+s.mid+'?</div>';
+  }
+  el.innerHTML=html;
+}
+
+function renderFinalSummary(s){
+  var box=document.getElementById('final-summary');
+  if(!box) return;
+  if(s.phase!=='done'){
+    box.classList.remove('show');
+    return;
+  }
+  box.classList.add('show');
+  document.getElementById('fs-ans').textContent='Final answer = '+s.ans;
+  var log=s.testLog||[];
+  var lh='';
+  for(var i=log.length-1;i>=0;i--){
+    lh+='<li class="'+(log[i].ok?'log-yes':'log-no')+'">d='+log[i].d+' '+(log[i].ok?'✓':'✗')+'</li>';
+  }
+  document.getElementById('fs-log').innerHTML=lh||'<li>—</li>';
+  var lastTrue=log.filter(function(t){return t.ok;}).pop();
+  document.getElementById('fs-msg').textContent=
+    'Largest feasible distance (LAST TRUE) = '+(lastTrue?lastTrue.d:s.ans)+'. All smaller d also work; all larger d fail.';
+}
+
+function renderVizPanels(s){
+  renderDistTimeline(s);
+  renderBsLog(s);
+  renderBsTree(s);
+  renderFinalSummary(s);
+}
+
+function applyStep(){
+  if(V.si>=V.steps.length)return false;
+  var s=V.steps[V.si];
+  for(var i=0;i<=7;i++){
+    var e=document.getElementById('cl'+i);
+    if(e)e.classList.toggle('active',i===s.cl);
+  }
+  renderStalls(s);
+  renderVizPanels(s);
+
+  document.getElementById('sv-lo').textContent=s.lo!=null?String(s.lo):'—';
+  document.getElementById('sv-mid').textContent=s.mid!=null?String(s.mid):'—';
+  document.getElementById('sv-hi').textContent=s.hi!=null?String(s.hi):'—';
+  document.getElementById('sv-ans').textContent=s.ans!=null?String(s.ans):'—';
+
+  document.getElementById('greedy-txt').textContent=s.detail||'—';
+  var fb=document.getElementById('feas-badge');
+  if(fb){
+    if(s.feas===true) fb.innerHTML='<span class="feas-badge yes">✓ feasible</span>';
+    else if(s.feas===false) fb.innerHTML='<span class="feas-badge no">✗ not feasible</span>';
+    else fb.innerHTML='';
+  }
+  var ps=document.getElementById('placed-stat');
+  if(ps){
+    if(s.placed&&s.placed.length&&s.k){
+      var mg=minConsecGap(s.stalls,s.placed);
+      ps.textContent='Cows placed: '+s.placed.length+' / '+s.k+(mg!=null?' · min gap between neighbors: '+mg:'');
+    }else ps.textContent='—';
+  }
+  document.getElementById('bt-note').textContent=s.note;
+  document.getElementById('step-info').textContent='Step '+(V.si+1)+' / '+V.steps.length;
+
+  var pf=document.getElementById('prog-fill');
+  if(pf) pf.style.width=(V.steps.length?((V.si+1)/V.steps.length*100):0)+'%';
+
+  V.si++;
+  updCtrl();
+  return V.si<V.steps.length;
+}
+
+function rewindTo(t){
+  V.si=t;
+  if(t>0){
+    var s=V.steps[t-1];
+    for(var i=0;i<=7;i++){var e=document.getElementById('cl'+i);if(e)e.classList.toggle('active',i===s.cl);}
+    renderStalls(s);
+    renderVizPanels(s);
+    document.getElementById('sv-lo').textContent=s.lo!=null?String(s.lo):'—';
+    document.getElementById('sv-mid').textContent=s.mid!=null?String(s.mid):'—';
+    document.getElementById('sv-hi').textContent=s.hi!=null?String(s.hi):'—';
+    document.getElementById('sv-ans').textContent=s.ans!=null?String(s.ans):'—';
+    document.getElementById('greedy-txt').textContent=s.detail||'—';
+    var fb2=document.getElementById('feas-badge');
+    if(fb2){
+      if(s.feas===true) fb2.innerHTML='<span class="feas-badge yes">✓ feasible</span>';
+      else if(s.feas===false) fb2.innerHTML='<span class="feas-badge no">✗ not feasible</span>';
+      else fb2.innerHTML='';
+    }
+    var ps2=document.getElementById('placed-stat');
+    if(ps2){
+      if(s.placed&&s.placed.length&&s.k){
+        var mg2=minConsecGap(s.stalls,s.placed);
+        ps2.textContent='Cows placed: '+s.placed.length+' / '+s.k+(mg2!=null?' · min gap between neighbors: '+mg2:'');
+      }else ps2.textContent='—';
+    }
+    document.getElementById('bt-note').textContent=s.note;
+    document.getElementById('step-info').textContent='Step '+t+' / '+V.steps.length;
+    var pf=document.getElementById('prog-fill');
+    if(pf) pf.style.width=(t/V.steps.length*100)+'%';
+  }else{
+    for(var j=0;j<=7;j++){var el=document.getElementById('cl'+j);if(el)el.classList.remove('active');}
+    document.getElementById('stall-pins').innerHTML='';
+    document.getElementById('dist-bracket').classList.remove('show');
+    document.getElementById('gap-brackets').innerHTML='';
+    var ban0=document.getElementById('score-banner');
+    if(ban0){ban0.classList.remove('show','good','bad');ban0.textContent='';}
+    document.getElementById('feas-badge').innerHTML='';
+    document.getElementById('placed-stat').textContent='—';
+    document.getElementById('dist-timeline').innerHTML='<span style="font-family:var(--mono);font-size:11px;color:var(--ph)">—</span>';
+    document.getElementById('bs-tree-viz').innerHTML='<span style="color:var(--ph)">Load to see search path</span>';
+    document.getElementById('bs-log').innerHTML='<li style="color:var(--ph);background:transparent">—</li>';
+    document.getElementById('final-summary').classList.remove('show');
+    document.getElementById('sv-lo').textContent='—';
+    document.getElementById('sv-mid').textContent='—';
+    document.getElementById('sv-hi').textContent='—';
+    document.getElementById('sv-ans').textContent='—';
+    document.getElementById('greedy-txt').textContent='—';
+    document.getElementById('bt-note').textContent='Use ← / → or ▶ Auto-play.';
+    document.getElementById('step-info').textContent='Step 0 / '+V.steps.length;
+    document.getElementById('prog-fill').style.width='0%';
+  }
+  updCtrl();
+}
+
+function runViz(){
+  stopAuto();
+  V.preview=false;
+  var stalls=parseStalls(document.getElementById('stalls-inp').value);
+  var k=parseInt(document.getElementById('k-inp').value,10);
+  if(stalls.length<2||isNaN(k)||k<2||k>stalls.length){
+    document.getElementById('bt-note').textContent='Need at least 2 stalls and 2 ≤ k ≤ number of stalls.';
+    V.built=false;
+    updCtrl();
+    return;
+  }
+  V.stalls=stalls;V.k=k;
+  V.steps=buildSteps(stalls,k);
+  if(!V.steps.length){
+    document.getElementById('bt-note').textContent='Could not build steps.';
+    return;
+  }
+  V.built=true;V.si=0;
+  rewindTo(0);
+  document.getElementById('bt-note').textContent='Loaded '+stalls.length+' stalls, k='+k+' → '+V.steps.length+' steps. Press ▶ or →';
+  updCtrl();
+}
+
+function loadEx(s,k){
+  document.getElementById('stalls-inp').value=s;
+  document.getElementById('k-inp').value=k;
+  runViz();
+}
+
+function updCtrl(){
+  var h=V.built&&V.steps.length>0;
+  document.getElementById('btn-prev').disabled=!h||V.si<=0;
+  document.getElementById('btn-next').disabled=!h||V.si>=V.steps.length;
+  document.getElementById('btn-auto').disabled=!h;
+  document.getElementById('btn-reset').disabled=!h;
+}
+
+function stepBy(d){
+  stopAuto();
+  if(!V.built)return;
+  if(d>0){if(V.si<V.steps.length)applyStep();}
+  else{if(V.si<=0)return;rewindTo(Math.max(0,V.si-1));}
+}
+
+function stopAuto(){
+  if(V.timer){clearTimeout(V.timer);V.timer=null;}
+  isPlaying=false;
+  var b=document.getElementById('btn-auto');
+  if(b){b.textContent='▶ Auto-play';b.classList.add('primary');}
+}
+
+function scheduleAutoTick(initialDelay){
+  if(!isPlaying)return;
+  var d=initialDelay!=null?initialDelay:0;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  V.timer=setTimeout(function tick(){
+    if(!isPlaying)return;
+    var more=applyStep();
+    updCtrl();
+    if(!more){stopAuto();return;}
+    var sl=document.getElementById('speed-sl');
+    var base=SPDS[parseInt(sl.value,10)-1]||280;
+    var wait=base;
+    if(reduce) wait=Math.min(wait,200);
+    V.timer=setTimeout(tick,wait);
+  },d);
+}
+
+function togglePlay(){
+  if(isPlaying){stopAuto();return;}
+  if(!V.built)return;
+  if(V.si>=V.steps.length)rewindTo(0);
+  isPlaying=true;
+  document.getElementById('btn-auto').textContent='⏸ Pause';
+  scheduleAutoTick(0);
+}
+
+function resetViz(){stopAuto();if(!V.built)return;rewindTo(0);}
+
+document.addEventListener('keydown',function(e){
+  if(['INPUT','TEXTAREA'].includes(document.activeElement.tagName))return;
+  if(!document.getElementById('tab-animation').classList.contains('active'))return;
+  if(e.key==='ArrowRight'){e.preventDefault();stepBy(1);}
+  else if(e.key==='ArrowLeft'){e.preventDefault();stepBy(-1);}
+  else if(e.key===' '){e.preventDefault();togglePlay();}
+});
+
+window.addEventListener('load',function(){
+  if(!window.matchMedia('(prefers-color-scheme:dark)').matches)
+    document.documentElement.setAttribute('data-theme','light');
+  loadEx('0, 3, 4, 7, 9, 10',4);
+});
+</script>
+</body>
+</html>
